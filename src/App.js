@@ -8,7 +8,7 @@ import {
   setUser
 } from './store/actions/actionsCreator';
 import { getProducts } from './store/selectors/selector';
-import Catalog from './catalog/catalog';
+import Catalogue from './catalogue/catalogue';
 import Login from './login/login';
 import Firebase from './firebase/firbase';
 import Header from './common/header'
@@ -33,8 +33,8 @@ componentDidMount() {
         <Header />
       <Router history={history}>
         <Route path={'/login'} component={Login} />
-        <Route path={'/home'} component={Catalog} />
-        <Route exact path={'/'} component={Catalog} />
+        <Route path={'/home'} component={Catalogue} />
+        <Route exact path={'/'} component={Catalogue} />
       </Router>
       </div>
     );

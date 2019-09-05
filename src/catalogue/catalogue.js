@@ -127,8 +127,7 @@ const Catalogue = ({productList}) => {
     }
     </ProductTable>
 
-    {productList.map(p => <div key={p.id}> {p.descrizione} </div>)}
-  </Container>
+ </Container>
 }
 
 const mapStateToProps = state => {

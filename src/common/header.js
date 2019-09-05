@@ -7,12 +7,14 @@ import { getUser } from '../store/selectors/selector';
 const HeaderContainer = styled.div`
   width: 100vw;
   height: 40px;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 2px solid #444444;
   display: inline-flex;
 `;
 const Logout = styled.div`
-  float: right;
-  padding: 8px 15px;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  padding: 9px 15px;
   background-color: #eeeeee;
   :hover {
     background-color: #444444;
@@ -28,10 +30,15 @@ const Title = styled.div`
   font-weight: bold;
 `;
 const UserName = styled.div`
-  width: 200px;
+  position: fixed;
+  top: 0px;
+  right: 70px;
   margin-right: 20px;
   padding: 8px;
   text-align: right;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Header = ({logout, user}) => {
@@ -39,7 +46,6 @@ const Header = ({logout, user}) => {
   text-align: center;
   flex-grow: 1;
   padding: 8px;
-  padding-left: ${user ? '324px' : '8px'};
   font-weight: bold;
 `;
 

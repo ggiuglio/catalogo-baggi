@@ -13,6 +13,11 @@ const LoginPanelStyled = styled.div`
   padding: 10px;
   box-sizing: border-box;
   display: flex-box;
+  @media (max-width: 768px) {
+   margin: 10px;
+   width: calc(100vw - 20px);
+   border: none;
+  }
 `;
 const InputFieldStyled = styled.input`
   font-size: 16px;

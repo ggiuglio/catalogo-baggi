@@ -8,8 +8,8 @@
     "E": "0001",
     "descrizione": "Tee filter 12mm A-Lock - 250 micron",
     "produttore": "Parker",
-    "codice-produttore": "M12A-FT8-250-SS",
-    "codide-fornitore": "ERN0009",
+    "codiceProduttore": "M12A-FT8-250-SS",
+    "codideFornitore": "ERN0009",
     "fornitore": "RTI"
   }, {
     "id": 2,
@@ -20,8 +20,8 @@
     "E": "0002",
     "descrizione": "In line filter 20mm A-Lock - 250 micron",
     "produttore": "Parker",
-    "codice-produttore": "M20A-F12L-250-SS",
-    "codide-fornitore": "ERN0009",
+    "codiceProduttore": "M20A-F12L-250-SS",
+    "codideFornitore": "ERN0009",
     "fornitore": "RTI"
   }, {
     "id": 3,
@@ -32,8 +32,8 @@
     "E": "0003",
     "descrizione": "In line filter 6mm A-Lock - 1 micron M6A-FT4-1-SS",
     "produttore": "Parker",
-    "codice-produttore": "M6A-FT4-1-SS",
-    "codide-fornitore": "ERD0713",
+    "codiceProduttore": "M6A-FT4-1-SS",
+    "codidePornitore": "ERD0713",
     "fornitore": "RTI"
   }
 ]
