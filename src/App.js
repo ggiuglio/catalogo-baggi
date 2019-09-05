@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
+import { connect } from "react-redux";
+import { Router, Route } from 'react-router-dom';
 import './App.css';
+import { 
+  loadProducts, 
+  logout,
+  setUser
+} from './store/actions/actionsCreator';
+import { getProducts } from './store/selectors/selector';
+import Catalog from './catalog/catalog';
+import Login from './login/login';
+import Firebase from './firebase/firbase';
+import Header from './common/header'
+import createHistory from 'history/createBrowserHistory'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export const history = createHistory()
+
+export const FirebaseInstance = new Firebase();
+
+class App extends Component {
+componentDidMount() {
+  FirebaseInstance.auth.onAuthStateChanged((user) => {
+    this.props.setUser(user);
+    this.props.loadProducts();
+    user ? history.push('home') : history.push('login')
+  });
 }
 
-export default App;
+  render() {
+    return (
+      <div>
+        <Header />
+      <Router history={history}>
+        <Route path={'/login'} component={Login} />
+        <Route path={'/home'} component={Catalog} />
+        <Route exact path={'/'} component={Catalog} />
+      </Router>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return { 
+    productList: getProducts(state)
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadProducts: () =>  dispatch(loadProducts()),
+    logout: () => dispatch(logout()),
+    setUser: (user) => dispatch(setUser(user))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
