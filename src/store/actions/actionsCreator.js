@@ -7,7 +7,8 @@ import {
   SET_PRODUCTS,
   SET_USER,
   LOGIN_ERROR,
-  RESET_LOGIN_ERROR
+  RESET_LOGIN_ERROR,
+  SET_FILTER
 } from './actionsTypes.js'
 import { checkServerIdentity } from 'tls';
 import {FirebaseInstance} from '../../App';
@@ -63,4 +64,15 @@ export const setUser = (user) => {
       user: user ? {email: user.email} : null
     });
   }
+}
+
+export const setFilter = (filter, value) => {
+  return dispatch => {
+    dispatch({
+      type: SET_FILTER,
+      filter: filter,
+      value: value
+    });
+  }
+  
 }
