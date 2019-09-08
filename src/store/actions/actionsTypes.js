@@ -5,3 +5,5 @@ export const LOGIN = "LOGIN";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const RESET_LOGIN_ERROR = "RESET_LOGIN_ERROR";
 export const SET_FILTER = "SET_FILTER";
+export const SET_FILTERD_PRODUCTS = "SET_FILTERD_PRODUCTS";
+export const SET_LOADING = "SET_LOADING";

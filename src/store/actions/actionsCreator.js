@@ -8,18 +8,22 @@ import {
   SET_USER,
   LOGIN_ERROR,
   RESET_LOGIN_ERROR,
-  SET_FILTER
+  SET_FILTER,
+  SET_LOADING,
+  SET_FILTERD_PRODUCTS
 } from './actionsTypes.js'
 import { checkServerIdentity } from 'tls';
 import {FirebaseInstance} from '../../App';
 import history from '../../common/history';
 
-
 export const loadProducts = () => {
   return dispatch => {
+    dispatch({
+      type: SET_LOADING,
+      value: true
+    });
     FirebaseInstance.products.on('value', snapshot => {
       const prod = JSON.parse(JSON.stringify(snapshot.val()));
-      console.log('prod', prod);
       dispatch({
         type: SET_PRODUCTS,
         products: prod
@@ -69,9 +73,16 @@ export const setUser = (user) => {
 export const setFilter = (filter, value) => {
   return dispatch => {
     dispatch({
+      type: SET_LOADING,
+      value: true
+    });
+    dispatch({
       type: SET_FILTER,
       filter: filter,
       value: value
+    });
+    dispatch({
+      type: SET_FILTERD_PRODUCTS
     });
   }
   

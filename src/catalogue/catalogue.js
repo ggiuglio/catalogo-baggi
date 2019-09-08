@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { loadProducts, setFilter } from '../store/actions/actionsCreator';
@@ -6,8 +6,9 @@ import { getProducts, getProductFilters } from '../store/selectors/selector';
 import search from '../assets/search.png';
 
 const Container = styled.div`
-  width: 100vw;
+  width: Calc(100vw - 18px);
   overflow: auto;
+  padding-top: 40px;
 `;
 const ProductTable = styled.div`
   width: Calc(100% - 40px);
@@ -95,10 +96,20 @@ const Icon = styled.img`
   height: 20px;
 `;
 
-const Catalogue = ({productList, filters, setFilter}) => {
+const Catalogue = ({productList, loadProducts, setFilter}) => {
+  useEffect(() => {loadProducts()}, []);
+  let debounce;
+
+  const debouncedFilterChange = (filter, value) => {
+    setFilter(filter, value)
+  }
 
   const filterChange = (event, filter) => {
-    setFilter(filter, event.target.value)
+    if(debounce) {
+      clearTimeout(debounce);
+    }
+    const value = event.target.value;
+    debounce = setTimeout(() => debouncedFilterChange(filter, value), 500);
   }
 
   return <Container>
@@ -147,23 +158,23 @@ const Catalogue = ({productList, filters, setFilter}) => {
             <Icon src={search} />
           </FilterCell>
           <GrowFilterCell>
-            <Filter type="text" />
-            <Icon src={search} onChange={(e) => filterChange(e, 'descrizione')}/>
-          </GrowFilterCell>
-          <GrowFilterCell>
-            <Filter type="text" onChange={(e) => filterChange(e, 'producttore')}/>
+            <Filter type="text" onChange={(e) => filterChange(e, 'descrizione')} />
             <Icon src={search} />
           </GrowFilterCell>
           <GrowFilterCell>
-            <Filter type="text" onChange={(e) => filterChange(e, 'codice')}/>
+            <Filter type="text" onChange={(e) => filterChange(e, 'produttore')}/>
             <Icon src={search} />
           </GrowFilterCell>
           <GrowFilterCell>
-            <Filter type="text" onChange={(e) => filterChange(e, 'A')}/>
+            <Filter type="text" onChange={(e) => filterChange(e, 'codiceProduttore')} />
             <Icon src={search} />
           </GrowFilterCell>
           <GrowFilterCell>
-            <Filter type="text"  onChange={(e) => filterChange(e, 'A')}/>
+            <Filter type="text" onChange={(e) => filterChange(e, 'codiceFornitore')}/>
+            <Icon src={search} />
+          </GrowFilterCell>
+          <GrowFilterCell>
+            <Filter type="text" onChange={(e) => filterChange(e, 'fornitore')}/>
             <Icon src={search} />
           </GrowFilterCell>
       </FilterRow>
@@ -193,7 +204,6 @@ const Catalogue = ({productList, filters, setFilter}) => {
 const mapStateToProps = state => {
   return { 
     productList: getProducts(state),
-    filters: getProductFilters(state)
   }
 };
 

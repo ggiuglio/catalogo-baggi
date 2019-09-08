@@ -6,6 +6,14 @@ import { getUser } from '../store/selectors/selector';
 
 const HeaderContainer = styled.div`
   width: 100vw;
+  height: 44px;
+  background-color: white;
+  z-index: 999;
+  position: fixed;
+  top: 0;
+`;
+const HeaderContent = styled.div`
+  	width: 100vw;
   height: 40px;
   border-bottom: 2px solid #444444;
   display: inline-flex;
@@ -50,9 +58,11 @@ const Header = ({logout, user}) => {
 `;
 
   return <HeaderContainer>
-    <Title> Catalogo B.A.G.G.I </Title>
-    {user ? <UserName> {user.email} </UserName> : ''}
-    {user ? <Logout onClick={() => logout()}>Logout</Logout> : ''}
+    <HeaderContent>
+      <Title> Catalogo B.A.G.G.I </Title>
+      {user ? <UserName> {user.email} </UserName> : ''}
+      {user ? <Logout onClick={() => logout()}>Logout</Logout> : ''}
+    </HeaderContent>
   </HeaderContainer>
 } 
 
