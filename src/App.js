@@ -13,7 +13,9 @@ import Login from './login/login';
 import Firebase from './firebase/firbase';
 import Header from './common/header';
 import Loader from './common/loader';
-import createHistory from 'history/createBrowserHistory'
+import createHistory from 'history/createBrowserHistory';
+import ImportData from './importData/importData';
+import NewProduct from './newProduct/newProduct';
 
 export const history = createHistory()
 
@@ -23,7 +25,7 @@ class App extends Component {
 componentDidMount() {
   FirebaseInstance.auth.onAuthStateChanged((user) => {
     this.props.setUser(user);
-    user ? history.push('home') : history.push('login')
+    user ? history.push('prodotti') : history.push('login')
   });
 }
 
@@ -34,7 +36,9 @@ componentDidMount() {
         <Loader />
         <Router history={history}>
           <Route path={'/login'} component={Login} />
-          <Route path={'/home'} component={Catalogue} />
+          <Route path={'/prodotti'} component={Catalogue} />
+          <Route path={'/nuovo-prodotto'} component={NewProduct} />
+          <Route path={'/import'} component={ImportData} />
           <Route exact path={'/'} component={Catalogue} />
         </Router>
       </div>

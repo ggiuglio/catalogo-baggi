@@ -7,9 +7,14 @@ import search from '../assets/search.png';
 import x from '../assets/x.png';
 
 const Container = styled.div`
-  width: Calc(100vw - 18px);
   overflow: auto;
-  padding-top: 40px;
+  box-sizing: border-box;
+  max-height: Calc(100vh - 40px);
+  margin-top: 40px;
+  @media (max-width: 768px) {
+    max-height: Calc(100vh - 80px);
+    margin-top: 80px;
+  }
 `;
 const ProductTable = styled.div`
   width: Calc(100% - 40px);

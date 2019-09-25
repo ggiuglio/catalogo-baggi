@@ -6,7 +6,7 @@ import { getProducts, getLoginError} from '../store/selectors/selector';
 
 const LoginPanelStyled = styled.div`
   width: 400px;
-  margin-top: Calc(50vh - 100px);
+  margin-top: Calc(50vh - 150px);
   margin-left: auto;
   margin-right: auto;
   border: 1px solid black;
@@ -15,6 +15,7 @@ const LoginPanelStyled = styled.div`
   display: flex-box;
   @media (max-width: 768px) {
    margin: 10px;
+   margin-top: Calc(50vh - 150px);
    width: calc(100vw - 20px);
    border: none;
   }
