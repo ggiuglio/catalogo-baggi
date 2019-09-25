@@ -178,13 +178,16 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
       case 'F':
         inputFref.current.value = '';
         break;
-      case 'prodotto':
+      case 'G':
+        inputGref.current.value = '';
+        break;
+      case 'produttore':
         inputProdottoref.current.value = '';
         break;
       case 'descrizione':
         inputDecrizioneref.current.value = '';
         break;
-      case 'codiceProdotto':
+      case 'codiceProduttore':
         inputCodiceProduttoref.current.value = '';
         break;
       case 'codiceFornitore':
@@ -230,17 +233,17 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
           <FilterCell>
             <Filter type="text" ref={inputCref} onChange={(e) => filterChange(e, 'C')}/>
             <SearchIcon src={search} />
-            { filterValues.B ? <ClearIcon src={x} onClick={() => resetFilter('C')} /> : '' }
+            { filterValues.C ? <ClearIcon src={x} onClick={() => resetFilter('C')} /> : '' }
           </FilterCell>
           <FilterCell>
             <Filter type="text" ref={inputDref} onChange={(e) => filterChange(e, 'D')}/>
             <SearchIcon src={search} />
-            { filterValues.C ? <ClearIcon src={x} onClick={() => resetFilter('D')} /> : '' }
+            { filterValues.D ? <ClearIcon src={x} onClick={() => resetFilter('D')} /> : '' }
           </FilterCell>
           <FilterCell>
             <Filter type="text" ref={inputEref} onChange={(e) => filterChange(e, 'E')}/>
             <SearchIcon src={search} />
-            { filterValues.D ? <ClearIcon src={x} onClick={() => resetFilter('E')} /> : '' }
+            { filterValues.E ? <ClearIcon src={x} onClick={() => resetFilter('E')} /> : '' }
           </FilterCell>
           <FilterCell>
             <Filter type="text" ref={inputFref} onChange={(e) => filterChange(e, 'F')}/>
