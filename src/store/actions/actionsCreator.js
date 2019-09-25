@@ -22,9 +22,10 @@ export const loadProducts = () => {
       type: SET_LOADING,
       value: true
     });
-    FirebaseInstance.products.on('value', snapshot => {
+
+    return FirebaseInstance.products.on('value', snapshot => {
       const prod = JSON.parse(JSON.stringify(snapshot.val()));
-      dispatch({
+      return dispatch({
         type: SET_PRODUCTS,
         products: prod
       });
@@ -35,9 +36,7 @@ export const loadProducts = () => {
 export const login = (username, password) => {
   return dispatch => {
     FirebaseInstance.doSignInWithEmailAndPassword(username, password)
-    .then(() => {
-      history.push('/home');
-    })
+    .then(() => {})
     .catch(() => {
       dispatch({
         type: LOGIN_ERROR,
@@ -70,20 +69,24 @@ export const setUser = (user) => {
   }
 }
 
-export const setFilter = (filter, value) => {
+export const setLoading = () => {
   return dispatch => {
     dispatch({
       type: SET_LOADING,
       value: true
-    });
+    })
+  }
+}
+
+export const setFilter = (filter, value) => {
+  return dispatch => {
     dispatch({
       type: SET_FILTER,
       filter: filter,
       value: value
-    });
+    })
     dispatch({
       type: SET_FILTERD_PRODUCTS
-    });
+    }); 
   }
-  
 }

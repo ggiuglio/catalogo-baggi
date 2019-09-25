@@ -1,12 +1,9 @@
 import React from 'react';
 import { connect } from "react-redux";
 import styled from 'styled-components';
-import loader from '../assets/KIA-loader.gif';
+import loader from '../assets/loading.gif';
 import { isLoading } from '../store/selectors/selector';
-
-const Loader = ({loading}) => {
- 
-  const LoaderContainer = styled.div`
+const LoaderContainer = styled.div`
     width: 100vw;
     height: 100vh;
     background-color: #f4f4f4;
@@ -16,17 +13,20 @@ const Loader = ({loading}) => {
   `;
  
   const Image = styled.img`
-    height: 500px;
-    width: 500px;
-    margin-top: 100px;
-    margin-left: Calc(50% - 250px);
-    object-fit: none;
+    height: 100px;
+    width: 100px;
+    margin-top: 200px;
+    margin-left: Calc(50% - 50px);
   `;
   const Label = styled.div`
     width: 100%;
     text-align: center;
-    font-size: 18px;
+    font-size: 22px;
   `;
+
+const Loader = ({loading}) => {
+ console.log('ma perche', loading)
+  
 
 return <div>
     { loading ? <LoaderContainer>
