@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { loadProducts, setFilter, setLoading } from '../store/actions/actionsCreator';
-import { getProducts, getProductFilters } from '../store/selectors/selector';
+import { getProducts } from '../store/selectors/selector';
 import search from '../assets/search.png';
 import x from '../assets/x.png';
 
@@ -157,26 +157,39 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
     switch(filter) {
       case 'A':
         inputAref.current.value = '';
+        break;
       case 'B':
         inputAref.current.value = '';
+        break;
       case 'C':
         inputAref.current.value = '';
+        break;
       case 'D':
         inputAref.current.value = '';
+        break;
       case 'E':
         inputAref.current.value = '';
+        break;
       case 'F':
         inputAref.current.value = '';
+        break;
       case 'prodotto':
         inputProdottoref.current.value = '';
+        break;
       case 'descrizione':
         inputDecrizioneref.current.value = '';
+        break;
       case 'codiceProdotto':
         inputCodiceProduttoref.current.value = '';
+        break;
       case 'codiceFornitore':
         inputCodiceFornitoreref.current.value = '';
+        break;
       case 'fornitore':
         inputFornitoreref.current.value = '';
+        break;
+      default: 
+        break;
     };
     
   }

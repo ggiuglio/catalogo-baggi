@@ -24,9 +24,7 @@ const LoaderContainer = styled.div`
     font-size: 22px;
   `;
 
-const Loader = ({loading}) => {
- console.log('ma perche', loading)
-  
+const Loader = ({loading}) => {  
 
 return <div>
     { loading ? <LoaderContainer>

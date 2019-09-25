@@ -1,8 +1,3 @@
-import axios from 'axios';
-import store from '../store';
-import {
-   doSignInWithEmailAndPassword 
-} from "../../firebase/firbase.js"
 import { 
   SET_PRODUCTS,
   SET_USER,
@@ -12,9 +7,7 @@ import {
   SET_LOADING,
   SET_FILTERD_PRODUCTS
 } from './actionsTypes.js'
-import { checkServerIdentity } from 'tls';
 import {FirebaseInstance} from '../../App';
-import history from '../../common/history';
 
 export const loadProducts = () => {
   return dispatch => {

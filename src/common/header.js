@@ -50,12 +50,6 @@ const UserName = styled.div`
 `;
 
 const Header = ({logout, user}) => {
-  const Title = styled.div`
-  text-align: center;
-  flex-grow: 1;
-  padding: 8px;
-  font-weight: bold;
-`;
 
   return <HeaderContainer>
     <HeaderContent>

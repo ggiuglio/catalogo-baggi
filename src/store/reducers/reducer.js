@@ -7,7 +7,6 @@ import {
     SET_FILTERD_PRODUCTS,
     SET_LOADING
 } from '../actions/actionsTypes'
-import store from '../store';
 
 export const INITIAL_STATE = {
    products: [],
@@ -17,7 +16,6 @@ export const INITIAL_STATE = {
    user: null,
    loading: false,
 };
-
 
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
