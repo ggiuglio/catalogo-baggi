@@ -164,19 +164,19 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
         inputAref.current.value = '';
         break;
       case 'B':
-        inputAref.current.value = '';
+        inputBref.current.value = '';
         break;
       case 'C':
-        inputAref.current.value = '';
+        inputCref.current.value = '';
         break;
       case 'D':
-        inputAref.current.value = '';
+        inputDref.current.value = '';
         break;
       case 'E':
-        inputAref.current.value = '';
+        inputEref.current.value = '';
         break;
       case 'F':
-        inputAref.current.value = '';
+        inputFref.current.value = '';
         break;
       case 'prodotto':
         inputProdottoref.current.value = '';

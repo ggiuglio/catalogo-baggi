@@ -19,8 +19,7 @@ const HeaderContent = styled.div`
   border-bottom: 2px solid #444444;
   display: inline-flex;
   @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
+    display: block;
   }
 `;
 const Logout = styled.div`
@@ -54,6 +53,7 @@ const Tabs = styled.div`
   display: flex;
   @media (max-width: 768px) {
     min-width: 100Vw;
+    height: 40px;
   }
 `;
 
@@ -79,7 +79,9 @@ const Bar = styled.div`
   display: inline-flex; 
   flex-grow: 1;
   @media (max-width: 768px) {
+    height: 40px;
     width: 100vw;
+    margin-top: 10px;
   }
 `;
 
