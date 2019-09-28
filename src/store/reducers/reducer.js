@@ -5,7 +5,8 @@ import {
     RESET_LOGIN_ERROR,
     SET_FILTER,
     SET_FILTERD_PRODUCTS,
-    SET_LOADING
+    SET_LOADING,
+    SET_IMPORT_RESULTS
 } from '../actions/actionsTypes'
 
 export const INITIAL_STATE = {
@@ -15,16 +16,21 @@ export const INITIAL_STATE = {
    loginError: "",
    user: null,
    loading: false,
+   importResults: null,
 };
 
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case SET_PRODUCTS:
             const products = [];
-            action.products.forEach( p => products.push(p));
-
+            if (action.products) {
+                Object.keys(action.products).forEach( p => {
+                    products.push(action.products[p])
+                });
+            }
+            
             // adding fake data for test
-            addFakeProducts(products, 1000);
+            // addFakeProducts(products, 1000);
 
             return {
                 ...state,
@@ -89,6 +95,12 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 loading: action.value
             }
         }
+        case SET_IMPORT_RESULTS: {
+            return {
+                ...state,
+                ...{ importResults: action.importResults }
+            }
+        }
         default: 
             return state
     }
@@ -98,23 +110,23 @@ const Reducer = (state = INITIAL_STATE, action) => {
 
 const addFakeProducts = (products, quantity) => {
     for (let i = 4; i < quantity; i++) {
-        products.push(
-            {
-                id: i,
-                A: 'S',
-                B: Math.floor(Math.random() * (9 - 0)).toString(),
-                C: Math.floor(Math.random() * (99 - 0)).toString(),
-                D: makeString(2),
-                E: makeString(3),
-                F: Math.floor(Math.random() * (9 - 0)).toString(),
-                G: Math.floor(Math.random() * (999 - 0)).toString(),
-                descrizione: makeString(30),
-                produttore: makeString(10),
-                codiceProduttore: makeString(6),
-                codiceFornitore: makeString(4),
-                fornitore: makeString(12)
-            }
-        );
+        const p = {
+            id: i,
+            A: 'S',
+            B: Math.floor(Math.random() * (9 - 0)).toString(),
+            C: Math.floor(Math.random() * (99 - 0)).toString(),
+            D: makeString(2),
+            E: makeString(3),
+            F: Math.floor(Math.random() * (9 - 0)).toString(),
+            G: Math.floor(Math.random() * (999 - 0)).toString(),
+            descrizione: makeString(30),
+            produttore: makeString(10),
+            codiceProduttore: makeString(6),
+            codiceFornitore: makeString(4),
+            fornitore: makeString(12)
+        }
+        p.id = p.A + p.B + p.C + p.D + p.E + p.F + p.G;
+        products.push(p);
     }
 };
 

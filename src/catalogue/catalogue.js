@@ -312,7 +312,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadProducts: () =>  dispatch(loadProducts()),
+    loadProducts: () => dispatch(loadProducts()),
     setFilter: (filter, value) => dispatch(setFilter(filter, value)),
     setLoading: () => dispatch(setLoading())
   }

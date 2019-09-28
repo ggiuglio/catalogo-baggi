@@ -1,6 +1,6 @@
 {
   "products" : [ {
-    "id": 1,
+    "id": "S000PAFLT0001",
     "A": "S",
     "B": "0",
     "C": "00",
@@ -14,7 +14,7 @@
     "codideFornitore": "ERN0009",
     "fornitore": "RTI"
   }, {
-    "id": 2,
+    "id": "S000PAFLT0002",
     "A": "S",
     "B": "0",
     "C": "00",
@@ -28,7 +28,7 @@
     "codideFornitore": "ERN0009",
     "fornitore": "RTI"
   }, {
-    "id": 3,
+    "id": "S000PAFLT0003",
     "A": "S",
     "B": "0",
     "C": "00",

@@ -7,7 +7,7 @@ class Firebase {
   constructor() {
     app.initializeApp(FirebaseConfig);
     const databaseRef = app.database().ref();
-    this.products = databaseRef.child('products');
+    this.products = app.database().ref('products'); //databaseRef.child('products');
     this.provider = new firebase.auth.GoogleAuthProvider()
 
     this.auth = app.auth();

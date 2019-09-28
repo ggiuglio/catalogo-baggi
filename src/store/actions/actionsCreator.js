@@ -5,9 +5,32 @@ import {
   RESET_LOGIN_ERROR,
   SET_FILTER,
   SET_LOADING,
-  SET_FILTERD_PRODUCTS
+  SET_FILTERD_PRODUCTS,
+  SET_IMPORT_RESULTS,
 } from './actionsTypes.js'
 import {FirebaseInstance} from '../../App';
+
+
+export const clearImportResults = () => {
+  return dispatch => {
+    return dispatch({
+      type: SET_IMPORT_RESULTS,
+      importResults: null
+    })
+  }
+}
+
+export const importProductData = (textData) => {
+  console.log(textData);
+  const productsData = textData.split(';');
+  
+  return dispatch => {
+    dispatch({
+      type: SET_IMPORT_RESULTS,
+      importResults: {found: productsData.lenght}
+    })
+  }
+}
 
 export const loadProducts = () => {
   return dispatch => {
@@ -15,14 +38,24 @@ export const loadProducts = () => {
       type: SET_LOADING,
       value: true
     });
-
-    return FirebaseInstance.products.on('value', snapshot => {
+    return FirebaseInstance.products.orderByChild('id').on('value', snapshot => {
       const prod = JSON.parse(JSON.stringify(snapshot.val()));
       return dispatch({
         type: SET_PRODUCTS,
         products: prod
       });
     });
+  }
+}
+
+export const insertProduct = (product) => {
+  return dispatch => {
+     return FirebaseInstance.products.push(product).then( s => {
+     
+     })
+     .catch((r) => {
+        console.log('catch', r);
+     })
   }
 }
 
@@ -45,7 +78,7 @@ export const resetLoginError = () => {
       type: RESET_LOGIN_ERROR
     }); 
   }
-};
+}
 
 export const logout = () => {
   return dispatch => {

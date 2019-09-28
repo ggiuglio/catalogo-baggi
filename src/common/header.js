@@ -99,16 +99,12 @@ const Header = ({logout, user}) => {
     switch (selectedTab) {
       case '/prodotti':
         return 'Prodotti';
-        break;
       case '/nuovo-prodotto':
         return 'Nuovo Prodotto';
-        break;
       case '/import':
         return 'Caricameto da Excell';
-        break;
       default:
         return '';
-        break;
     }
   }
 
