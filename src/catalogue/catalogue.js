@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { loadProducts, setFilter, setLoading } from '../store/actions/actionsCreator';
-import { getProducts } from '../store/selectors/selector';
+import { getProducts, getUser } from '../store/selectors/selector';
+import { history } from '../App';
 import search from '../assets/search.png';
 import x from '../assets/x.png';
 
@@ -117,8 +118,18 @@ const ProductsFound = styled.div`
 
 const filterValues = {};
 
-const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
-  useEffect(() => {loadProducts()}, []);
+const Catalogue = ({ productList, loadProducts, setFilter, setLoading, user }) => {
+  useEffect(() => { callLoadProducts() }, []);
+  if (!user) {
+    history.push('login');
+  }
+
+  const callLoadProducts = () => {
+    if (user) {
+      loadProducts();
+    }
+  }
+
   const inputAref = React.createRef();
   const inputBref = React.createRef();
   const inputCref = React.createRef();
@@ -149,7 +160,7 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
 
   const setFilterValue = (filter, value) => {
     filterValues[filter] = value;
-    if(debounce && debounceLoad) {
+    if (debounce && debounceLoad) {
       clearTimeout(debounce);
       clearTimeout(debounceLoad);
     }
@@ -159,7 +170,7 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
 
   const resetFilter = (filter) => {
     setFilterValue(filter, '');
-    switch(filter) {
+    switch (filter) {
       case 'A':
         inputAref.current.value = '';
         break;
@@ -196,10 +207,10 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
       case 'fornitore':
         inputFornitoreref.current.value = '';
         break;
-      default: 
+      default:
         break;
     };
-    
+
   }
 
   return <Container>
@@ -215,98 +226,99 @@ const Catalogue = ({productList, loadProducts, setFilter, setLoading}) => {
         <HeaderCell>G</HeaderCell>
         <GrowHeaderCell>Descrizione</GrowHeaderCell>
         <GrowHeaderCell>Produttore</GrowHeaderCell>
-        <GrowHeaderCell>Codice Produttore</GrowHeaderCell>    
+        <GrowHeaderCell>Codice Produttore</GrowHeaderCell>
         <GrowHeaderCell>Codice Fornitore</GrowHeaderCell>
         <GrowHeaderCell>Fornitore</GrowHeaderCell>
       </HeaderRow>
       <FilterRow>
-          <FilterCell>
-            <Filter type="text" ref={inputAref} onChange={(e) => filterChange(e, 'A')} />
-            <SearchIcon src={search} />
-            { filterValues.A ? <ClearIcon src={x} onClick={() => resetFilter('A')} /> : '' }
-          </FilterCell>
-          <FilterCell>
-            <Filter type="text" ref={inputBref} onChange={(e) => filterChange(e, 'B')} />
-            <SearchIcon src={search} />
-            { filterValues.B ? <ClearIcon src={x} onClick={() => resetFilter('B')} /> : '' }
-          </FilterCell>
-          <FilterCell>
-            <Filter type="text" ref={inputCref} onChange={(e) => filterChange(e, 'C')}/>
-            <SearchIcon src={search} />
-            { filterValues.C ? <ClearIcon src={x} onClick={() => resetFilter('C')} /> : '' }
-          </FilterCell>
-          <FilterCell>
-            <Filter type="text" ref={inputDref} onChange={(e) => filterChange(e, 'D')}/>
-            <SearchIcon src={search} />
-            { filterValues.D ? <ClearIcon src={x} onClick={() => resetFilter('D')} /> : '' }
-          </FilterCell>
-          <FilterCell>
-            <Filter type="text" ref={inputEref} onChange={(e) => filterChange(e, 'E')}/>
-            <SearchIcon src={search} />
-            { filterValues.E ? <ClearIcon src={x} onClick={() => resetFilter('E')} /> : '' }
-          </FilterCell>
-          <FilterCell>
-            <Filter type="text" ref={inputFref} onChange={(e) => filterChange(e, 'F')}/>
-            <SearchIcon src={search} />
-            { filterValues.F ? <ClearIcon src={x} onClick={() => resetFilter('F')} /> : '' }
-          </FilterCell>
-          <FilterCell>
-            <Filter type="text" ref={inputGref} onChange={(e) => filterChange(e, 'G')}/>
-            <SearchIcon src={search} />
-            { filterValues.G ? <ClearIcon src={x} onClick={() => resetFilter('G')} /> : '' }
-          </FilterCell>
-          <GrowFilterCell>
-            <Filter type="text" ref={inputDecrizioneref} onChange={(e) => filterChange(e, 'descrizione')} />
-            <SearchIcon src={search} />
-            { filterValues.descrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : '' }
-          </GrowFilterCell>
-          <GrowFilterCell>
-            <Filter type="text" ref={inputProdottoref} onChange={(e) => filterChange(e, 'produttore')}/>
-            <SearchIcon src={search} />
-            { filterValues.produttore ? <ClearIcon src={x} onClick={() => resetFilter('produttore')} /> : '' }
-          </GrowFilterCell>
-          <GrowFilterCell>
-            <Filter type="text" ref={inputCodiceProduttoref} onChange={(e) => filterChange(e, 'codiceProduttore')} />
-            <SearchIcon src={search} />
-            { filterValues.codiceProduttore ? <ClearIcon src={x} onClick={() => resetFilter('codiceProduttore')} /> : '' }
-          </GrowFilterCell>
-          <GrowFilterCell>
-            <Filter type="text" ref={inputCodiceFornitoreref} onChange={(e) => filterChange(e, 'codiceFornitore')}/>
-            <SearchIcon src={search} />
-            { filterValues.codiceFornitore ? <ClearIcon src={x} onClick={() => resetFilter('codiceFornitore')} /> : '' }
-          </GrowFilterCell>
-          <GrowFilterCell>
-            <Filter type="text" ref={inputFornitoreref} onChange={(e) => filterChange(e, 'fornitore')}/>
-            <SearchIcon src={search} />
-            { filterValues.fornitore? <ClearIcon src={x} onClick={() => resetFilter('fornitore')} /> : '' }
-          </GrowFilterCell>
+        <FilterCell>
+          <Filter type="text" ref={inputAref} onChange={(e) => filterChange(e, 'A')} />
+          <SearchIcon src={search} />
+          {filterValues.A ? <ClearIcon src={x} onClick={() => resetFilter('A')} /> : ''}
+        </FilterCell>
+        <FilterCell>
+          <Filter type="text" ref={inputBref} onChange={(e) => filterChange(e, 'B')} />
+          <SearchIcon src={search} />
+          {filterValues.B ? <ClearIcon src={x} onClick={() => resetFilter('B')} /> : ''}
+        </FilterCell>
+        <FilterCell>
+          <Filter type="text" ref={inputCref} onChange={(e) => filterChange(e, 'C')} />
+          <SearchIcon src={search} />
+          {filterValues.C ? <ClearIcon src={x} onClick={() => resetFilter('C')} /> : ''}
+        </FilterCell>
+        <FilterCell>
+          <Filter type="text" ref={inputDref} onChange={(e) => filterChange(e, 'D')} />
+          <SearchIcon src={search} />
+          {filterValues.D ? <ClearIcon src={x} onClick={() => resetFilter('D')} /> : ''}
+        </FilterCell>
+        <FilterCell>
+          <Filter type="text" ref={inputEref} onChange={(e) => filterChange(e, 'E')} />
+          <SearchIcon src={search} />
+          {filterValues.E ? <ClearIcon src={x} onClick={() => resetFilter('E')} /> : ''}
+        </FilterCell>
+        <FilterCell>
+          <Filter type="text" ref={inputFref} onChange={(e) => filterChange(e, 'F')} />
+          <SearchIcon src={search} />
+          {filterValues.F ? <ClearIcon src={x} onClick={() => resetFilter('F')} /> : ''}
+        </FilterCell>
+        <FilterCell>
+          <Filter type="text" ref={inputGref} onChange={(e) => filterChange(e, 'G')} />
+          <SearchIcon src={search} />
+          {filterValues.G ? <ClearIcon src={x} onClick={() => resetFilter('G')} /> : ''}
+        </FilterCell>
+        <GrowFilterCell>
+          <Filter type="text" ref={inputDecrizioneref} onChange={(e) => filterChange(e, 'descrizione')} />
+          <SearchIcon src={search} />
+          {filterValues.descrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : ''}
+        </GrowFilterCell>
+        <GrowFilterCell>
+          <Filter type="text" ref={inputProdottoref} onChange={(e) => filterChange(e, 'produttore')} />
+          <SearchIcon src={search} />
+          {filterValues.produttore ? <ClearIcon src={x} onClick={() => resetFilter('produttore')} /> : ''}
+        </GrowFilterCell>
+        <GrowFilterCell>
+          <Filter type="text" ref={inputCodiceProduttoref} onChange={(e) => filterChange(e, 'codiceProduttore')} />
+          <SearchIcon src={search} />
+          {filterValues.codiceProduttore ? <ClearIcon src={x} onClick={() => resetFilter('codiceProduttore')} /> : ''}
+        </GrowFilterCell>
+        <GrowFilterCell>
+          <Filter type="text" ref={inputCodiceFornitoreref} onChange={(e) => filterChange(e, 'codiceFornitore')} />
+          <SearchIcon src={search} />
+          {filterValues.codiceFornitore ? <ClearIcon src={x} onClick={() => resetFilter('codiceFornitore')} /> : ''}
+        </GrowFilterCell>
+        <GrowFilterCell>
+          <Filter type="text" ref={inputFornitoreref} onChange={(e) => filterChange(e, 'fornitore')} />
+          <SearchIcon src={search} />
+          {filterValues.fornitore ? <ClearIcon src={x} onClick={() => resetFilter('fornitore')} /> : ''}
+        </GrowFilterCell>
       </FilterRow>
       {
-        productList.map(p => 
-        <TableRow key={p.id}>
-          <Cell>{p.A}</Cell>
-          <Cell>{p.B}</Cell>
-          <Cell>{p.C}</Cell>
-          <Cell>{p.D}</Cell>
-          <Cell>{p.E}</Cell>
-          <Cell>{p.F}</Cell>
-          <Cell>{p.G}</Cell>
-          <GrowCell>{p.descrizione}</GrowCell>
-          <GrowCell>{p.produttore}</GrowCell>
-          <GrowCell>{p.codiceProduttore}</GrowCell>
-          <GrowCell>{p.codiceFornitore}</GrowCell>
-          <GrowCell>{p.fornitore}</GrowCell>
-        </TableRow>      
-      )
-    }
+        productList.map(p =>
+          <TableRow key={p.id}>
+            <Cell>{p.A}</Cell>
+            <Cell>{p.B}</Cell>
+            <Cell>{p.C}</Cell>
+            <Cell>{p.D}</Cell>
+            <Cell>{p.E}</Cell>
+            <Cell>{p.F}</Cell>
+            <Cell>{p.G}</Cell>
+            <GrowCell>{p.descrizione}</GrowCell>
+            <GrowCell>{p.produttore}</GrowCell>
+            <GrowCell>{p.codiceProduttore}</GrowCell>
+            <GrowCell>{p.codiceFornitore}</GrowCell>
+            <GrowCell>{p.fornitore}</GrowCell>
+          </TableRow>
+        )
+      }
     </ProductTable>
 
- </Container>
+  </Container>
 }
 
 const mapStateToProps = state => {
-  return { 
+  return {
     productList: getProducts(state),
+    user: getUser(state)
   }
 };
 
@@ -318,4 +330,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps) (Catalogue);
+export default connect(mapStateToProps, mapDispatchToProps)(Catalogue);

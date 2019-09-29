@@ -88,8 +88,6 @@ const Bar = styled.div`
 const Header = ({logout, user}) => {
   const [selectedTab, changeTab] = useState(history.location.pathname);
 
-  
-
   const goToPage = (page) => {
     changeTab(`/${page}`);
     setTimeout(() =>  history.push(page), 100);

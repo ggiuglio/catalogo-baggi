@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import { importProductData, clearImportResults } from '../store/actions/actionsCreator';
-import { getImportResults } from '../store/selectors/selector';
+import { getImportResults, getUser } from '../store/selectors/selector';
+import { history } from '../App';
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -105,7 +106,10 @@ const Bad = styled.span`
   color: red;
 `;
 
-const ImportData = ({ importProductData, importResutls, clearImportResults }) => {
+const ImportData = ({ importProductData, importResutls, clearImportResults, user }) => {
+  if (!user) {
+    history.push('login');
+  }
 
   const productDataText = React.createRef();
 
@@ -161,7 +165,8 @@ const ImportData = ({ importProductData, importResutls, clearImportResults }) =>
 
 const mapStateToProps = state => {
   return {
-    importResutls: getImportResults(state)
+    importResutls: getImportResults(state),
+    user: getUser(state)
   }
 };
 

@@ -9,6 +9,7 @@ import {
   SET_IMPORT_RESULTS,
 } from './actionsTypes.js'
 import { FirebaseInstance } from '../../App';
+import { history } from '../../App';
 
 export const clearImportResults = () => {
   return dispatch => {
@@ -99,7 +100,9 @@ export const insertProductInDB = (product) => {
 export const login = (username, password) => {
   return dispatch => {
     FirebaseInstance.doSignInWithEmailAndPassword(username, password)
-      .then(() => { })
+      .then(() => {
+        history.push('/prodotti')
+      })
       .catch(() => {
         dispatch({
           type: LOGIN_ERROR,
@@ -221,8 +224,7 @@ const parseProduct = (productString) => {
 
 const checkforProdcutDuplications = (productList) => {
   return (dispatch, getState) => {
-    const productWithNoDuplication = [];
-    productList.forEach(product => {
+     productList.forEach(product => {
       if (product.valid) {
         const inStore = getState().products.find(p => p.id === product.product.id);
         const inSameList = productList.filter(p => (p.id === product.id && !p.duplicated)).length > 1;

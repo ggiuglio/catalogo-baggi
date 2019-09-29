@@ -1,8 +1,12 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { getUser } from '../store/selectors/selector';
+import { history } from '../App';
 
-const NewProduct = ({}) => {
-
+const NewProduct = ({user}) => {
+  if (!user) {
+    history.push('login');
+  }
   return <div>
     new product
   </div>
@@ -10,6 +14,7 @@ const NewProduct = ({}) => {
 
 const mapStateToProps = state => {
   return { 
+    user: getUser(state)
   }
 };
 

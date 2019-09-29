@@ -25,6 +25,7 @@ const LoaderContainer = styled.div`
   `;
 
 const Loader = ({loading}) => {  
+  console.log(loading)
 
 return <div>
     { loading ? <LoaderContainer>

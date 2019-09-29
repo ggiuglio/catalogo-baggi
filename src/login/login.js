@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import { loadProducts, login, resetLoginError } from '../store/actions/actionsCreator';
-import { getProducts, getLoginError} from '../store/selectors/selector';
+import { getUser, getLoginError} from '../store/selectors/selector';
+import { history } from '../App';
 
 const LoginPanelStyled = styled.div`
   width: 400px;
@@ -57,7 +58,11 @@ const ButtonStyled = styled.input`
   }
 `;
 
-const Login = ({login, loginError, resetLoginError}) => {
+const Login = ({login, loginError, resetLoginError, user}) => {
+  if (user) {
+    history.push('/prodotti');
+  }
+  
   const [username, setUsername] = useState('test@test.com');
   const [password, setPassword] = useState('provola');
 
@@ -100,8 +105,8 @@ const Login = ({login, loginError, resetLoginError}) => {
 
 const mapStateToProps = state => {
   return { 
-    productList: getProducts(state),
-    loginError: getLoginError(state)
+    loginError: getLoginError(state),
+    user: getUser(state)
   }
 };
 
