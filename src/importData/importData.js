@@ -59,7 +59,6 @@ const LoadButton = styled.div`
       color: white;
     }
 `;
-
 const ImportResultsPanel = styled.div`
   width: 60vw;
   height: 70vh;
@@ -71,13 +70,11 @@ const ImportResultsPanel = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 const ImportResults = styled.div`
   padding: 20px;
   width: 100;
   flex-grow: 1;
-`; 
-
+`;
 const Okbutton = styled.div`
   width: 150px;
   padding: 5px;
@@ -93,23 +90,22 @@ const Okbutton = styled.div`
     color: white;
   }
 `;
+const ResultsTitle = styled.div`
+  text-allign: center;
+  font-weight: bold;
+`;
+const Result = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid black;
+`;
+const Good = styled.span`
+  color: green;
+`;
+const Bad = styled.span`
+  color: red;
+`;
 
-const ImportData = ({importProductData, importResutls}) => {
-  const product = {
-    id: "S000PAFLT0003",
-    A: "S",
-    B: "0",
-    C: "00",
-    D: "PA",
-    E: "FLT",
-    F: "0",
-    G: "003",
-    "descrizione": "Tee filter 12mm A-Lock - 250 micron",
-    "produttore": "Parker",
-    "codiceProduttore": "M12A-FT8-250-SS",
-    "codideFornitore": "ERN0009",
-    "fornitore": "RTI"
-  };
+const ImportData = ({ importProductData, importResutls, clearImportResults }) => {
 
   const productDataText = React.createRef();
 
@@ -117,6 +113,9 @@ const ImportData = ({importProductData, importResutls}) => {
     <InstructionText>
       Inserisci i dati contenuti nei file excell esportati in formato .csv. I campi di un prodotto devono essere separati
       da una "," i diversi prodotti devono essere separati da ";"
+      <div>
+        Ad esempio: S,0,00,PA,FLT,0,005,UN NUOVO PRODOTTO DI PROVA Tee filter 12mm A-Lock - 250 micron,Parker,M12A-FT8-250-S,ERN0009,RTI;
+      </div>
     </InstructionText>
     <ImportTextContainer>
       <ImportText ref={productDataText} />
@@ -126,19 +125,42 @@ const ImportData = ({importProductData, importResutls}) => {
         Carica prodotti nel database
       </LoadButton>
     </LoadButtonContainer>
-    {importResutls ? 
+    {importResutls ?
       <ImportResultsPanel>
-      
+
         <ImportResults>
-        this are the results: found: {importResutls.found} 
+          <ResultsTitle>
+            Risultati del caricamento dati
+          </ResultsTitle>
+          <Result>
+            {importResutls.found} prodotti trovati
+          </Result>
+          {importResutls.good ?
+            <Result>
+              <Good>
+                {importResutls.good} prodotti caricati
+              </Good>
+            </Result> : ''}
+          {importResutls.wrong ?
+            <Result>
+              <Bad>
+                {importResutls.wrong} prodotti incorretti
+             </Bad>
+            </Result> : ''}
+          {importResutls.duplicated ?
+            <Result>
+              <Bad>
+                {importResutls.duplicated} prodotti duplicati
+              </Bad>
+            </Result> : ''}
         </ImportResults>
-        <Okbutton>ok</Okbutton>
-      </ImportResultsPanel> : ''  }
+        <Okbutton onClick={() => clearImportResults()}>ok</Okbutton>
+      </ImportResultsPanel> : ''}
   </Container>
 }
 
 const mapStateToProps = state => {
-  return { 
+  return {
     importResutls: getImportResults(state)
   }
 };
@@ -150,4 +172,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps) (ImportData);
+export default connect(mapStateToProps, mapDispatchToProps)(ImportData);
