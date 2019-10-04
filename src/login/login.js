@@ -63,8 +63,8 @@ const Login = ({login, loginError, resetLoginError, user}) => {
     history.push('/prodotti');
   }
   
-  const [username, setUsername] = useState('test@test.com');
-  const [password, setPassword] = useState('provola');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const userChange = (event) => {
     setUsername(event.target.value);
