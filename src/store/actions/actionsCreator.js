@@ -21,11 +21,15 @@ export const clearImportResults = () => {
 }
 
 export const importProductData = (textData) => {
-  textData.replace((/  |\r\n|\n|\r/gm),"");
-  let productsData = textData.split(';');
-  productsData.pop();
+  textData.replace((/  |\r\n|\r/gm),"");
+  let productsData = textData.split('\n');
 
-  let products = productsData.map(p => parseProduct(p));
+  let products = productsData.map((p, i) => {
+    if(p.charAt(p.length - 1) === ';') {
+      p = p.slice(0, -1);
+    }
+    return parseProduct(p, i);
+  });
 
   return dispatch => {
     dispatch(checkforProdcutDuplications(products))
@@ -37,7 +41,7 @@ export const importProdcuts = (products) => {
     dispatch(setImportResults(products));
     products.forEach(p => {
       if (p.valid && !p.duplicated) {
-        dispatch(insertProductInDB(p.product))
+        // dispatch(insertProductInDB(p.product))
       }
     });
   }
@@ -92,7 +96,7 @@ export const insertProductInDB = (product) => {
 
     })
       .catch((r) => {
-        console.log('catch', r);
+        console.log('error', r);
       })
   }
 }
@@ -157,17 +161,17 @@ export const setFilter = (filter, value) => {
   }
 }
 
-const parseProduct = (productString) => {
-  const productProperties = productString.split(',');
+const parseProduct = (productString, line) => {
+  const productProperties = productString.split(';');
   const result = {
     valid: true,
     errors: [],
     product: null
   }
 
-  if (!productProperties || productProperties.length !== 12) {
+  if (!productProperties || productProperties.length !== 10) {
     result.valid = false;
-    result.errors.push('Il prodotto non constiene il giusto nuermo di campi separati da /",/"');
+    result.errors.push(`linea: ${line + 1}: Il prodotto contiene ${productProperties.length} invece di 10;`);
     return result;
   }
 
@@ -175,15 +179,15 @@ const parseProduct = (productString) => {
     A: productProperties[0].trim(),
     B: productProperties[1].trim(),
     C: productProperties[2].trim(),
-    D: productProperties[3].trim(),
-    E: productProperties[4].trim(),
-    F: productProperties[5].trim(),
-    G: productProperties[6].trim(),
-    descrizione: productProperties[7].trim(),
-    produttore: productProperties[8].trim(),
-    codiceProduttore: productProperties[9].trim(),
-    codiceFornitore: productProperties[10].trim(),
-    fornitore: productProperties[11].trim(),
+    D: productProperties[3].trim().substring(0, 2),
+    E: productProperties[3].trim().substring(2, 5),
+    F: productProperties[4].trim().substring(0, 1),
+    G: productProperties[4].trim().substring(1, 4),
+    descrizione: productProperties[5].trim(),
+    produttore: productProperties[6].trim(),
+    codiceProduttore: productProperties[7].trim(),
+    codiceFornitore: productProperties[8].trim(),
+    fornitore: productProperties[9].trim(),
   };
   mappedProduct.id = createProductId(productProperties);
 
@@ -192,31 +196,40 @@ const parseProduct = (productString) => {
   // valiate product paramenters
   if (mappedProduct.A.length != 1) {
     result.valid = false;
-    result.errors.push('Il campo A deve essere un carattere');
+    result.errors.push(`linea: ${line + 1}: Il campo A deve essere un carattere`);
   }
   if (mappedProduct.B.length !== 1 || parseInt(mappedProduct.B) === NaN) {
     result.valid = false;
-    result.errors.push('Il campo B deve essere un numero di una cifra');
+    result.errors.push(`linea: ${line + 1}: Il campo B deve essere un numero di una cifra`);
   }
   if (mappedProduct.C.length !== 2 || parseInt(mappedProduct.C) === NaN) {
     result.valid = false;
-    result.errors.push('Il campo C deve essere un numero di due cifre ');
+    result.errors.push(`linea: ${line + 1}: Il campo C deve essere un numero di due cifre`);
   }
   if (mappedProduct.D.length !== 2) {
     result.valid = false;
-    result.errors.push('Il campo D deve essere due caratteri');
+    result.errors.push(`linea: ${line + 1}: Il campo D deve essere due caratteri`);
   }
   if (mappedProduct.E.length !== 3) {
     result.valid = false;
-    result.errors.push('Il campo E deve essere di 3 caratteri');
+    result.errors.push(`linea: ${line + 1}: Il campo E deve essere di 3 caratteri`);
+  }
+  if (productProperties[3].length !== 5) {
+    result.valid = false;
+    result.errors.push(`linea: ${line + 1}: I campi D e E devono provenire da un campo di 5 caratteri`);
+  }
+  if (productProperties[4].length !== 4 || parseInt(productProperties[4]) === NaN ) {
+    result.valid = false;
+    result.errors.push(`linea: ${line + 1}: I campi F e G devono provenire da un campo di 4 cifre`);
+
   }
   if (mappedProduct.F.length != 1 || parseInt(mappedProduct.F) === NaN) {
     result.valid = false;
-    result.errors.push('Il campo F deve essere un numero di una cifra');
+    result.errors.push(`linea: ${line + 1}: Il campo F deve essere un numero di una cifra`);
   }
   if (mappedProduct.G.length !== 3 || parseInt(mappedProduct.G) === NaN) {
     result.valid = false;
-    result.errors.push('Il campo G deve essere un numero do tre cifre');
+    result.errors.push(`linea: ${line + 1}: Il campo G deve essere un numero do tre cifre`);
   }
 
   return result;
@@ -227,9 +240,9 @@ const checkforProdcutDuplications = (productList) => {
      productList.forEach(product => {
       if (product.valid) {
         const inStore = getState().products.find(p => p.id === product.product.id);
-        const inSameList = productList.filter(p => (p.id === product.id && !p.duplicated)).length > 1;
+        const inSameList = productList.filter(p => (p.id === product.id && !p.duplicated && p.valid)).length > 1;
 
-        if (inStore || inSameList) {
+        if (inStore || inSameList ) {
           product.duplicated = true;
         }
       }

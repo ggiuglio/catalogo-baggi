@@ -106,12 +106,21 @@ const Bad = styled.span`
   color: red;
 `;
 
+const ErrorField = styled.div`
+  width: Calc(100% - 60px);
+  height: 100%;
+  padding: 20px;
+  overflow: auto;
+`;
+
 const ImportData = ({ importProductData, importResutls, clearImportResults, user }) => {
   if (!user) {
     history.push('login');
   }
 
   const productDataText = React.createRef();
+
+  const errorContent = importResutls ? importResutls.errors.map(e => <div> {e} </div> ) : '';
 
   return <Container>
     <InstructionText>
@@ -158,6 +167,9 @@ const ImportData = ({ importProductData, importResutls, clearImportResults, user
               </Bad>
             </Result> : ''}
         </ImportResults>
+        <ErrorField>
+            {errorContent}
+        </ErrorField>
         <Okbutton onClick={() => clearImportResults()}>ok</Okbutton>
       </ImportResultsPanel> : ''}
   </Container>
