@@ -30,7 +30,7 @@ const Reducer = (state = INITIAL_STATE, action) => {
             }
             
             // adding fake data for test
-            // addFakeProducts(products, 1000);
+            // addFakeProducts(products, 100000);
 
             return {
                 ...state,

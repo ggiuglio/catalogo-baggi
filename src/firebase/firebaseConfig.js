@@ -1,5 +1,5 @@
 export const FirebaseConfig = {
-    apiKey: "AIzaSyCLkHPyeo7-WVlxQAttZVie-ARp3q-qZ7E",
-    authDomain: "catalogo-baggi.firebaseapp.com",
-    databaseURL: "https://catalogo-baggi.firebaseio.com/"
+    apiKey: "AIzaSyDAVbKqR2S70HlSUBE39VrVk6msvoN2cyI",
+    authDomain: "prt-baggi.firebaseapp.com",
+    databaseURL: "https://prt-baggi.firebaseio.com/"
   };

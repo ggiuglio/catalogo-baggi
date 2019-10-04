@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { loadProducts, setFilter, setLoading } from '../store/actions/actionsCreator';
-import { getProducts, getUser } from '../store/selectors/selector';
+import { getProducts, getUser, getProductsNumber } from '../store/selectors/selector';
 import { history } from '../App';
 import search from '../assets/search.png';
 import x from '../assets/x.png';
@@ -118,7 +118,7 @@ const ProductsFound = styled.div`
 
 const filterValues = {};
 
-const Catalogue = ({ productList, loadProducts, setFilter, setLoading, user }) => {
+const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLoading, user }) => {
   useEffect(() => { callLoadProducts() }, []);
   if (!user) {
     history.push('login');
@@ -214,7 +214,7 @@ const Catalogue = ({ productList, loadProducts, setFilter, setLoading, user }) =
   }
 
   return <Container>
-    <ProductsFound>{productList.length} prodotti trovati</ProductsFound>
+    <ProductsFound>{productList.length} su {productsNumber} prodotti trovati</ProductsFound>
     <ProductTable>
       <HeaderRow>
         <HeaderCell>A</HeaderCell>
@@ -318,7 +318,8 @@ const Catalogue = ({ productList, loadProducts, setFilter, setLoading, user }) =
 const mapStateToProps = state => {
   return {
     productList: getProducts(state),
-    user: getUser(state)
+    user: getUser(state),
+    productsNumber: getProductsNumber(state)
   }
 };
 

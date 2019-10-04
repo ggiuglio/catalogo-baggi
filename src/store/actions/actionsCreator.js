@@ -41,7 +41,7 @@ export const importProdcuts = (products) => {
     dispatch(setImportResults(products));
     products.forEach(p => {
       if (p.valid && !p.duplicated) {
-        // dispatch(insertProductInDB(p.product))
+        dispatch(insertProductInDB(p.product))
       }
     });
   }
