@@ -189,9 +189,6 @@ const parseProduct = (productString, line) => {
     codiceFornitore: productProperties[8].trim(),
     fornitore: productProperties[9].trim(),
   };
-  mappedProduct.id = createProductId(productProperties);
-
-  result.product = mappedProduct;
 
   // valiate product paramenters
   if (mappedProduct.A.length != 1) {
@@ -232,6 +229,9 @@ const parseProduct = (productString, line) => {
     result.errors.push(`linea: ${line + 1}: Il campo G deve essere un numero do tre cifre`);
   }
 
+  mappedProduct.id = createProductId(mappedProduct);
+  result.product = mappedProduct;
+
   return result;
 }
 
@@ -240,7 +240,7 @@ const checkforProdcutDuplications = (productList) => {
      productList.forEach(product => {
       if (product.valid) {
         const inStore = getState().products.find(p => p.id === product.product.id);
-        const inSameList = productList.filter(p => (p.id === product.id && !p.duplicated && p.valid)).length > 1;
+        const inSameList = productList.filter(p => (p.id === product.product.id && !p.duplicated && p.valid)).length > 1;
 
         if (inStore || inSameList ) {
           product.duplicated = true;
@@ -252,12 +252,8 @@ const checkforProdcutDuplications = (productList) => {
   }
 }
 
-const createProductId = (productDataArray) => {
-  let id = '';
-  for (let i = 0; i < 12; i++) {
-    id = id + productDataArray[i];
-  }
-
+const createProductId = (product) => {
+ const id = product.A + product.B + product.C + product.D + product.E + product.F + product.G; 
   return id;
 }
 
