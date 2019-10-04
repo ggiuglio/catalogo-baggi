@@ -24,12 +24,15 @@ export const importProductData = (textData) => {
   textData.replace((/  |\r\n|\r/gm),"");
   let productsData = textData.split('\n');
 
-  let products = productsData.map((p, i) => {
+  let products = productsData.reduce((list, p, i) => {
     if(p.charAt(p.length - 1) === ';') {
       p = p.slice(0, -1);
     }
-    return parseProduct(p, i);
-  });
+    if(p.length > 0) {
+      list.push(parseProduct(p, i));
+    }
+    return list;
+  }, []);
 
   return dispatch => {
     dispatch(checkforProdcutDuplications(products))
@@ -171,7 +174,7 @@ const parseProduct = (productString, line) => {
 
   if (!productProperties || productProperties.length !== 10) {
     result.valid = false;
-    result.errors.push(`linea: ${line + 1}: Il prodotto contiene ${productProperties.length} invece di 10;`);
+    result.errors.push(`linea: ${line + 1}: Il prodotto contiene ${productProperties.length} campi invece di 10;`);
     return result;
   }
 
