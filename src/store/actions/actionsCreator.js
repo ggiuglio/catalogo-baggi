@@ -21,14 +21,14 @@ export const clearImportResults = () => {
 }
 
 export const importProductData = (textData) => {
-  textData.replace((/  |\r\n|\r/gm),"");
+  textData.replace((/  |\r\n|\r/gm), "");
   let productsData = textData.split('\n');
 
   let products = productsData.reduce((list, p, i) => {
-    if(p.charAt(p.length - 1) === ';') {
+    if (p.charAt(p.length - 1) === ';') {
       p = p.slice(0, -1);
     }
-    if(p.length > 0) {
+    if (p.length > 0) {
       list.push(parseProduct(p, i));
     }
     return list;
@@ -36,7 +36,7 @@ export const importProductData = (textData) => {
 
   return dispatch => {
     dispatch(checkforProdcutDuplications(products))
-  }   
+  }
 }
 
 export const importProdcuts = (products) => {
@@ -56,18 +56,21 @@ export const setImportResults = (products) => {
     good: 0,
     wrong: 0,
     duplicated: 0,
-    errors: []
+    errors: [],
+    badProducts: []
   }
-  products.forEach( p => {
+  products.forEach(p => {
     if (!p.valid) {
       results.wrong++;
-      results.errors.push(...p.errors); 
-    }
-    if (p.duplicated) {
-      results.duplicated++;
+      results.errors.push(...p.errors);
+      results.badProducts.push(p.productString);
+      
+      if (p.duplicated) {
+        results.duplicated++;
+      }
     }
   });
-  results.good = results.found - results.wrong - results.duplicated; 
+  results.good = results.found - results.wrong - results.duplicated;
 
   return dispatch => {
     return dispatch({
@@ -169,7 +172,8 @@ const parseProduct = (productString, line) => {
   const result = {
     valid: true,
     errors: [],
-    product: null
+    product: null,
+    productString: productString
   }
 
   if (!productProperties || productProperties.length !== 10) {
@@ -218,7 +222,7 @@ const parseProduct = (productString, line) => {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: I campi D e E devono provenire da un campo di 5 caratteri`);
   }
-  if (productProperties[4].length !== 4 || parseInt(productProperties[4]) === NaN ) {
+  if (productProperties[4].length !== 4 || parseInt(productProperties[4]) === NaN) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: I campi F e G devono provenire da un campo di 4 cifre`);
 
@@ -240,12 +244,12 @@ const parseProduct = (productString, line) => {
 
 const checkforProdcutDuplications = (productList) => {
   return (dispatch, getState) => {
-     productList.forEach(product => {
+    productList.forEach(product => {
       if (product.valid) {
         const inStore = getState().products.find(p => p.id === product.product.id);
         const inSameList = productList.filter(p => (p.id === product.product.id && !p.duplicated && p.valid)).length > 1;
 
-        if (inStore || inSameList ) {
+        if (inStore || inSameList) {
           product.duplicated = true;
         }
       }
@@ -256,7 +260,7 @@ const checkforProdcutDuplications = (productList) => {
 }
 
 const createProductId = (product) => {
- const id = product.A + product.B + product.C + product.D + product.E + product.F + product.G; 
+  const id = product.A + product.B + product.C + product.D + product.E + product.F + product.G;
   return id;
 }
 

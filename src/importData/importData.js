@@ -119,8 +119,17 @@ const ImportData = ({ importProductData, importResutls, clearImportResults, user
   }
 
   const productDataText = React.createRef();
-
   const errorContent = importResutls ? importResutls.errors.map(e => <div> {e} </div> ) : '';
+
+  const closeImportResult = () => {
+    const badProductsList = importResutls.badProducts.reduce((total, p) => {
+      total = total + p + '\n';
+      return total;
+    }, '');
+    productDataText.current.value = badProductsList;
+
+    clearImportResults();
+  }
 
   return <Container>
     <InstructionText>
@@ -170,7 +179,7 @@ const ImportData = ({ importProductData, importResutls, clearImportResults, user
         <ErrorField>
             {errorContent}
         </ErrorField>
-        <Okbutton onClick={() => clearImportResults()}>ok</Okbutton>
+        <Okbutton onClick={() => closeImportResult()}>ok</Okbutton>
       </ImportResultsPanel> : ''}
   </Container>
 }
