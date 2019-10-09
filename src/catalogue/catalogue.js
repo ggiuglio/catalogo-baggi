@@ -5,6 +5,7 @@ import { loadProducts, setFilter, setLoading } from '../store/actions/actionsCre
 import { getProducts, getUser, getProductsNumber } from '../store/selectors/selector';
 import { history } from '../App';
 import search from '../assets/search.png';
+import deleteImg from '../assets/delete.png';
 import x from '../assets/x.png';
 
 const Container = styled.div`
@@ -50,7 +51,7 @@ const TableRow = styled.div`
 `;
 const Cell = styled.div`
   box-sizing: border-box;
-  width: 100px;
+  width: 70px;
   padding: 0.4em 0.6em;
   overflow: hidden; // Or flex might break
   list-style: none;
@@ -111,9 +112,21 @@ const ClearIcon = styled.img`
   opacity: 0.7;
   cursor: pointer;
 `;
+const DeleteIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  cursor: pointer;
+  margin: 8px 5px;
+`;
 const ProductsFound = styled.div`
   margin: 20px 0 0 20px;
   font-weight: bold;
+`;
+const ActionCell = styled.div`
+  box-sizing: border-box;
+  width: 30px;
+  border-right: 1px solid black;
 `;
 
 const filterValues = {};
@@ -217,6 +230,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
     <ProductsFound>{productList.length} su {productsNumber} prodotti trovati</ProductsFound>
     <ProductTable>
       <HeaderRow>
+        <ActionCell></ActionCell>
         <HeaderCell>A</HeaderCell>
         <HeaderCell>B</HeaderCell>
         <HeaderCell>C</HeaderCell>
@@ -231,6 +245,8 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
         <GrowHeaderCell>Fornitore</GrowHeaderCell>
       </HeaderRow>
       <FilterRow>
+        <ActionCell>
+        </ActionCell>
         <FilterCell>
           <Filter type="text" ref={inputAref} onChange={(e) => filterChange(e, 'A')} />
           <SearchIcon src={search} />
@@ -295,6 +311,9 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
       {
         productList.map(p =>
           <TableRow key={p.id}>
+            <ActionCell>
+              <DeleteIcon src={deleteImg} />
+            </ActionCell>
             <Cell>{p.A}</Cell>
             <Cell>{p.B}</Cell>
             <Cell>{p.C}</Cell>
@@ -312,7 +331,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
       }
     </ProductTable>
 
-  </Container>
+  </Container >
 }
 
 const mapStateToProps = state => {

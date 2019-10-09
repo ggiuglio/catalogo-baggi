@@ -24,8 +24,9 @@ const Reducer = (state = INITIAL_STATE, action) => {
         case SET_PRODUCTS:
             const products = [];
             if (action.products) {
-                Object.keys(action.products).forEach( p => {
-                    products.push(action.products[p])
+                Object.keys(action.products).forEach( k => {
+                    action.products[k].firebaseId = k;
+                    products.push(action.products[k])
                 });
             }
             
