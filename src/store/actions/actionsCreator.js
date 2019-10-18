@@ -24,21 +24,23 @@ export const clearImportResults = () => {
 }
 
 export const importProductData = (textData) => {
-  textData.replace((/  |\r\n|\r/gm), "");
-  let productsData = textData.split('\n');
+  return (dispatch, getState) => {
+    textData.replace((/  |\r\n|\r/gm), "");
+    let productsData = textData.split('\n');
 
-  let products = productsData.reduce((list, p, i) => {
-    if (p.charAt(p.length - 1) === ';') {
-      p = p.slice(0, -1);
-    }
-    if (p.length > 0) {
-      list.push(parseProduct(p, i));
-    }
-    return list;
-  }, []);
+    const user = getState().user.email;
 
-  return dispatch => {
-    dispatch(checkforProdcutDuplications(products))
+    let products = productsData.reduce((list, p, i) => {
+      if (p.charAt(p.length - 1) === ';') {
+        p = p.slice(0, -1);
+      }
+      if (p.length > 0) {
+        list.push(parseProduct(p, user, i));
+      }
+      return list;
+    }, []);
+
+    return dispatch(checkforProdcutDuplications(products))
   }
 }
 
@@ -138,7 +140,6 @@ export const deleteProductCancel = () => {
   }
 }
 
-
 export const login = (username, password) => {
   return dispatch => {
     FirebaseInstance.doSignInWithEmailAndPassword(username, password)
@@ -199,7 +200,7 @@ export const setFilter = (filter, value) => {
   }
 }
 
-const parseProduct = (productString, line) => {
+const parseProduct = (productString, user, line) => {
   const productProperties = productString.split(';');
   const result = {
     valid: true,
@@ -227,6 +228,8 @@ const parseProduct = (productString, line) => {
     codiceProduttore: productProperties[7].trim(),
     codiceFornitore: productProperties[8].trim(),
     fornitore: productProperties[9].trim(),
+    creatoDa: user,
+    creatoIl: new Date().toLocaleDateString('it-IT'),
   };
 
   // valiate product paramenters
@@ -234,11 +237,11 @@ const parseProduct = (productString, line) => {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo A deve essere un carattere`);
   }
-  if (mappedProduct.B.length !== 1 || parseInt(mappedProduct.B).isNaN()) {
+  if (mappedProduct.B.length !== 1 || Number.isNaN(parseInt(mappedProduct.B))) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo B deve essere un numero di una cifra`);
   }
-  if (mappedProduct.C.length !== 2 || parseInt(mappedProduct.C).isNaN()) {
+  if (mappedProduct.C.length !== 2 || Number.isNaN(parseInt(mappedProduct.C))) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo C deve essere un numero di due cifre`);
   }
@@ -254,16 +257,16 @@ const parseProduct = (productString, line) => {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: I campi D e E devono provenire da un campo di 5 caratteri`);
   }
-  if (productProperties[4].length !== 4 || parseInt(productProperties[4]).isNaN()) {
+  if (productProperties[4].length !== 4 || Number.isNaN(parseInt(productProperties[4]))) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: I campi F e G devono provenire da un campo di 4 cifre`);
 
   }
-  if (mappedProduct.F.length !== 1 || parseInt(mappedProduct.F).isNaN()) {
+  if (mappedProduct.F.length !== 1 || Number.isNaN(parseInt(mappedProduct.F))) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo F deve essere un numero di una cifra`);
   }
-  if (mappedProduct.G.length !== 3 || parseInt(mappedProduct.G).isNaN()) {
+  if (mappedProduct.G.length !== 3 || Number.isNaN(parseInt(mappedProduct.G))) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo G deve essere un numero do tre cifre`);
   }

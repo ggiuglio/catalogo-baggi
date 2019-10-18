@@ -88,18 +88,18 @@ const Reducer = (state = INITIAL_STATE, action) => {
         }
         case SET_FILTERD_PRODUCTS: {
             const fp = state.products.filter( p => 
-                (!state.productFilters.A || p.A.includes(state.productFilters.A)) &&
-                (!state.productFilters.B || p.B.includes(state.productFilters.B)) &&
-                (!state.productFilters.C || p.C.includes(state.productFilters.C)) &&
-                (!state.productFilters.D || p.D.includes(state.productFilters.D)) &&
-                (!state.productFilters.E || p.E.includes(state.productFilters.E)) &&
-                (!state.productFilters.F || p.F.includes(state.productFilters.F)) &&
-                (!state.productFilters.G || p.G.includes(state.productFilters.G)) &&
-                (!state.productFilters.descrizione || p.descrizione.includes(state.productFilters.descrizione)) &&
-                (!state.productFilters.produttore  || p.produttore.includes(state.productFilters.produttore)) &&
-                (!state.productFilters.codiceProduttore || p.codiceProduttore.includes(state.productFilters.codiceProduttore)) &&
-                (!state.productFilters.codiceFornitore  || p.codiceFornitore.includes(state.productFilters.codiceFornitore)) &&
-                (!state.productFilters.fornitore || p.fornitore.includes(state.productFilters.fornitore))
+                (!state.productFilters.A || p.A.toLowerCase().includes(state.productFilters.A.toLowerCase())) &&
+                (!state.productFilters.B || p.B.toLowerCase().includes(state.productFilters.B.toLowerCase())) &&
+                (!state.productFilters.C || p.C.toLowerCase().includes(state.productFilters.C.toLowerCase())) &&
+                (!state.productFilters.D || p.D.toLowerCase().includes(state.productFilters.D.toLowerCase())) &&
+                (!state.productFilters.E || p.E.toLowerCase().includes(state.productFilters.E.toLowerCase())) &&
+                (!state.productFilters.F || p.F.toLowerCase().includes(state.productFilters.F.toLowerCase())) &&
+                (!state.productFilters.G || p.G.toLowerCase().includes(state.productFilters.G.toLowerCase())) &&
+                (!state.productFilters.descrizione || p.descrizione.toLowerCase().includes(state.productFilters.descrizione.toLowerCase())) &&
+                (!state.productFilters.produttore || p.produttore.toLowerCase().includes(state.productFilters.produttore.toLowerCase())) &&
+                (!state.productFilters.codiceProduttore || p.codiceProduttore.toLowerCase().includes(state.productFilters.codiceProduttore.toLowerCase())) &&
+                (!state.productFilters.codiceFornitore || p.codiceFornitore.toLowerCase().includes(state.productFilters.codiceFornitore.toLowerCase())) &&
+                (!state.productFilters.fornitore || p.fornitore.toLowerCase().includes(state.productFilters.fornitore.toLowerCase()))
             );
 
             return {
