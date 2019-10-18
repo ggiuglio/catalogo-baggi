@@ -9,7 +9,7 @@ const HeaderContainer = styled.div`
   width: 100vw;
   height: 44px;
   background-color: white;
-  z-index: 999;
+  z-index: 2;
   position: fixed;
   top: 0;
 `;

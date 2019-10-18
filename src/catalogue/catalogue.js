@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled from 'styled-components';
-import { loadProducts, setFilter, setLoading } from '../store/actions/actionsCreator';
+import { loadProducts, setFilter, setLoading, deleteProduct } from '../store/actions/actionsCreator';
 import { getProducts, getUser, getProductsNumber } from '../store/selectors/selector';
 import { history } from '../App';
 import search from '../assets/search.png';
 import deleteImg from '../assets/delete.png';
 import x from '../assets/x.png';
+import ConfirmDelete from '../common/confirmDelete';
 
 const Container = styled.div`
   overflow: auto;
@@ -131,7 +132,7 @@ const ActionCell = styled.div`
 
 const filterValues = {};
 
-const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLoading, user }) => {
+const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLoading, user, deleteProd }) => {
   useEffect(() => { callLoadProducts() }, []);
   if (!user) {
     history.push('login');
@@ -312,7 +313,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
         productList.map(p =>
           <TableRow key={p.id}>
             <ActionCell>
-              <DeleteIcon src={deleteImg} />
+              <DeleteIcon src={deleteImg} onClick={() => deleteProd(p)} />
             </ActionCell>
             <Cell>{p.A}</Cell>
             <Cell>{p.B}</Cell>
@@ -330,7 +331,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
         )
       }
     </ProductTable>
-
+    <ConfirmDelete />
   </Container >
 }
 
@@ -346,7 +347,8 @@ const mapDispatchToProps = dispatch => {
   return {
     loadProducts: () => dispatch(loadProducts()),
     setFilter: (filter, value) => dispatch(setFilter(filter, value)),
-    setLoading: () => dispatch(setLoading())
+    setLoading: () => dispatch(setLoading()),
+    deleteProd: (product) => dispatch(deleteProduct(product))
   }
 };
 

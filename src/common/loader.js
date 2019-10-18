@@ -25,9 +25,7 @@ const LoaderContainer = styled.div`
   `;
 
 const Loader = ({loading}) => {  
-  console.log(loading)
-
-return <div>
+  return <div>
     { loading ? <LoaderContainer>
       <Image src={loader} />
       <Label>Loading...</Label>

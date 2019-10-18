@@ -6,7 +6,10 @@ import {
     SET_FILTER,
     SET_FILTERD_PRODUCTS,
     SET_LOADING,
-    SET_IMPORT_RESULTS
+    SET_IMPORT_RESULTS,
+    DELETE_PRODUCT,
+    DELETE_PRODUCT_CANCEL,
+    DELETE_PRODUCT_SUCCESS
 } from '../actions/actionsTypes'
 
 export const INITIAL_STATE = {
@@ -65,7 +68,24 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 
             }
         }
-
+        case DELETE_PRODUCT: {
+            return {
+                ...state,
+                productToDelete: action.product
+            }
+        }
+        case DELETE_PRODUCT_CANCEL: {
+            return {
+                ...state,
+                productToDelete: null
+            }
+        }
+        case DELETE_PRODUCT_SUCCESS: {
+            return {
+                ...state,
+                productToDelete: null
+            }
+        }
         case SET_FILTERD_PRODUCTS: {
             const fp = state.products.filter( p => 
                 (!state.productFilters.A || p.A.includes(state.productFilters.A)) &&

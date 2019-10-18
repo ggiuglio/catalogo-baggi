@@ -7,6 +7,9 @@ import {
   SET_LOADING,
   SET_FILTERD_PRODUCTS,
   SET_IMPORT_RESULTS,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT,
+  DELETE_PRODUCT_CANCEL,
 } from './actionsTypes.js'
 import { FirebaseInstance } from '../../App';
 import { history } from '../../App';
@@ -64,7 +67,7 @@ export const setImportResults = (products) => {
       results.wrong++;
       results.errors.push(...p.errors);
       results.badProducts.push(p.productString);
-      
+
       if (p.duplicated) {
         results.duplicated++;
       }
@@ -106,6 +109,35 @@ export const insertProductInDB = (product) => {
       })
   }
 }
+
+export const deleteProduct = (product) => {
+  return dispatch => {
+    dispatch({
+      type: DELETE_PRODUCT,
+      product: product
+    })
+  }
+}
+
+export const deleteProductConfirm = (product) => {
+  return dispatch => {
+    return FirebaseInstance.products.child(product.firebaseId).remove().then(() => {
+      console.log('removed');
+      return dispatch({
+        type: DELETE_PRODUCT_SUCCESS
+      })
+    });
+  }
+}
+
+export const deleteProductCancel = () => {
+  return dispatch => {
+    return dispatch({
+      type: DELETE_PRODUCT_CANCEL
+    })
+  }
+}
+
 
 export const login = (username, password) => {
   return dispatch => {
@@ -198,15 +230,15 @@ const parseProduct = (productString, line) => {
   };
 
   // valiate product paramenters
-  if (mappedProduct.A.length != 1) {
+  if (mappedProduct.A.length !== 1) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo A deve essere un carattere`);
   }
-  if (mappedProduct.B.length !== 1 || parseInt(mappedProduct.B) === NaN) {
+  if (mappedProduct.B.length !== 1 || parseInt(mappedProduct.B).isNaN()) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo B deve essere un numero di una cifra`);
   }
-  if (mappedProduct.C.length !== 2 || parseInt(mappedProduct.C) === NaN) {
+  if (mappedProduct.C.length !== 2 || parseInt(mappedProduct.C).isNaN()) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo C deve essere un numero di due cifre`);
   }
@@ -222,16 +254,16 @@ const parseProduct = (productString, line) => {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: I campi D e E devono provenire da un campo di 5 caratteri`);
   }
-  if (productProperties[4].length !== 4 || parseInt(productProperties[4]) === NaN) {
+  if (productProperties[4].length !== 4 || parseInt(productProperties[4]).isNaN()) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: I campi F e G devono provenire da un campo di 4 cifre`);
 
   }
-  if (mappedProduct.F.length != 1 || parseInt(mappedProduct.F) === NaN) {
+  if (mappedProduct.F.length !== 1 || parseInt(mappedProduct.F).isNaN()) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo F deve essere un numero di una cifra`);
   }
-  if (mappedProduct.G.length !== 3 || parseInt(mappedProduct.G) === NaN) {
+  if (mappedProduct.G.length !== 3 || parseInt(mappedProduct.G).isNaN()) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo G deve essere un numero do tre cifre`);
   }

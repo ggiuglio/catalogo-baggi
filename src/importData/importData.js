@@ -86,6 +86,7 @@ const Okbutton = styled.div`
   color: black;
   border: 1px solid black;
   margin: 15px auto;
+  cursor: pointer;
   :hover {
     background-color: #444444;
     color: white;
