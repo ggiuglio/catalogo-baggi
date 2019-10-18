@@ -134,7 +134,7 @@ const ImportData = ({ importProductData, importResutls, clearImportResults, user
 
   return <Container>
     <InstructionText>
-      Inserisci i dati contenuti nei file excell esportati in formato .csv. I campi di un prodotto devono essere separati
+      Inserisci i dati contenuti nei file excel esportati in formato .csv. I campi di un prodotto devono essere separati
       da una "," i diversi prodotti devono essere separati da ";"
       <div>
         Ad esempio: S,0,00,PA,FLT,0,005,UN NUOVO PRODOTTO DI PROVA Tee filter 12mm A-Lock - 250 micron,Parker,M12A-FT8-250-S,ERN0009,RTI;
