@@ -124,7 +124,6 @@ export const deleteProduct = (product) => {
 export const deleteProductConfirm = (product) => {
   return dispatch => {
     return FirebaseInstance.products.child(product.firebaseId).remove().then(() => {
-      console.log('removed');
       return dispatch({
         type: DELETE_PRODUCT_SUCCESS
       })

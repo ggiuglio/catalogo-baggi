@@ -100,7 +100,7 @@ const Header = ({logout, user}) => {
       case '/nuovo-prodotto':
         return 'Nuovo Prodotto';
       case '/import':
-        return 'Caricameto da Excell';
+        return 'Caricameto da Excel';
       default:
         return '';
     }
