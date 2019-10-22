@@ -40,7 +40,9 @@ export const importProductData = (textData) => {
       return list;
     }, []);
 
-    return dispatch(checkforProdcutDuplications(products))
+    products = checkforProdcutDuplications(products, getState().products);
+
+    return dispatch(importProdcuts(products))
   }
 }
 
@@ -69,10 +71,9 @@ export const setImportResults = (products) => {
       results.wrong++;
       results.errors.push(...p.errors);
       results.badProducts.push(p.productString);
-
-      if (p.duplicated) {
-        results.duplicated++;
-      }
+    }
+    if (p.duplicated) {
+      results.duplicated++;
     }
   });
   results.good = results.found - results.wrong - results.duplicated;
@@ -276,21 +277,20 @@ const parseProduct = (productString, user, line) => {
   return result;
 }
 
-const checkforProdcutDuplications = (productList) => {
-  return (dispatch, getState) => {
-    productList.forEach(product => {
-      if (product.valid) {
-        const inStore = getState().products.find(p => p.id === product.product.id);
-        const inSameList = productList.filter(p => (p.id === product.product.id && !p.duplicated && p.valid)).length > 1;
+const checkforProdcutDuplications = (importedProductList, dbProducts) => {
+ 
+  importedProductList.forEach(product => {
+    if (product.valid) {
+      const inStore = dbProducts.find(p => p.id === product.product.id);
+      const inSameList = importedProductList.filter(p => (p.product.id === product.product.id && !p.duplicated && p.valid)).length > 1;
 
-        if (inStore || inSameList) {
-          product.duplicated = true;
-        }
+      if (inStore || inSameList) {
+        product.duplicated = true;
       }
-    });
+    }
+  });
 
-    return dispatch(importProdcuts(productList));
-  }
+  return importedProductList; 
 }
 
 const createProductId = (product) => {
