@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import { loadProducts, login, resetLoginError } from '../store/actions/actionsCreator';
@@ -59,9 +59,11 @@ const ButtonStyled = styled.input`
 `;
 
 const Login = ({login, loginError, resetLoginError, user}) => {
-  if (user) {
-    history.push('/prodotti');
-  }
+  React.useEffect(() => {
+    if (user) {
+      history.push('/prodotti');
+    }
+  }, [user]);
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -89,12 +91,12 @@ const Login = ({login, loginError, resetLoginError, user}) => {
       <LabelStyled>
         Username
       </LabelStyled>
-      <InputFieldStyled type="text" value={username} onChange={userChange} ></InputFieldStyled>
+      <InputFieldStyled type="text" value={username} onChange={e => userChange(e.target.value)} ></InputFieldStyled>
      
       <LabelStyled>
         Password
       </LabelStyled>
-      <InputFieldStyled type="password" value={password} onChange={passwordChange} ></InputFieldStyled>
+      <InputFieldStyled type="password" value={password} onChange={e => passwordChange(e.target.value)} ></InputFieldStyled>
 
       <ErrorLabel> {loginError} </ErrorLabel>
       <ButtonStyled type="submit" value="Login" disabled={checkDisable}></ButtonStyled>

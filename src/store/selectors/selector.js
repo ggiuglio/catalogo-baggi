@@ -6,3 +6,4 @@ export const getProductFilters = state => state.productFilters;
 export const isLoading = state => state.loading;
 export const getImportResults = state => state.importResults;
 export const getProductToDelete = state => state.productToDelete;
+export const getProductToEdit = state => state.productToEdit;

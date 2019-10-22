@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled from 'styled-components';
-import { loadProducts, setFilter, setLoading, deleteProduct } from '../store/actions/actionsCreator';
+import { loadProducts, setFilter, setLoading, deleteProduct, editProduct } from '../store/actions/actionsCreator';
 import { getProducts, getUser, getProductsNumber } from '../store/selectors/selector';
 import { history } from '../App';
 import search from '../assets/search.png';
 import deleteImg from '../assets/delete.png';
+import editImg from '../assets/edit.png';
 import x from '../assets/x.png';
 import ConfirmDelete from '../common/confirmDelete';
+import ConfirmEdit from '../common/confirmEdit';
 
 const Container = styled.div`
   overflow: auto;
@@ -21,7 +23,7 @@ const Container = styled.div`
 `;
 const ProductTable = styled.div`
   width: Calc(100% - 40px);
-  min-width: 1000px;
+  min-width: 1600px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -120,6 +122,15 @@ const DeleteIcon = styled.img`
   cursor: pointer;
   margin: 8px 5px;
 `;
+const EditIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  cursor: pointer;
+  margin: 8px 5px;
+  margin-top: 0;
+  opacity: 0.5;
+`;
 const ProductsFound = styled.div`
   margin: 20px 0 0 20px;
   font-weight: bold;
@@ -130,10 +141,20 @@ const ActionCell = styled.div`
   border-right: 1px solid black;
 `;
 
+const MediumHeaderCell = styled(HeaderCell)`
+  width: 200px;
+`
+const MediumFilterCell = styled(FilterCell)`
+  width: 200px;
+`
+const MediumCell = styled(Cell)`
+  width: 200px;
+`
+
 const filterValues = {};
 
-const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLoading, user, deleteProd }) => {
-  useEffect(() => { callLoadProducts() }, []);
+const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLoading, user, deleteProd, editProd }) => {
+  useEffect(() => { callLoadProducts() }, [productList]);
   if (!user) {
     history.push('login');
   }
@@ -151,7 +172,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
   const inputEref = React.createRef();
   const inputFref = React.createRef();
   const inputGref = React.createRef();
-  const inputProdottoref = React.createRef();
+  const inputProduttoref = React.createRef();
   const inputDecrizioneref = React.createRef();
   const inputCodiceProduttoref = React.createRef();
   const inputCodiceFornitoreref = React.createRef();
@@ -207,7 +228,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
         inputGref.current.value = '';
         break;
       case 'produttore':
-        inputProdottoref.current.value = '';
+        inputProduttoref.current.value = '';
         break;
       case 'descrizione':
         inputDecrizioneref.current.value = '';
@@ -240,10 +261,10 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
         <HeaderCell>F</HeaderCell>
         <HeaderCell>G</HeaderCell>
         <GrowHeaderCell>Descrizione</GrowHeaderCell>
-        <GrowHeaderCell>Produttore</GrowHeaderCell>
-        <GrowHeaderCell>Codice Produttore</GrowHeaderCell>
-        <GrowHeaderCell>Codice Fornitore</GrowHeaderCell>
-        <GrowHeaderCell>Fornitore</GrowHeaderCell>
+        <MediumHeaderCell>Produttore</MediumHeaderCell>
+        <MediumHeaderCell>Codice Produttore</MediumHeaderCell>
+        <MediumHeaderCell>Codice Fornitore</MediumHeaderCell>
+        <MediumHeaderCell>Fornitore</MediumHeaderCell>
       </HeaderRow>
       <FilterRow>
         <ActionCell>
@@ -288,32 +309,33 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
           <SearchIcon src={search} />
           {filterValues.descrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : ''}
         </GrowFilterCell>
-        <GrowFilterCell>
-          <Filter type="text" ref={inputProdottoref} onChange={(e) => filterChange(e, 'produttore')} />
+        <MediumFilterCell>
+          <Filter type="text" ref={inputProduttoref} onChange={(e) => filterChange(e, 'produttore')} />
           <SearchIcon src={search} />
           {filterValues.produttore ? <ClearIcon src={x} onClick={() => resetFilter('produttore')} /> : ''}
-        </GrowFilterCell>
-        <GrowFilterCell>
+        </MediumFilterCell>
+        <MediumFilterCell>
           <Filter type="text" ref={inputCodiceProduttoref} onChange={(e) => filterChange(e, 'codiceProduttore')} />
           <SearchIcon src={search} />
           {filterValues.codiceProduttore ? <ClearIcon src={x} onClick={() => resetFilter('codiceProduttore')} /> : ''}
-        </GrowFilterCell>
-        <GrowFilterCell>
+        </MediumFilterCell>
+        <MediumFilterCell>
           <Filter type="text" ref={inputCodiceFornitoreref} onChange={(e) => filterChange(e, 'codiceFornitore')} />
           <SearchIcon src={search} />
           {filterValues.codiceFornitore ? <ClearIcon src={x} onClick={() => resetFilter('codiceFornitore')} /> : ''}
-        </GrowFilterCell>
-        <GrowFilterCell>
+        </MediumFilterCell>
+        <MediumFilterCell>
           <Filter type="text" ref={inputFornitoreref} onChange={(e) => filterChange(e, 'fornitore')} />
           <SearchIcon src={search} />
           {filterValues.fornitore ? <ClearIcon src={x} onClick={() => resetFilter('fornitore')} /> : ''}
-        </GrowFilterCell>
+        </MediumFilterCell>
       </FilterRow>
       {
         productList.map(p =>
           <TableRow key={p.id}>
             <ActionCell>
               <DeleteIcon src={deleteImg} onClick={() => deleteProd(p)} />
+              <EditIcon src={editImg} onClick={() => editProd(p)} />
             </ActionCell>
             <Cell>{p.A}</Cell>
             <Cell>{p.B}</Cell>
@@ -323,15 +345,16 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
             <Cell>{p.F}</Cell>
             <Cell>{p.G}</Cell>
             <GrowCell>{p.descrizione}</GrowCell>
-            <GrowCell>{p.produttore}</GrowCell>
-            <GrowCell>{p.codiceProduttore}</GrowCell>
-            <GrowCell>{p.codiceFornitore}</GrowCell>
-            <GrowCell>{p.fornitore}</GrowCell>
+            <MediumCell>{p.produttore}</MediumCell>
+            <MediumCell>{p.codiceProduttore}</MediumCell>
+            <MediumCell>{p.codiceFornitore}</MediumCell>
+            <MediumCell>{p.fornitore}</MediumCell>
           </TableRow>
         )
       }
     </ProductTable>
     <ConfirmDelete />
+    <ConfirmEdit />
   </Container >
 }
 
@@ -348,7 +371,8 @@ const mapDispatchToProps = dispatch => {
     loadProducts: () => dispatch(loadProducts()),
     setFilter: (filter, value) => dispatch(setFilter(filter, value)),
     setLoading: () => dispatch(setLoading()),
-    deleteProd: (product) => dispatch(deleteProduct(product))
+    deleteProd: (product) => dispatch(deleteProduct(product)),
+    editProd: (product) => dispatch(editProduct(product))
   }
 };
 

@@ -10,6 +10,9 @@ import {
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT,
   DELETE_PRODUCT_CANCEL,
+  EDIT_PRODUCT,
+  EDIT_PRODUCT_CANCEL,
+  EDIT_PRODUCT_SUCCESS
 } from './actionsTypes.js'
 import { FirebaseInstance } from '../../App';
 import { history } from '../../App';
@@ -140,6 +143,44 @@ export const deleteProductCancel = () => {
   }
 }
 
+export const editProduct = (product) => {
+  return dispatch => {
+    dispatch({
+      type: EDIT_PRODUCT,
+      product: product
+    })
+  }
+}
+
+export const editProductConfirm = (product) => {
+  return (dispatch, getState) => {
+    product.modificatoDa = getState().user.email;
+    product.modificatoIl = `${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}`;
+
+    return FirebaseInstance.products.child(product.firebaseId).update(product).then(() => {
+      return dispatch({
+        type: EDIT_PRODUCT_SUCCESS
+      })
+    });
+  }
+}
+
+export const editProductSuccess = (product) => {
+  return dispatch => {
+    return dispatch({
+      type: EDIT_PRODUCT_SUCCESS
+    })
+  }
+}
+
+export const editProductCancel = () => {
+  return dispatch => {
+    return dispatch({
+      type: EDIT_PRODUCT_CANCEL
+    })
+  }
+}
+
 export const login = (username, password) => {
   return dispatch => {
     FirebaseInstance.doSignInWithEmailAndPassword(username, password)
@@ -228,8 +269,8 @@ const parseProduct = (productString, user, line) => {
     codiceProduttore: productProperties[7].trim(),
     codiceFornitore: productProperties[8].trim(),
     fornitore: productProperties[9].trim(),
-    creatoDa: user,
-    creatoIl: new Date().toLocaleDateString('it-IT'),
+    modificatoDa: user,
+    modificatoIl: `${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}`,
   };
 
   // valiate product paramenters
@@ -282,7 +323,7 @@ const checkforProdcutDuplications = (importedProductList, dbProducts) => {
   importedProductList.forEach(product => {
     if (product.valid) {
       const inStore = dbProducts.find(p => p.id === product.product.id);
-      const inSameList = importedProductList.filter(p => (p.product.id === product.product.id && !p.duplicated && p.valid)).length > 1;
+      const inSameList = importedProductList.filter(p => (!p.duplicated &&  p.valid && p.product.id === product.product.id)).length > 1;
 
       if (inStore || inSameList) {
         product.duplicated = true;

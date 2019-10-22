@@ -9,7 +9,10 @@ import {
     SET_IMPORT_RESULTS,
     DELETE_PRODUCT,
     DELETE_PRODUCT_CANCEL,
-    DELETE_PRODUCT_SUCCESS
+    DELETE_PRODUCT_SUCCESS,
+    EDIT_PRODUCT,
+    EDIT_PRODUCT_SUCCESS,
+    EDIT_PRODUCT_CANCEL
 } from '../actions/actionsTypes'
 
 export const INITIAL_STATE = {
@@ -84,6 +87,24 @@ const Reducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 productToDelete: null
+            }
+        }
+        case EDIT_PRODUCT: {
+            return {
+                ...state,
+                productToEdit: action.product
+            }
+        }
+        case EDIT_PRODUCT_CANCEL: {
+            return {
+                ...state,
+                productToEdit: null
+            }
+        }
+        case EDIT_PRODUCT_SUCCESS: {
+            return {
+                ...state,
+                productToEdit: null
             }
         }
         case SET_FILTERD_PRODUCTS: {
