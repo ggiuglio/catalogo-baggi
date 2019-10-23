@@ -12,7 +12,9 @@ import {
     DELETE_PRODUCT_SUCCESS,
     EDIT_PRODUCT,
     EDIT_PRODUCT_SUCCESS,
-    EDIT_PRODUCT_CANCEL
+    EDIT_PRODUCT_CANCEL,
+    GET_LATEST_PRODUCT_VERSION,
+    CANCEL_LATEST_PRODUCT_VERSION
 } from '../actions/actionsTypes'
 
 export const INITIAL_STATE = {
@@ -141,6 +143,30 @@ const Reducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 ...{ importResults: action.importResults }
+            }
+        }
+        case GET_LATEST_PRODUCT_VERSION: {
+            let latestVersion = null;
+            let versions = state.products.filter(p => 
+                ( p.A.toLowerCase().includes(action.productDetails.A.toLowerCase())) &&
+                ( p.B.toLowerCase().includes(action.productDetails.B.toLowerCase())) &&
+                ( p.C.toLowerCase().includes(action.productDetails.C.toLowerCase())) &&
+                ( p.D.toLowerCase().includes(action.productDetails.D.toLowerCase())) &&
+                ( p.E.toLowerCase().includes(action.productDetails.E.toLowerCase())) &&
+                ( p.F.toLowerCase().includes(action.productDetails.F.toLowerCase())) );
+
+            latestVersion = versions.sort((a, b) => a.F > b.F ? 1 : -1 )[0];
+
+            console.log(latestVersion);
+            return {
+                ...state,
+                latestVersion: latestVersion
+            }
+        }
+        case CANCEL_LATEST_PRODUCT_VERSION: {
+            return {
+                ...state,
+                latestVersion: null
             }
         }
         default: 

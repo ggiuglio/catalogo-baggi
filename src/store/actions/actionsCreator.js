@@ -12,10 +12,29 @@ import {
   DELETE_PRODUCT_CANCEL,
   EDIT_PRODUCT,
   EDIT_PRODUCT_CANCEL,
-  EDIT_PRODUCT_SUCCESS
+  EDIT_PRODUCT_SUCCESS,
+  GET_LATEST_PRODUCT_VERSION,
+  CANCEL_LATEST_PRODUCT_VERSION
 } from './actionsTypes.js'
 import { FirebaseInstance } from '../../App';
 import { history } from '../../App';
+
+export const getLatestProductVersion = (productDetails) => {
+  return dispatch => {
+    return dispatch({
+      type: GET_LATEST_PRODUCT_VERSION,
+      productDetails: productDetails
+    })
+  }
+}
+
+export const cancelLatestProductVersion = () => {
+  return dispatch => {
+    return dispatch({
+      type: CANCEL_LATEST_PRODUCT_VERSION
+    })
+  }
+}
 
 export const clearImportResults = () => {
   return dispatch => {

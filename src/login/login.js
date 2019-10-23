@@ -91,12 +91,12 @@ const Login = ({login, loginError, resetLoginError, user}) => {
       <LabelStyled>
         Username
       </LabelStyled>
-      <InputFieldStyled type="text" value={username} onChange={e => userChange(e.target.value)} ></InputFieldStyled>
+      <InputFieldStyled type="text" value={username} onChange={e => userChange(e)} ></InputFieldStyled>
      
       <LabelStyled>
         Password
       </LabelStyled>
-      <InputFieldStyled type="password" value={password} onChange={e => passwordChange(e.target.value)} ></InputFieldStyled>
+      <InputFieldStyled type="password" value={password} onChange={e => passwordChange(e)} ></InputFieldStyled>
 
       <ErrorLabel> {loginError} </ErrorLabel>
       <ButtonStyled type="submit" value="Login" disabled={checkDisable}></ButtonStyled>

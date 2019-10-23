@@ -7,3 +7,4 @@ export const isLoading = state => state.loading;
 export const getImportResults = state => state.importResults;
 export const getProductToDelete = state => state.productToDelete;
 export const getProductToEdit = state => state.productToEdit;
+export const getLatestVersion = state => state.latestVersion;

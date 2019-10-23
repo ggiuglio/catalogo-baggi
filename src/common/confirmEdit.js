@@ -39,10 +39,6 @@ const ConfirmEditMessage = styled.div`
   text-align: center;
   box-sizing: border-box;
 `;
-const ConfirmEditProductDetails = styled.div`
-  padding: 20px;
-  text-align: center;
-`;
 const ProductDetails = styled.div`
   margin: 10px 20px;
   text-algin: left;
@@ -89,7 +85,7 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
   const [codiceFornitore, setCodiceFornitore] = useState('');
   const [fornitore, setFornitore] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if(productToEdit) {
       setDescrizione(productToEdit.descrizione);
       setProduttore(productToEdit.produttore);
