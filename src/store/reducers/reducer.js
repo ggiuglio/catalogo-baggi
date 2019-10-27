@@ -13,7 +13,7 @@ import {
     EDIT_PRODUCT,
     EDIT_PRODUCT_SUCCESS,
     EDIT_PRODUCT_CANCEL,
-    GET_LATEST_PRODUCT_VERSION,
+    CALCULATE_LATEST_PRODUCT_VERSION,
     CANCEL_LATEST_PRODUCT_VERSION
 } from '../actions/actionsTypes'
 
@@ -70,7 +70,6 @@ const Reducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 productFilters: {...state.productFilters, [action.filter]: action.value},
-                
             }
         }
         case DELETE_PRODUCT: {
@@ -111,18 +110,18 @@ const Reducer = (state = INITIAL_STATE, action) => {
         }
         case SET_FILTERD_PRODUCTS: {
             const fp = state.products.filter( p => 
-                (!state.productFilters.A || p.A.toLowerCase().includes(state.productFilters.A.toLowerCase())) &&
-                (!state.productFilters.B || p.B.toLowerCase().includes(state.productFilters.B.toLowerCase())) &&
-                (!state.productFilters.C || p.C.toLowerCase().includes(state.productFilters.C.toLowerCase())) &&
-                (!state.productFilters.D || p.D.toLowerCase().includes(state.productFilters.D.toLowerCase())) &&
-                (!state.productFilters.E || p.E.toLowerCase().includes(state.productFilters.E.toLowerCase())) &&
-                (!state.productFilters.F || p.F.toLowerCase().includes(state.productFilters.F.toLowerCase())) &&
-                (!state.productFilters.G || p.G.toLowerCase().includes(state.productFilters.G.toLowerCase())) &&
-                (!state.productFilters.descrizione || p.descrizione.toLowerCase().includes(state.productFilters.descrizione.toLowerCase())) &&
-                (!state.productFilters.produttore || p.produttore.toLowerCase().includes(state.productFilters.produttore.toLowerCase())) &&
-                (!state.productFilters.codiceProduttore || p.codiceProduttore.toLowerCase().includes(state.productFilters.codiceProduttore.toLowerCase())) &&
-                (!state.productFilters.codiceFornitore || p.codiceFornitore.toLowerCase().includes(state.productFilters.codiceFornitore.toLowerCase())) &&
-                (!state.productFilters.fornitore || p.fornitore.toLowerCase().includes(state.productFilters.fornitore.toLowerCase()))
+                (state.productFilters.A == null || p.A.toLowerCase().includes(state.productFilters.A.toLowerCase())) &&
+                (state.productFilters.B == null || p.B.toLowerCase().includes(state.productFilters.B.toLowerCase())) &&
+                (state.productFilters.C == null || p.C.toLowerCase().includes(state.productFilters.C.toLowerCase())) &&
+                (state.productFilters.D == null || p.D.toLowerCase().includes(state.productFilters.D.toLowerCase())) &&
+                (state.productFilters.E == null || p.E.toLowerCase().includes(state.productFilters.E.toLowerCase())) &&
+                (state.productFilters.F == null || p.F.toLowerCase().includes(state.productFilters.F.toLowerCase())) &&
+                (state.productFilters.G == null || p.G.toLowerCase().includes(state.productFilters.G.toLowerCase())) &&
+                (state.productFilters.descrizione == null || p.descrizione.toLowerCase().includes(state.productFilters.descrizione.toLowerCase())) &&
+                (state.productFilters.produttore == null || p.produttore.toLowerCase().includes(state.productFilters.produttore.toLowerCase())) &&
+                (state.productFilters.codiceProduttore == null || p.codiceProduttore.toLowerCase().includes(state.productFilters.codiceProduttore.toLowerCase())) &&
+                (state.productFilters.codiceFornitore == null || p.codiceFornitore.toLowerCase().includes(state.productFilters.codiceFornitore.toLowerCase())) &&
+                (state.productFilters.fornitore == null || p.fornitore.toLowerCase().includes(state.productFilters.fornitore.toLowerCase()))
             );
 
             return {
@@ -145,7 +144,7 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 ...{ importResults: action.importResults }
             }
         }
-        case GET_LATEST_PRODUCT_VERSION: {
+        case CALCULATE_LATEST_PRODUCT_VERSION: {
             let latestVersion = null;
             let versions = state.products.filter(p => 
                 ( p.A.toLowerCase().includes(action.productDetails.A.toLowerCase())) &&
@@ -155,9 +154,14 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 ( p.E.toLowerCase().includes(action.productDetails.E.toLowerCase())) &&
                 ( p.F.toLowerCase().includes(action.productDetails.F.toLowerCase())) );
 
-            latestVersion = versions.sort((a, b) => a.F > b.F ? 1 : -1 )[0];
+            versions = versions.sort((a, b) => a.F > b.F ? 1 : -1 );
+            if(versions.length > 0) {
+                latestVersion = '000' + (parseInt(versions[0].G) + 1);
+                latestVersion = latestVersion.substr(latestVersion.length - 3)
+            } else {
+                latestVersion = '001';
+            }
 
-            console.log(latestVersion);
             return {
                 ...state,
                 latestVersion: latestVersion

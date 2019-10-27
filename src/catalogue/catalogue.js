@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 const ProductTable = styled.div`
   width: Calc(100% - 40px);
-  min-width: 1600px;
+  min-width: 1800px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@ const TableRow = styled.div`
 `;
 const Cell = styled.div`
   box-sizing: border-box;
-  width: 70px;
+  width: 100px;
   padding: 0.4em 0.6em;
   overflow: hidden; // Or flex might break
   list-style: none;
@@ -154,16 +154,14 @@ const MediumCell = styled(Cell)`
 const filterValues = {};
 
 const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLoading, user, deleteProd, editProd }) => {
-  useEffect(() => { callLoadProducts() }, [productList]);
-  if (!user) {
-    history.push('login');
-  }
-
-  const callLoadProducts = () => {
+  useEffect(() => {
     if (user) {
       loadProducts();
     }
-  }
+    if (!user) {
+      history.push('login');
+    }
+  }, [user, loadProducts]);
 
   const inputAref = React.createRef();
   const inputBref = React.createRef();
@@ -253,13 +251,13 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
     <ProductTable>
       <HeaderRow>
         <ActionCell></ActionCell>
-        <HeaderCell>A</HeaderCell>
-        <HeaderCell>B</HeaderCell>
-        <HeaderCell>C</HeaderCell>
-        <HeaderCell>D</HeaderCell>
-        <HeaderCell>E</HeaderCell>
-        <HeaderCell>F</HeaderCell>
-        <HeaderCell>G</HeaderCell>
+        <HeaderCell>Divisione</HeaderCell>
+        <HeaderCell>Stato</HeaderCell>
+        <HeaderCell>Mercato</HeaderCell>
+        <HeaderCell>Origine</HeaderCell>
+        <HeaderCell>Famiglia</HeaderCell>
+        <HeaderCell>Tipo</HeaderCell>
+        <HeaderCell>Versione</HeaderCell>
         <GrowHeaderCell>Descrizione</GrowHeaderCell>
         <MediumHeaderCell>Produttore</MediumHeaderCell>
         <MediumHeaderCell>Codice Produttore</MediumHeaderCell>

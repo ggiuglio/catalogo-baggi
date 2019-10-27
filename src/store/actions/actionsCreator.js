@@ -13,16 +13,26 @@ import {
   EDIT_PRODUCT,
   EDIT_PRODUCT_CANCEL,
   EDIT_PRODUCT_SUCCESS,
-  GET_LATEST_PRODUCT_VERSION,
+  CALCULATE_LATEST_PRODUCT_VERSION,
   CANCEL_LATEST_PRODUCT_VERSION
 } from './actionsTypes.js'
 import { FirebaseInstance } from '../../App';
 import { history } from '../../App';
 
-export const getLatestProductVersion = (productDetails) => {
+export const createNewProduct = (product) => {
+  return (dispatch, getState) => {
+    product.modificatoDa = getState().user.email;
+    product.modificatoIl = `${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}`;
+    product.id = createProductId(product);
+
+    dispatch(insertProductInDB(product));
+  } 
+}
+
+export const calculateLatestProductVersion = (productDetails) => {
   return dispatch => {
     return dispatch({
-      type: GET_LATEST_PRODUCT_VERSION,
+      type: CALCULATE_LATEST_PRODUCT_VERSION,
       productDetails: productDetails
     })
   }
@@ -47,7 +57,7 @@ export const clearImportResults = () => {
 
 export const importProductData = (textData) => {
   return (dispatch, getState) => {
-    textData.replace((/  |\r\n|\r/gm), "");
+    textData.replace((/ {2}|\r\n|\r/gm), "");
     let productsData = textData.split('\n');
 
     const user = getState().user.email;

@@ -16,7 +16,7 @@ const ConfirmEditContainer = styled.div`
 const ConfirmEditModal = styled.div`
   width: 80vw;
   position: fixed;
-  top: Calc(50vh - 150px);
+  top: Calc(50vh - 210px);
   left: 10vw;
   margin-right: auto;
   border: 1px solid black;
@@ -119,19 +119,19 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
           </ProductDetails>
           <ProductDetails>
             <ProductDetailsLabel>produttore</ProductDetailsLabel>
-            <ProductDetailsValue type="text" value={produttore} onChange={ e => setProduttore(e.target.value)} type="text"/>
+            <ProductDetailsValue type="text" value={produttore} onChange={ e => setProduttore(e.target.value)} />
           </ProductDetails>
           <ProductDetails>
             <ProductDetailsLabel>codice producttore</ProductDetailsLabel>
-            <ProductDetailsValue type="text" value={codiceProduttore} onChange={ e => setCodiceProduttore(e.target.value)} type="text"/>
+            <ProductDetailsValue type="text" value={codiceProduttore} onChange={ e => setCodiceProduttore(e.target.value)} />
           </ProductDetails>
           <ProductDetails>
             <ProductDetailsLabel>codice fornitore</ProductDetailsLabel>
-            <ProductDetailsValue type="text" value={codiceFornitore} onChange={ e => setCodiceFornitore(e.target.value)} type="text"/>
+            <ProductDetailsValue type="text" value={codiceFornitore} onChange={ e => setCodiceFornitore(e.target.value)} />
           </ProductDetails>
           <ProductDetails>
             <ProductDetailsLabel>fornitore</ProductDetailsLabel>
-            <ProductDetailsValue type="text" value={fornitore} onChange={ e => setFornitore(e.target.value)} type="text"/>
+            <ProductDetailsValue type="text" value={fornitore} onChange={ e => setFornitore(e.target.value)} />
           </ProductDetails>
           <ProductDetails>
             <span>Modificato da: &nbsp;</span>
