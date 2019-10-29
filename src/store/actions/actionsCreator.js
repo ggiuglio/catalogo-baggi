@@ -307,7 +307,7 @@ const parseProduct = (productString, user, line) => {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo A deve essere un carattere`);
   }
-  if (mappedProduct.B.length !== 1 || Number.isNaN(parseInt(mappedProduct.B))) {
+  if (mappedProduct.B.length !== 1) {
     result.valid = false;
     result.errors.push(`linea: ${line + 1}: Il campo B deve essere un numero di una cifra`);
   }
