@@ -77,21 +77,25 @@ const ConfirmEditFiller = styled.div`
   height: 20px; 
   flex-grow: 1;
 `;
+const FornitoriContainer = styled.div`
+  margin: 0 20px;
+`;
+const ProductDetailsTitle = styled(ProductDetailsLabel)`
+  font-weight: bold;
+`;
 
 const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => {  
   const [descrizione, setDescrizione] = useState('');
   const [produttore, setProduttore] = useState('');
   const [codiceProduttore, setCodiceProduttore] = useState('');
-  const [codiceFornitore, setCodiceFornitore] = useState('');
-  const [fornitore, setFornitore] = useState('');
+  const [fornitori, setFornitori] = useState('');
 
   useEffect(() => {
     if(productToEdit) {
       setDescrizione(productToEdit.descrizione);
       setProduttore(productToEdit.produttore);
       setCodiceProduttore(productToEdit.codiceProduttore);
-      setCodiceFornitore(productToEdit.codiceFornitore);
-      setFornitore(productToEdit.fornitore);
+      setFornitori(productToEdit.fornitori);
     }
   }, [productToEdit])
 
@@ -100,12 +104,30 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
     prod.descrizione = descrizione;
     prod.produttore = produttore;
     prod.codiceProduttore = codiceProduttore;
-    prod.codiceFornitore = codiceFornitore;
-    prod.fornitore = fornitore;
+    prod.fornitori = fornitori;
     editProductConfirm(prod);
   }
 
-  return <div>
+  const editCodiceFornitore = (codiceFornitore, id) => {
+    const fornitoreList = JSON.parse(JSON.stringify(fornitori));
+    fornitoreList.forEach((f, i) => {
+      if (i === id) {
+        f.codiceFornitore = codiceFornitore;
+      }
+    });
+    setFornitori(fornitoreList);
+  };
+  const editFornitore = (fornitore, id) => {
+    const fornitoreList = JSON.parse(JSON.stringify(fornitori));
+    fornitoreList.forEach((f, i) => {
+      if (i === id) {
+        f.fornitore = fornitore;
+      }
+    });
+    setFornitori(fornitoreList);
+  };
+
+return <div>
     { productToEdit ? <div>
         <ConfirmEditContainer></ConfirmEditContainer>  
         <ConfirmEditModal>
@@ -126,13 +148,21 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
             <ProductDetailsValue type="text" value={codiceProduttore} onChange={ e => setCodiceProduttore(e.target.value)} />
           </ProductDetails>
           <ProductDetails>
-            <ProductDetailsLabel>codice fornitore</ProductDetailsLabel>
-            <ProductDetailsValue type="text" value={codiceFornitore} onChange={ e => setCodiceFornitore(e.target.value)} />
+            <ProductDetailsTitle>Elenco fornitori</ProductDetailsTitle>
           </ProductDetails>
-          <ProductDetails>
-            <ProductDetailsLabel>fornitore</ProductDetailsLabel>
-            <ProductDetailsValue type="text" value={fornitore} onChange={ e => setFornitore(e.target.value)} />
-          </ProductDetails>
+          {
+            fornitori ? fornitori.map((f, i) =>
+              <FornitoriContainer key={i}>
+                <ProductDetails>
+                  <ProductDetailsLabel>codice fornitore</ProductDetailsLabel>
+                  <ProductDetailsValue type="text" value={f.codiceFornitore} onChange={ e => editCodiceFornitore(e.target.value, i)} />
+                </ProductDetails>
+                <ProductDetails>
+                  <ProductDetailsLabel>fornitore</ProductDetailsLabel>
+                  <ProductDetailsValue type="text" value={f.fornitore} onChange={ e => editFornitore(e.target.value, i)} />
+                </ProductDetails>
+              </FornitoriContainer>
+            ) : '' }
           <ProductDetails>
             <span>Modificato da: &nbsp;</span>
             <span>{productToEdit.modificatoDa} &nbsp;</span>

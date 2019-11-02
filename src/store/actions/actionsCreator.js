@@ -296,8 +296,7 @@ const parseProduct = (productString, user, line) => {
     descrizione: productProperties[5].trim(),
     produttore: productProperties[6].trim(),
     codiceProduttore: productProperties[7].trim(),
-    codiceFornitore: productProperties[8].trim(),
-    fornitore: productProperties[9].trim(),
+    fornitori: [ { fornitore: productProperties[9].trim(), codiceFornitore: productProperties[8].trim()} ],
     modificatoDa: user,
     modificatoIl: `${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}`,
   };

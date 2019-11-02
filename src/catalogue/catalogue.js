@@ -345,8 +345,8 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
             <GrowCell>{p.descrizione}</GrowCell>
             <MediumCell>{p.produttore}</MediumCell>
             <MediumCell>{p.codiceProduttore}</MediumCell>
-            <MediumCell>{p.codiceFornitore}</MediumCell>
-            <MediumCell>{p.fornitore}</MediumCell>
+            <MediumCell>{p.fornitori.map(f => f.codiceFornitore)}</MediumCell>
+            <MediumCell>{p.fornitori.map(f => f.fornitore)}</MediumCell>
           </TableRow>
         )
       }

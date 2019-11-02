@@ -110,18 +110,18 @@ const Reducer = (state = INITIAL_STATE, action) => {
         }
         case SET_FILTERD_PRODUCTS: {
             const fp = state.products.filter( p => 
-                (state.productFilters.A == null || p.A.toLowerCase().includes(state.productFilters.A.toLowerCase())) &&
-                (state.productFilters.B == null || p.B.toLowerCase().includes(state.productFilters.B.toLowerCase())) &&
-                (state.productFilters.C == null || p.C.toLowerCase().includes(state.productFilters.C.toLowerCase())) &&
-                (state.productFilters.D == null || p.D.toLowerCase().includes(state.productFilters.D.toLowerCase())) &&
-                (state.productFilters.E == null || p.E.toLowerCase().includes(state.productFilters.E.toLowerCase())) &&
-                (state.productFilters.F == null || p.F.toLowerCase().includes(state.productFilters.F.toLowerCase())) &&
-                (state.productFilters.G == null || p.G.toLowerCase().includes(state.productFilters.G.toLowerCase())) &&
-                (state.productFilters.descrizione == null || p.descrizione.toLowerCase().includes(state.productFilters.descrizione.toLowerCase())) &&
-                (state.productFilters.produttore == null || p.produttore.toLowerCase().includes(state.productFilters.produttore.toLowerCase())) &&
-                (state.productFilters.codiceProduttore == null || p.codiceProduttore.toLowerCase().includes(state.productFilters.codiceProduttore.toLowerCase())) &&
-                (state.productFilters.codiceFornitore == null || p.codiceFornitore.toLowerCase().includes(state.productFilters.codiceFornitore.toLowerCase())) &&
-                (state.productFilters.fornitore == null || p.fornitore.toLowerCase().includes(state.productFilters.fornitore.toLowerCase()))
+                (!state.productFilters.A || p.A.toLowerCase().includes(state.productFilters.A.toLowerCase())) &&
+                (!state.productFilters.B || p.B.toLowerCase().includes(state.productFilters.B.toLowerCase())) &&
+                (!state.productFilters.C || p.C.toLowerCase().includes(state.productFilters.C.toLowerCase())) &&
+                (!state.productFilters.D || p.D.toLowerCase().includes(state.productFilters.D.toLowerCase())) &&
+                (!state.productFilters.E || p.E.toLowerCase().includes(state.productFilters.E.toLowerCase())) &&
+                (!state.productFilters.F || p.F.toLowerCase().includes(state.productFilters.F.toLowerCase())) &&
+                (!state.productFilters.G || p.G.toLowerCase().includes(state.productFilters.G.toLowerCase())) &&
+                (!state.productFilters.descrizione || p.descrizione.toLowerCase().includes(state.productFilters.descrizione.toLowerCase())) &&
+                (!state.productFilters.produttore || p.produttore.toLowerCase().includes(state.productFilters.produttore.toLowerCase())) &&
+                (!state.productFilters.codiceProduttore || p.codiceProduttore.toLowerCase().includes(state.productFilters.codiceProduttore.toLowerCase())) &&
+                (!state.productFilters.codiceFornitore || fornitoreDetailsMatcher(p.fornitori, 'codiceFornitore', state.productFilters.codiceFornitore)) &&
+                (!state.productFilters.fornitore || fornitoreDetailsMatcher(p.fornitori, 'fornitore', state.productFilters.fornitore))
             );
 
             return {
@@ -176,6 +176,20 @@ const Reducer = (state = INITIAL_STATE, action) => {
         default: 
             return state
     }
+}
+
+const fornitoreDetailsMatcher = (fornitoriList, field, value) => {
+    let match = false;
+    fornitoriList.forEach(f => {
+        if (field === 'fornitore' && f.fornitore.toLowerCase().includes(value.toLowerCase())) {
+            match = true;
+        }
+        if (field === 'codiceFornitore' && f.codiceFornitore.toLowerCase().includes(value.toLowerCase())) {
+            match = true;
+        }
+    });
+
+    return match;
 }
 
 // temp stuff for testing

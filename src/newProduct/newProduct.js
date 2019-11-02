@@ -65,6 +65,7 @@ const NewProductDetailsTable = styled.div`
 `;
 const NewProductDetailsTableHeaderCell = styled(NewProductTableHeaderCell)`
   width: 250px;
+  min-width: 200px;
   flex-grow: 0;
 `;
 const NewProductTextArea = styled.textarea`
@@ -98,6 +99,7 @@ const CreateButton = styled.div`
       color: white;
     }
 `;
+const NewProductDetailsTableHeaderFullRow = styled(NewProductDetailsTableHeaderCell)``;
 
 const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}) => {
   if (!user) {
@@ -112,8 +114,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}
   const [descrizione, setDescrizione] = useState('');
   const [produttore, setProduttore] = useState('');
   const [codiceProduttore, setCodiceProduttore] = useState('');
-  const [codiceFornitore, setCodiceFornitore] = useState('');
-  const [fornitore, setFornitore] = useState('');
+  const [fornitori, setFornitori] = useState([{codiceFornitore: '', fornitore: ''}]);
 
   useEffect(() => {
     if(a && b && c && d && e && f) {
@@ -165,15 +166,22 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}
       case 'codiceProduttore':
         setCodiceProduttore(e.target.value);
         break;
-      case 'codiceFornitore':
-        setCodiceFornitore(e.target.value);
-        break;
-      case 'fornitore':
-        setFornitore(e.target.value);
-        break;
       default:
         break;
     };
+  }
+  
+  const setFronitoreValue = (value, type, id) => {
+    const fornitoriList = JSON.parse(JSON.stringify(fornitori));
+    fornitoriList.forEach((f, i) => {
+      if(i === id && type === 'fornitore') {
+        f.fornitore = value;
+      }
+      if(i === id && type === 'codiceFornitore') {
+        f.codiceFornitore = value;
+      }
+    });
+    setFornitori(fornitoriList);
   }
 
   const createBAGGICode = () => {
@@ -189,8 +197,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}
         descrizione: descrizione,
         produttore: produttore,
         codiceProduttore: codiceProduttore,
-        codiceFornitore: codiceFornitore,
-        fornitore: fornitore
+        fornitori: fornitori
       }
       createProduct(newProd);
       history.push('/prodotti');
@@ -263,24 +270,27 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}
         <NewProductTextArea value={produttore} onChange={e => setValue('produttore', e)}/> 
       </NewProductTableCell>
     </NewProductDetailsTable>
+
     <NewProductDetailsTable>
       <NewProductDetailsTableHeaderCell>Codice Produttore</NewProductDetailsTableHeaderCell>
       <NewProductTableCell> 
         <NewProductTextArea value={codiceProduttore} onChange={e => setValue('codiceProduttore', e)}/> 
       </NewProductTableCell>
     </NewProductDetailsTable>
-    <NewProductDetailsTable>
-      <NewProductDetailsTableHeaderCell>Codice Fornitore</NewProductDetailsTableHeaderCell>
-      <NewProductTableCell> 
-        <NewProductTextArea value={codiceFornitore} onChange={e => setValue('codiceFornitore', e)}/> 
-      </NewProductTableCell>
-    </NewProductDetailsTable>
-    <NewProductDetailsTable>
-      <NewProductDetailsTableHeaderCell>Fornitore</NewProductDetailsTableHeaderCell>
-      <NewProductTableCell> 
-        <NewProductTextArea value={fornitore} onChange={e => setValue('fornitore', e)}/> 
-      </NewProductTableCell>
-    </NewProductDetailsTable>
+
+    <NewProductDetailsTableHeaderCell>Elenco Fonitori</NewProductDetailsTableHeaderCell>
+    { fornitori ? fornitori.map( (f, i) =>
+      <NewProductDetailsTable>
+        <NewProductDetailsTableHeaderCell>Codice Fonitore</NewProductDetailsTableHeaderCell>
+        <NewProductTableCell> 
+          <NewProductTextArea value={f.codiceFornitore} onChange={e => setFronitoreValue(e.target.value, 'codiceFornitore', i)}/> 
+        </NewProductTableCell>
+        <NewProductDetailsTableHeaderCell>Fornitore</NewProductDetailsTableHeaderCell>
+        <NewProductTableCell> 
+          <NewProductTextArea value={f.fornitore} onChange={e => setFronitoreValue(e.target.value, 'fornitore', i)}/> 
+        </NewProductTableCell>
+      </NewProductDetailsTable>
+    ) : '' }
   
     <CreateButton onClick={() => createBAGGICode()}>Crea Prodotto</CreateButton>
   </NewProductContainer>
