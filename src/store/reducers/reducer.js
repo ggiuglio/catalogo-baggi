@@ -147,12 +147,11 @@ const Reducer = (state = INITIAL_STATE, action) => {
         case CALCULATE_LATEST_PRODUCT_VERSION: {
             let latestVersion = null;
             let versions = state.products.filter(p => 
-                ( p.A.toLowerCase().includes(action.productDetails.A.toLowerCase())) &&
-                ( p.B.toLowerCase().includes(action.productDetails.B.toLowerCase())) &&
-                ( p.C.toLowerCase().includes(action.productDetails.C.toLowerCase())) &&
-                ( p.D.toLowerCase().includes(action.productDetails.D.toLowerCase())) &&
-                ( p.E.toLowerCase().includes(action.productDetails.E.toLowerCase())) &&
-                ( p.F.toLowerCase().includes(action.productDetails.F.toLowerCase())) );
+                ( p.A.toLowerCase() === action.productDetails.A.toLowerCase()) &&
+                ( p.C.toLowerCase() === action.productDetails.C.toLowerCase()) &&
+                ( p.D.toLowerCase() === action.productDetails.D.toLowerCase()) &&
+                ( p.E.toLowerCase() === action.productDetails.E.toLowerCase()) &&
+                ( p.F.toLowerCase() === action.productDetails.F.toLowerCase()));
 
             versions = versions.sort((a, b) => a.F > b.F ? 1 : -1 );
             if(versions.length > 0) {
