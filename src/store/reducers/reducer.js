@@ -14,6 +14,7 @@ import {
     EDIT_PRODUCT_SUCCESS,
     EDIT_PRODUCT_CANCEL,
     CALCULATE_LATEST_PRODUCT_VERSION,
+    CALCULATE_LATEST_OI_PRODUCT_VERSION,
     CANCEL_LATEST_PRODUCT_VERSION
 } from '../actions/actionsTypes'
 
@@ -153,7 +154,7 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 ( p.E.toLowerCase() === action.productDetails.E.toLowerCase()) &&
                 ( p.F.toLowerCase() === action.productDetails.F.toLowerCase()));
 
-            versions = versions.sort((a, b) => a.F > b.F ? 1 : -1 );
+            versions = versions.sort((a, b) => a.G > b.G ? -1 : 1 );
             if(versions.length > 0) {
                 latestVersion = '000' + (parseInt(versions[0].G) + 1);
                 latestVersion = latestVersion.substr(latestVersion.length - 3)
@@ -166,10 +167,41 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 latestVersion: latestVersion
             }
         }
+        case CALCULATE_LATEST_OI_PRODUCT_VERSION: {
+            let latestVersion = null;
+            let latestTipo = null; 
+            let versions = state.products.filter(p => 
+                ( p.A.toLowerCase() === action.productDetails.A.toLowerCase()) &&
+                ( p.C.toLowerCase() === action.productDetails.C.toLowerCase()) &&
+                ( p.D.toLowerCase() === action.productDetails.D.toLowerCase()) &&
+                ( p.E.toLowerCase() === action.productDetails.E.toLowerCase()));
+
+            versions = versions.sort((a, b) => {
+                const verA = a.F + a.G;
+                const verB = b.F + b.G;
+
+                return verA > verB ? -1 : 1 
+            });
+            if(versions.length > 0) {
+                latestVersion = '000' + (parseInt(versions[0].G) + 1);
+                latestVersion = latestVersion.substr(latestVersion.length - 3)
+                latestTipo = versions[0].F;
+            } else {
+                latestVersion = '001';
+                latestTipo = '0';
+            }
+
+            return {
+                ...state,
+                latestVersion: latestVersion,
+                latestTipo: latestTipo
+            }
+        }
         case CANCEL_LATEST_PRODUCT_VERSION: {
             return {
                 ...state,
-                latestVersion: null
+                latestVersion: null,
+                latestTipo: null
             }
         }
         default: 

@@ -1,8 +1,12 @@
 import React, { useState, useEffect  } from 'react';
 import styled from 'styled-components';
 import { connect } from "react-redux";
-import { getUser, getLatestVersion } from '../store/selectors/selector';
-import { calculateLatestProductVersion, cancelLatestProductVersion, createNewProduct } from '../store/actions/actionsCreator';
+import { getUser, getLatestVersion, getLatestTipo } from '../store/selectors/selector';
+import { calculateLatestProductVersion,
+         calculateLatestOiProductVersion,
+         cancelLatestProductVersion, 
+         createNewProduct 
+        } from '../store/actions/actionsCreator';
 import { history } from '../App';
 
 const NewProductContainer = styled.div`
@@ -101,7 +105,7 @@ const CreateButton = styled.div`
 `;
 const NewProductDetailsTableHeaderFullRow = styled(NewProductDetailsTableHeaderCell)``;
 
-const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}) => {
+const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct, getOiVersion, newTipo}) => {
   if (!user) {
     history.push('login');
   }
@@ -126,11 +130,15 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}
         E: e,
         F: f
       };
-      getVersion(productDetials);
+      if(d.toLowerCase() === 'oi') {
+        getOiVersion(productDetials);
+      } else {
+        getVersion(productDetials);
+      }
     } else {
       cancelVersion()
     }
-  }, [a,b,c,d,e,f, getVersion, cancelVersion]);
+  }, [a,b,c,d,e,f, getVersion, getOiVersion, cancelVersion]);
  // A: S, V
  // B: 0, S, L, G
  // C: 00, 01, 02...
@@ -244,7 +252,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}
           <NewProductInput maxlength="3" value={e} onChange={e => setValue('E', e)}/> 
         </NewProductTableCell>
         <NewProductTableCell> 
-          <NewProductSelect value={f} onChange={e => setValue('F', e)}>
+          <NewProductSelect value={newTipo ? newTipo : f} onChange={e => setValue('F', e)}>
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -299,13 +307,15 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct}
 const mapStateToProps = state => {
   return { 
     user: getUser(state),
-    newVersion: getLatestVersion(state)
+    newVersion: getLatestVersion(state),
+    newTipo: getLatestTipo(state)
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getVersion: product => dispatch(calculateLatestProductVersion(product)),
+    getOiVersion: product => dispatch(calculateLatestOiProductVersion(product)),
     cancelVersion: () => dispatch(cancelLatestProductVersion()),
     createProduct: (product) => dispatch(createNewProduct(product))
   }
