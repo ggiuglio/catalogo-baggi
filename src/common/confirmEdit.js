@@ -41,7 +41,7 @@ const ConfirmEditMessage = styled.div`
 `;
 const ProductDetails = styled.div`
   margin: 10px 20px;
-  text-algin: left;
+  text-align: left;
   display: inline-flex;
 `;
 const ProductDetailsLabel = styled.div`
@@ -63,7 +63,6 @@ const ConfirmEditButton = styled.div`
   padding: 5px;
   text-align: center;
   font-weight: bold;
-  text-align: center;
   background: #cccccc;
   color: black;
   border: 1px solid black;
@@ -83,12 +82,19 @@ const FornitoriContainer = styled.div`
 const ProductDetailsTitle = styled(ProductDetailsLabel)`
   font-weight: bold;
 `;
+const ObsoletoCheckBox = styled.input`
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  cursor: pointer;
+`;
 
 const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => {  
   const [descrizione, setDescrizione] = useState('');
   const [produttore, setProduttore] = useState('');
   const [codiceProduttore, setCodiceProduttore] = useState('');
   const [fornitori, setFornitori] = useState('');
+  const [obsoleto, setObsoleto] = useState(false);
 
   useEffect(() => {
     if(productToEdit) {
@@ -96,6 +102,7 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
       setProduttore(productToEdit.produttore);
       setCodiceProduttore(productToEdit.codiceProduttore);
       setFornitori(productToEdit.fornitori);
+      setObsoleto(productToEdit.obsoleto);
     }
   }, [productToEdit])
 
@@ -105,6 +112,8 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
     prod.produttore = produttore;
     prod.codiceProduttore = codiceProduttore;
     prod.fornitori = fornitori;
+    prod.obsoleto = obsoleto;
+
     editProductConfirm(prod);
   }
 
@@ -168,6 +177,9 @@ return <div>
             <span>{productToEdit.modificatoDa} &nbsp;</span>
             <span> il: &nbsp;</span>
             <span>{productToEdit.modificatoIl}</span>
+          </ProductDetails>
+          <ProductDetails>
+            <ObsoletoCheckBox type="checkbox" checked={obsoleto} onChange={ e => setObsoleto(e.target.checked)} /> Prodotto obsoleto
           </ProductDetails>
           <ConfirmEditActions>
             <ConfirmEditButton onClick={() => editProductCancel()}>CANCELLA</ConfirmEditButton>

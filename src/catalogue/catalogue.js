@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import styled from 'styled-components';
+import styled,{ css } from 'styled-components';
 import { loadProducts, setFilter, setLoading, deleteProduct, editProduct } from '../store/actions/actionsCreator';
 import { getProducts, getUser, getProductsNumber } from '../store/selectors/selector';
 import { history } from '../App';
@@ -21,13 +21,15 @@ const Container = styled.div`
     margin-top: 80px;
   }
 `;
+const TableContainer = styled.div`
+  padding: 0 20px;
+  width: max-content;
+`;
 const ProductTable = styled.div`
-  width: Calc(100% - 40px);
-  min-width: 1800px;
+  min-width: 2200px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  margin: 0 0 0 20px;
   border: 1px solid #444444;
 `;
 const HeaderRow = styled.div`
@@ -48,6 +50,7 @@ const TableRow = styled.div`
   background-color: white;
   display: flex;
   color: #444444;
+  ${props => props.disabled ? css`color: #bbbbbb` : css``}
   :nth-child(odd) {
     background-color: #e2e2e2;
   }
@@ -58,11 +61,11 @@ const Cell = styled.div`
   padding: 0.4em 0.6em;
   overflow: hidden; // Or flex might break
   list-style: none;
-  brder: none
   border-right: 1px solid #444444;
   :last-child {
     border: none;
-  }  background: fade(slategrey,20%);
+  }  
+  background: fade(slategrey,20%);
   position: relative;
   word-break: break-word;
   > h1, > h2, > h3, > h4, > h5, > h6 { margin: 0; }
@@ -248,7 +251,8 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
 
   return <Container>
     <ProductsFound>{productList.length} su {productsNumber} prodotti trovati</ProductsFound>
-    <ProductTable>
+    <TableContainer>
+      <ProductTable>
       <HeaderRow>
         <ActionCell></ActionCell>
         <HeaderCell>Divisione</HeaderCell>
@@ -263,6 +267,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
         <MediumHeaderCell>Codice Produttore</MediumHeaderCell>
         <MediumHeaderCell>Codice Fornitore</MediumHeaderCell>
         <MediumHeaderCell>Fornitore</MediumHeaderCell>
+        <MediumHeaderCell>Codice BAGGI</MediumHeaderCell>
       </HeaderRow>
       <FilterRow>
         <ActionCell>
@@ -327,10 +332,13 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
           <SearchIcon src={search} />
           {filterValues.fornitore ? <ClearIcon src={x} onClick={() => resetFilter('fornitore')} /> : ''}
         </MediumFilterCell>
+        <MediumFilterCell>
+        </MediumFilterCell>
+
       </FilterRow>
       {
         productList.map(p =>
-          <TableRow key={p.id}>
+          <TableRow disabled={p.obsoleto} key={p.id}>
             <ActionCell>
               <DeleteIcon src={deleteImg} onClick={() => deleteProd(p)} />
               <EditIcon src={editImg} onClick={() => editProd(p)} />
@@ -347,10 +355,12 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
             <MediumCell>{p.codiceProduttore}</MediumCell>
             <MediumCell>{p.fornitori.map(f => f.codiceFornitore)}</MediumCell>
             <MediumCell>{p.fornitori.map(f => f.fornitore)}</MediumCell>
+            <MediumCell>{p.id}</MediumCell>
           </TableRow>
         )
       }
     </ProductTable>
+    </TableContainer>
     <ConfirmDelete />
     <ConfirmEdit />
   </Container >
