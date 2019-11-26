@@ -102,7 +102,7 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
       setProduttore(productToEdit.produttore);
       setCodiceProduttore(productToEdit.codiceProduttore);
       setFornitori(productToEdit.fornitori);
-      setObsoleto(productToEdit.obsoleto);
+      setObsoleto(productToEdit.obsoleto !== undefined ? productToEdit.obsoleto : false);
     }
   }, [productToEdit])
 

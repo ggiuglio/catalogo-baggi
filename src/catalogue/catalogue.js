@@ -15,7 +15,6 @@ const Container = styled.div`
   overflow: auto;
   box-sizing: border-box;
   max-height: Calc(100vh - 40px);
-  margin-top: 40px;
   @media (max-width: 768px) {
     max-height: Calc(100vh - 80px);
     margin-top: 80px;
@@ -135,8 +134,10 @@ const EditIcon = styled.img`
   opacity: 0.5;
 `;
 const ProductsFound = styled.div`
-  margin: 20px 0 0 20px;
+  width: Calc(100vw - 40px);
+  margin: 60px 20px 0 20px;
   font-weight: bold;
+  display: inline-flex;
 `;
 const ActionCell = styled.div`
   box-sizing: border-box;
@@ -146,13 +147,22 @@ const ActionCell = styled.div`
 
 const MediumHeaderCell = styled(HeaderCell)`
   width: 200px;
-`
+`;
 const MediumFilterCell = styled(FilterCell)`
   width: 200px;
-`
+`;
 const MediumCell = styled(Cell)`
   width: 200px;
-`
+`;
+const Separator = styled.div`
+  flex-grow: 1;
+`;
+const Checkbox = styled.input`
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  cursor: pointer;
+`;
 
 const filterValues = {};
 
@@ -178,6 +188,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
   const inputCodiceProduttoref = React.createRef();
   const inputCodiceFornitoreref = React.createRef();
   const inputFornitoreref = React.createRef();
+  const inputObsoletoref = React.createRef();
 
   let debounce;
   let debounceLoad;
@@ -192,6 +203,10 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
   const filterChange = (event, filter) => {
     const value = event.target.value;
     setFilterValue(filter, value);
+  }
+
+  const setDuplicated = (value) => {
+    setFilterValue('onlyDuplicated', value);
   }
 
   const setFilterValue = (filter, value) => {
@@ -249,121 +264,128 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
 
   }
 
-  return <Container>
-    <ProductsFound>{productList.length} su {productsNumber} prodotti trovati</ProductsFound>
-    <TableContainer>
-      <ProductTable>
-      <HeaderRow>
-        <ActionCell></ActionCell>
-        <HeaderCell>Divisione</HeaderCell>
-        <HeaderCell>Stato</HeaderCell>
-        <HeaderCell>Mercato</HeaderCell>
-        <HeaderCell>Origine</HeaderCell>
-        <HeaderCell>Famiglia</HeaderCell>
-        <HeaderCell>Tipo</HeaderCell>
-        <HeaderCell>Versione</HeaderCell>
-        <GrowHeaderCell>Descrizione</GrowHeaderCell>
-        <MediumHeaderCell>Produttore</MediumHeaderCell>
-        <MediumHeaderCell>Codice Produttore</MediumHeaderCell>
-        <MediumHeaderCell>Codice Fornitore</MediumHeaderCell>
-        <MediumHeaderCell>Fornitore</MediumHeaderCell>
-        <MediumHeaderCell>Codice BAGGI</MediumHeaderCell>
-      </HeaderRow>
-      <FilterRow>
-        <ActionCell>
-        </ActionCell>
-        <FilterCell>
-          <Filter type="text" ref={inputAref} onChange={(e) => filterChange(e, 'A')} />
-          <SearchIcon src={search} />
-          {filterValues.A ? <ClearIcon src={x} onClick={() => resetFilter('A')} /> : ''}
-        </FilterCell>
-        <FilterCell>
-          <Filter type="text" ref={inputBref} onChange={(e) => filterChange(e, 'B')} />
-          <SearchIcon src={search} />
-          {filterValues.B ? <ClearIcon src={x} onClick={() => resetFilter('B')} /> : ''}
-        </FilterCell>
-        <FilterCell>
-          <Filter type="text" ref={inputCref} onChange={(e) => filterChange(e, 'C')} />
-          <SearchIcon src={search} />
-          {filterValues.C ? <ClearIcon src={x} onClick={() => resetFilter('C')} /> : ''}
-        </FilterCell>
-        <FilterCell>
-          <Filter type="text" ref={inputDref} onChange={(e) => filterChange(e, 'D')} />
-          <SearchIcon src={search} />
-          {filterValues.D ? <ClearIcon src={x} onClick={() => resetFilter('D')} /> : ''}
-        </FilterCell>
-        <FilterCell>
-          <Filter type="text" ref={inputEref} onChange={(e) => filterChange(e, 'E')} />
-          <SearchIcon src={search} />
-          {filterValues.E ? <ClearIcon src={x} onClick={() => resetFilter('E')} /> : ''}
-        </FilterCell>
-        <FilterCell>
-          <Filter type="text" ref={inputFref} onChange={(e) => filterChange(e, 'F')} />
-          <SearchIcon src={search} />
-          {filterValues.F ? <ClearIcon src={x} onClick={() => resetFilter('F')} /> : ''}
-        </FilterCell>
-        <FilterCell>
-          <Filter type="text" ref={inputGref} onChange={(e) => filterChange(e, 'G')} />
-          <SearchIcon src={search} />
-          {filterValues.G ? <ClearIcon src={x} onClick={() => resetFilter('G')} /> : ''}
-        </FilterCell>
-        <GrowFilterCell>
-          <Filter type="text" ref={inputDecrizioneref} onChange={(e) => filterChange(e, 'descrizione')} />
-          <SearchIcon src={search} />
-          {filterValues.descrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : ''}
-        </GrowFilterCell>
-        <MediumFilterCell>
-          <Filter type="text" ref={inputProduttoref} onChange={(e) => filterChange(e, 'produttore')} />
-          <SearchIcon src={search} />
-          {filterValues.produttore ? <ClearIcon src={x} onClick={() => resetFilter('produttore')} /> : ''}
-        </MediumFilterCell>
-        <MediumFilterCell>
-          <Filter type="text" ref={inputCodiceProduttoref} onChange={(e) => filterChange(e, 'codiceProduttore')} />
-          <SearchIcon src={search} />
-          {filterValues.codiceProduttore ? <ClearIcon src={x} onClick={() => resetFilter('codiceProduttore')} /> : ''}
-        </MediumFilterCell>
-        <MediumFilterCell>
-          <Filter type="text" ref={inputCodiceFornitoreref} onChange={(e) => filterChange(e, 'codiceFornitore')} />
-          <SearchIcon src={search} />
-          {filterValues.codiceFornitore ? <ClearIcon src={x} onClick={() => resetFilter('codiceFornitore')} /> : ''}
-        </MediumFilterCell>
-        <MediumFilterCell>
-          <Filter type="text" ref={inputFornitoreref} onChange={(e) => filterChange(e, 'fornitore')} />
-          <SearchIcon src={search} />
-          {filterValues.fornitore ? <ClearIcon src={x} onClick={() => resetFilter('fornitore')} /> : ''}
-        </MediumFilterCell>
-        <MediumFilterCell>
-        </MediumFilterCell>
+  return <div>
+    <ProductsFound>{productList.length} su {productsNumber} prodotti trovati
+      <Separator></Separator>
+      <Checkbox type="checkbox" onChange={ e => setDuplicated(e.target.checked)}/> Mostra solo codici fornitori duplicati
+    </ProductsFound>
+  
+    <Container>
+      <TableContainer>
+        <ProductTable>
+        <HeaderRow>
+          <ActionCell></ActionCell>
+          <HeaderCell>Divisione</HeaderCell>
+          <HeaderCell>Stato</HeaderCell>
+          <HeaderCell>Mercato</HeaderCell>
+          <HeaderCell>Origine</HeaderCell>
+          <HeaderCell>Famiglia</HeaderCell>
+          <HeaderCell>Tipo</HeaderCell>
+          <HeaderCell>Versione</HeaderCell>
+          <GrowHeaderCell>Descrizione</GrowHeaderCell>
+          <MediumHeaderCell>Produttore</MediumHeaderCell>
+          <MediumHeaderCell>Codice Produttore</MediumHeaderCell>
+          <MediumHeaderCell>Codice Fornitore</MediumHeaderCell>
+          <MediumHeaderCell>Fornitore</MediumHeaderCell>
+          <MediumHeaderCell>Codice BAGGI</MediumHeaderCell>
+        </HeaderRow>
+        <FilterRow>
+          <ActionCell>
+          </ActionCell>
+          <FilterCell>
+            <Filter type="text" ref={inputAref} onChange={(e) => filterChange(e, 'A')} />
+            <SearchIcon src={search} />
+            {filterValues.A ? <ClearIcon src={x} onClick={() => resetFilter('A')} /> : ''}
+          </FilterCell>
+          <FilterCell>
+            <Filter type="text" ref={inputBref} onChange={(e) => filterChange(e, 'B')} />
+            <SearchIcon src={search} />
+            {filterValues.B ? <ClearIcon src={x} onClick={() => resetFilter('B')} /> : ''}
+          </FilterCell>
+          <FilterCell>
+            <Filter type="text" ref={inputCref} onChange={(e) => filterChange(e, 'C')} />
+            <SearchIcon src={search} />
+            {filterValues.C ? <ClearIcon src={x} onClick={() => resetFilter('C')} /> : ''}
+          </FilterCell>
+          <FilterCell>
+            <Filter type="text" ref={inputDref} onChange={(e) => filterChange(e, 'D')} />
+            <SearchIcon src={search} />
+            {filterValues.D ? <ClearIcon src={x} onClick={() => resetFilter('D')} /> : ''}
+          </FilterCell>
+          <FilterCell>
+            <Filter type="text" ref={inputEref} onChange={(e) => filterChange(e, 'E')} />
+            <SearchIcon src={search} />
+            {filterValues.E ? <ClearIcon src={x} onClick={() => resetFilter('E')} /> : ''}
+          </FilterCell>
+          <FilterCell>
+            <Filter type="text" ref={inputFref} onChange={(e) => filterChange(e, 'F')} />
+            <SearchIcon src={search} />
+            {filterValues.F ? <ClearIcon src={x} onClick={() => resetFilter('F')} /> : ''}
+          </FilterCell>
+          <FilterCell>
+            <Filter type="text" ref={inputGref} onChange={(e) => filterChange(e, 'G')} />
+            <SearchIcon src={search} />
+            {filterValues.G ? <ClearIcon src={x} onClick={() => resetFilter('G')} /> : ''}
+          </FilterCell>
+          <GrowFilterCell>
+            <Filter type="text" ref={inputDecrizioneref} onChange={(e) => filterChange(e, 'descrizione')} />
+            <SearchIcon src={search} />
+            {filterValues.descrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : ''}
+          </GrowFilterCell>
+          <MediumFilterCell>
+            <Filter type="text" ref={inputProduttoref} onChange={(e) => filterChange(e, 'produttore')} />
+            <SearchIcon src={search} />
+            {filterValues.produttore ? <ClearIcon src={x} onClick={() => resetFilter('produttore')} /> : ''}
+          </MediumFilterCell>
+          <MediumFilterCell>
+            <Filter type="text" ref={inputCodiceProduttoref} onChange={(e) => filterChange(e, 'codiceProduttore')} />
+            <SearchIcon src={search} />
+            {filterValues.codiceProduttore ? <ClearIcon src={x} onClick={() => resetFilter('codiceProduttore')} /> : ''}
+          </MediumFilterCell>
+          <MediumFilterCell>
+            <Filter type="text" ref={inputCodiceFornitoreref} onChange={(e) => filterChange(e, 'codiceFornitore')} />
+            <SearchIcon src={search} />
+            {filterValues.codiceFornitore ? <ClearIcon src={x} onClick={() => resetFilter('codiceFornitore')} /> : ''}
+          </MediumFilterCell>
+          <MediumFilterCell>
+            <Filter type="text" ref={inputFornitoreref} onChange={(e) => filterChange(e, 'fornitore')} />
+            <SearchIcon src={search} />
+            {filterValues.fornitore ? <ClearIcon src={x} onClick={() => resetFilter('fornitore')} /> : ''}
+          </MediumFilterCell>
+          <MediumFilterCell>
+          </MediumFilterCell>
 
-      </FilterRow>
-      {
-        productList.map(p =>
-          <TableRow disabled={p.obsoleto} key={p.id}>
-            <ActionCell>
-              <DeleteIcon src={deleteImg} onClick={() => deleteProd(p)} />
-              <EditIcon src={editImg} onClick={() => editProd(p)} />
-            </ActionCell>
-            <Cell>{p.A}</Cell>
-            <Cell>{p.B}</Cell>
-            <Cell>{p.C}</Cell>
-            <Cell>{p.D}</Cell>
-            <Cell>{p.E}</Cell>
-            <Cell>{p.F}</Cell>
-            <Cell>{p.G}</Cell>
-            <GrowCell>{p.descrizione}</GrowCell>
-            <MediumCell>{p.produttore}</MediumCell>
-            <MediumCell>{p.codiceProduttore}</MediumCell>
-            <MediumCell>{p.fornitori.map(f => f.codiceFornitore)}</MediumCell>
-            <MediumCell>{p.fornitori.map(f => f.fornitore)}</MediumCell>
-            <MediumCell>{p.id}</MediumCell>
-          </TableRow>
-        )
-      }
-    </ProductTable>
-    </TableContainer>
-    <ConfirmDelete />
-    <ConfirmEdit />
-  </Container >
+        </FilterRow>
+        {
+          productList.map(p =>
+            <TableRow disabled={p.obsoleto} key={p.id}>
+              <ActionCell>
+                <DeleteIcon src={deleteImg} onClick={() => deleteProd(p)} />
+                <EditIcon src={editImg} onClick={() => editProd(p)} />
+              </ActionCell>
+              <Cell>{p.A}</Cell>
+              <Cell>{p.B}</Cell>
+              <Cell>{p.C}</Cell>
+              <Cell>{p.D}</Cell>
+              <Cell>{p.E}</Cell>
+              <Cell>{p.F}</Cell>
+              <Cell>{p.G}</Cell>
+              <GrowCell>{p.descrizione}</GrowCell>
+              <MediumCell>{p.produttore}</MediumCell>
+              <MediumCell>{p.codiceProduttore}</MediumCell>
+              <MediumCell>{p.fornitori.map(f => f.codiceFornitore)}</MediumCell>
+              <MediumCell>{p.fornitori.map(f => f.fornitore)}</MediumCell>
+              <MediumCell>{p.id}</MediumCell>
+            </TableRow>
+          )
+        }
+      </ProductTable>
+      </TableContainer>
+      <ConfirmDelete />
+      <ConfirmEdit />
+    </Container >
+  </div>
+
 }
 
 const mapStateToProps = state => {

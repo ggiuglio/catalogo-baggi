@@ -110,7 +110,7 @@ const Reducer = (state = INITIAL_STATE, action) => {
             }
         }
         case SET_FILTERD_PRODUCTS: {
-            const fp = state.products.filter( p => 
+            let fp = state.products.filter( p => 
                 (!state.productFilters.A || p.A.toLowerCase().includes(state.productFilters.A.toLowerCase())) &&
                 (!state.productFilters.B || p.B.toLowerCase().includes(state.productFilters.B.toLowerCase())) &&
                 (!state.productFilters.C || p.C.toLowerCase().includes(state.productFilters.C.toLowerCase())) &&
@@ -124,6 +124,24 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 (!state.productFilters.codiceFornitore || fornitoreDetailsMatcher(p.fornitori, 'codiceFornitore', state.productFilters.codiceFornitore)) &&
                 (!state.productFilters.fornitore || fornitoreDetailsMatcher(p.fornitori, 'fornitore', state.productFilters.fornitore))
             );
+            
+            if (state.productFilters.onlyDuplicated) {
+                const duplicatedMatrix = {};
+            
+                fp.forEach(p => {
+                    p.fornitori.forEach( f => {
+                    if(f.codiceFornitore) {
+                        duplicatedMatrix[f.codiceFornitore] = duplicatedMatrix[f.codiceFornitore] ? [...duplicatedMatrix[f.codiceFornitore], p] : [p];  
+                    }
+                    });
+                });
+                fp = [];
+                Object.keys(duplicatedMatrix).map(k => {
+                    if(duplicatedMatrix[k].length > 2) {
+                        fp = [...fp, ...duplicatedMatrix[k]];
+                    }
+                });
+            }
 
             return {
                 ...state, 
