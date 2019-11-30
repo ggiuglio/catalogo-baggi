@@ -14,7 +14,7 @@ import ConfirmEdit from '../common/confirmEdit';
 const Container = styled.div`
   overflow: auto;
   box-sizing: border-box;
-  max-height: Calc(100vh - 40px);
+  max-height: Calc(100vh - 90px);
   @media (max-width: 768px) {
     max-height: Calc(100vh - 80px);
     margin-top: 80px;
