@@ -21,11 +21,12 @@ const Container = styled.div`
   }
 `;
 const TableContainer = styled.div`
-  padding: 0 20px;
+  padding: 0 10px;
   width: max-content;
+  font-size: 12px;
 `;
 const ProductTable = styled.div`
-  min-width: 2200px;
+  min-width: 1460px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -49,15 +50,15 @@ const TableRow = styled.div`
   background-color: white;
   display: flex;
   color: #444444;
-  ${props => props.disabled ? css`color: #bbbbbb` : css``}
+  ${props => props.disabled ? css`background-color: #ebd59b !important` : css``}
   :nth-child(odd) {
     background-color: #e2e2e2;
   }
 `;
 const Cell = styled.div`
   box-sizing: border-box;
-  width: 100px;
-  padding: 0.4em 0.6em;
+  width: 75px;
+  padding: 12px 4px;
   overflow: hidden; // Or flex might break
   list-style: none;
   border-right: 1px solid #444444;
@@ -70,7 +71,7 @@ const Cell = styled.div`
   > h1, > h2, > h3, > h4, > h5, > h6 { margin: 0; }
 `;
 const HeaderCell = styled(Cell)`
-  padding: 0.8em 0.6em;
+  padding: 12px 4px;
   text-align: center;
   font-weight: bold;
   border: none
@@ -118,15 +119,15 @@ const ClearIcon = styled.img`
   cursor: pointer;
 `;
 const DeleteIcon = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   opacity: 0.7;
   cursor: pointer;
   margin: 8px 5px;
 `;
 const EditIcon = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   opacity: 0.7;
   cursor: pointer;
   margin: 8px 5px;
@@ -135,7 +136,7 @@ const EditIcon = styled.img`
 `;
 const ProductsFound = styled.div`
   width: Calc(100vw - 40px);
-  margin: 60px 20px 0 20px;
+  margin: 60px 20px 0 10px;
   font-weight: bold;
   display: inline-flex;
 `;
@@ -144,15 +145,14 @@ const ActionCell = styled.div`
   width: 30px;
   border-right: 1px solid black;
 `;
-
 const MediumHeaderCell = styled(HeaderCell)`
-  width: 200px;
+  width: 120px;
 `;
 const MediumFilterCell = styled(FilterCell)`
-  width: 200px;
+  width: 120px;
 `;
 const MediumCell = styled(Cell)`
-  width: 200px;
+  width: 120px;
 `;
 const Separator = styled.div`
   flex-grow: 1;
@@ -188,7 +188,6 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
   const inputCodiceProduttoref = React.createRef();
   const inputCodiceFornitoreref = React.createRef();
   const inputFornitoreref = React.createRef();
-  const inputObsoletoref = React.createRef();
 
   let debounce;
   let debounceLoad;
@@ -267,7 +266,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
   return <div>
     <ProductsFound>{productList.length} su {productsNumber} prodotti trovati
       <Separator></Separator>
-      <Checkbox type="checkbox" onChange={ e => setDuplicated(e.target.checked)}/> Mostra solo codici fornitori duplicati
+      <Checkbox type="checkbox" onChange={ e => setDuplicated(e.target.checked)}/> Mostra solo codici produttore duplicati
     </ProductsFound>
   
     <Container>

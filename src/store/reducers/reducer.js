@@ -129,15 +129,13 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 const duplicatedMatrix = {};
             
                 fp.forEach(p => {
-                    p.fornitori.forEach( f => {
-                    if(f.codiceFornitore) {
-                        duplicatedMatrix[f.codiceFornitore] = duplicatedMatrix[f.codiceFornitore] ? [...duplicatedMatrix[f.codiceFornitore], p] : [p];  
+                    if(p.codiceProduttore) {
+                        duplicatedMatrix[p.codiceProduttore.trim()] = duplicatedMatrix[p.codiceProduttore] ? [...duplicatedMatrix[p.codiceProduttore], p] : [p];  
                     }
-                    });
                 });
                 fp = [];
                 Object.keys(duplicatedMatrix).map(k => {
-                    if(duplicatedMatrix[k].length > 2) {
+                    if(duplicatedMatrix[k].length >= 2) {
                         fp = [...fp, ...duplicatedMatrix[k]];
                     }
                 });
