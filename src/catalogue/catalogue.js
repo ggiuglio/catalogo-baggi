@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 const TableContainer = styled.div`
   padding: 0 10px;
-  width: max-content;
+  width: auto;
   font-size: 12px;
 `;
 const ProductTable = styled.div`
