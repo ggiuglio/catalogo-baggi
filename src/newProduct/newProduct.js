@@ -286,10 +286,10 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
       </NewProductTableCell>
     </NewProductDetailsTable>
 
-    <NewProductDetailsTableHeaderCell>Elenco Fonitori</NewProductDetailsTableHeaderCell>
+    <NewProductDetailsTableHeaderCell>Elenco Fornitori</NewProductDetailsTableHeaderCell>
     { fornitori ? fornitori.map( (f, i) =>
       <NewProductDetailsTable>
-        <NewProductDetailsTableHeaderCell>Codice Fonitore</NewProductDetailsTableHeaderCell>
+        <NewProductDetailsTableHeaderCell>Codice Fornitore</NewProductDetailsTableHeaderCell>
         <NewProductTableCell> 
           <NewProductTextArea value={f.codiceFornitore} onChange={e => setFronitoreValue(e.target.value, 'codiceFornitore', i)}/> 
         </NewProductTableCell>
