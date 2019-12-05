@@ -204,7 +204,7 @@ return <div>
                       <ProductDetailsLabel>fornitore</ProductDetailsLabel>
                       <ProductDetailsValue type="text" value={f.fornitore} onChange={ e => editFornitore(e.target.value, i)} />
                     </ProductDetails>
-                    <DeleteIcon src={xImg} onClick={() => removeFornitore(i)} />
+                    {i > 0 ? <DeleteIcon src={xImg} onClick={() => removeFornitore(i)} /> : '' }
                   </FornitoriContainer>
                 ) : '' }
           </ListFornitori>
