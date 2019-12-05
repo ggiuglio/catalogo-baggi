@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import styled from 'styled-components';
 import { getProductToEdit } from '../store/selectors/selector';
 import { editProductConfirm, editProductCancel } from '../store/actions/actionsCreator';
+import xImg from '../assets/x.png';
+import addImg from '../assets/add.png';
 
 const ConfirmEditContainer = styled.div`
   width: 100vw;
@@ -16,7 +18,7 @@ const ConfirmEditContainer = styled.div`
 const ConfirmEditModal = styled.div`
   width: 80vw;
   position: fixed;
-  top: Calc(50vh - 210px);
+  top: Calc(50vh - 300px);
   left: 10vw;
   margin-right: auto;
   border: 1px solid black;
@@ -88,6 +90,24 @@ const ObsoletoCheckBox = styled.input`
   margin-top: 1px;
   cursor: pointer;
 `;
+const ListFornitori = styled.div`
+  max-height: 150px;
+  overflow: auto;
+`;
+const DeleteIcon = styled.img`
+  width: 15px;
+  height: 15px;
+  opacity: 0.7;
+  cursor: pointer;
+  margin: -4px 0px;
+`;
+const AddIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  cursor: pointer;
+  margin: -5px 6px;
+`;
 
 const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => {  
   const [descrizione, setDescrizione] = useState('');
@@ -136,6 +156,18 @@ const ConfirmEdit = ({productToEdit, editProductCancel, editProductConfirm}) => 
     setFornitori(fornitoreList);
   };
 
+  const addFornitore = () => {
+    const fornitoreList = JSON.parse(JSON.stringify(fornitori));
+    fornitoreList.push({codiceFornitore: '', fornitore: ''});
+    setFornitori(fornitoreList);
+  };
+
+  const removeFornitore = (i) => {
+    const fornitoreList = JSON.parse(JSON.stringify(fornitori));
+    fornitoreList.splice(i, 1);
+    setFornitori(fornitoreList);
+  };
+
 return <div>
     { productToEdit ? <div>
         <ConfirmEditContainer></ConfirmEditContainer>  
@@ -157,21 +189,25 @@ return <div>
             <ProductDetailsValue type="text" value={codiceProduttore} onChange={ e => setCodiceProduttore(e.target.value)} />
           </ProductDetails>
           <ProductDetails>
-            <ProductDetailsTitle>Elenco fornitori</ProductDetailsTitle>
+            <ProductDetailsTitle>Elenco fornitori</ProductDetailsTitle> 
+            <div onClick={() => addFornitore()}><AddIcon src={addImg} />Aggiungi fornitore</div>
           </ProductDetails>
-          {
-            fornitori ? fornitori.map((f, i) =>
-              <FornitoriContainer key={i}>
-                <ProductDetails>
-                  <ProductDetailsLabel>codice fornitore</ProductDetailsLabel>
-                  <ProductDetailsValue type="text" value={f.codiceFornitore} onChange={ e => editCodiceFornitore(e.target.value, i)} />
-                </ProductDetails>
-                <ProductDetails>
-                  <ProductDetailsLabel>fornitore</ProductDetailsLabel>
-                  <ProductDetailsValue type="text" value={f.fornitore} onChange={ e => editFornitore(e.target.value, i)} />
-                </ProductDetails>
-              </FornitoriContainer>
-            ) : '' }
+          <ListFornitori>
+              {
+                fornitori ? fornitori.map((f, i) =>
+                  <FornitoriContainer key={i}>
+                    <ProductDetails>
+                      <ProductDetailsLabel>codice fornitore</ProductDetailsLabel>
+                      <ProductDetailsValue type="text" value={f.codiceFornitore} onChange={ e => editCodiceFornitore(e.target.value, i)} />
+                    </ProductDetails>
+                    <ProductDetails>
+                      <ProductDetailsLabel>fornitore</ProductDetailsLabel>
+                      <ProductDetailsValue type="text" value={f.fornitore} onChange={ e => editFornitore(e.target.value, i)} />
+                    </ProductDetails>
+                    <DeleteIcon src={xImg} onClick={() => removeFornitore(i)} />
+                  </FornitoriContainer>
+                ) : '' }
+          </ListFornitori>
           <ProductDetails>
             <span>Modificato da: &nbsp;</span>
             <span>{productToEdit.modificatoDa} &nbsp;</span>
