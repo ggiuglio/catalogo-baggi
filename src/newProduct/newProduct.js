@@ -230,20 +230,32 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
       <NewProductTableRow>
         <NewProductTableCell> 
           <NewProductSelect value={a} onChange={e => setValue('A', e)}>
-            <option value="S">Something</option>
-            <option value="V">Vattelappesca</option>
+            <option value="S">Sensevolution</option>
+            <option value="V">Voicevolution</option>
+            <option value="C">Cibus</option>
           </NewProductSelect> 
         </NewProductTableCell>
         <NewProductTableCell> 
           <NewProductSelect value={b} onChange={e => setValue('B', e)}>
-            <option value="0">Zero</option>
-            <option value="S">Sallo</option>
-            <option value="L">Lo so</option>
-            <option value="G">gia</option>
+            <option value="0">Generico</option>
+            <option value="S">Solido</option>
+            <option value="L">Liquido</option>
+            <option value="G">Gas</option>
           </NewProductSelect> 
         </NewProductTableCell>
-        <NewProductTableCell> 
-          <NewProductInput value={c} onChange={e => setValue('C', e)}/> 
+        <NewProductTableCell>
+          <NewProductSelect value={c} onChange={e => setValue('C', e)}>
+            <option value="00">Tutti i mercati</option>
+            <option value="01">Tabacco</option>
+            <option value="02">Energetico</option>
+            <option value="03">Tessile, Carta, Plastica, varie</option>
+            <option value="04">Chimico</option>
+            <option value="05">Alimentare</option>
+            <option value="06">Bioenergie</option>
+            <option value="07">Farmaceutico</option>
+            <option value="09">Petrolchimico</option>
+            <option value="12">Siderurgico</option>
+          </NewProductSelect> 
         </NewProductTableCell>
         <NewProductTableCell> 
           <NewProductInput maxlength="2" value={d} onChange={e => setValue('D', e)}/> 
@@ -253,13 +265,13 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
         </NewProductTableCell>
         <NewProductTableCell> 
           <NewProductSelect value={newTipo ? newTipo : f} onChange={e => setValue('F', e)}>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
+            <option value="0">Prodotti</option>
+            <option value="1">Ricambii</option>
+            <option value="2">Certificati/Documenti</option>
+            <option value="3">Service</option>
+            <option value="4">Consumabili</option>
+            <option value="5">Demo</option>
+            <option value="6">Distinte non prodotto</option>
           </NewProductSelect> 
         </NewProductTableCell>
         <NewProductTableCell> <NewProductInput value={newVersion ? newVersion : ''} disabled /> </NewProductTableCell>
