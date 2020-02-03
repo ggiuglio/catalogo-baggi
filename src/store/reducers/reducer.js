@@ -38,7 +38,8 @@ const Reducer = (state = INITIAL_STATE, action) => {
                     products.push(action.products[k])
                 });
             }
-            
+            const filteredProducts = filterProducts(products, state.productFilters);
+
             // adding fake data for test
             // addFakeProducts(products, 100000);
 
@@ -46,7 +47,7 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 ...{
                     products: products,
-                    filterdProducts: JSON.parse(JSON.stringify(products)),
+                    filterdProducts: filteredProducts,
                     loading: false
                 }
             }
@@ -110,41 +111,12 @@ const Reducer = (state = INITIAL_STATE, action) => {
             }
         }
         case SET_FILTERD_PRODUCTS: {
-            let fp = state.products.filter( p => 
-                (!state.productFilters.A || p.A.toLowerCase().includes(state.productFilters.A.toLowerCase())) &&
-                (!state.productFilters.B || p.B.toLowerCase().includes(state.productFilters.B.toLowerCase())) &&
-                (!state.productFilters.C || p.C.toLowerCase().includes(state.productFilters.C.toLowerCase())) &&
-                (!state.productFilters.D || p.D.toLowerCase().includes(state.productFilters.D.toLowerCase())) &&
-                (!state.productFilters.E || p.E.toLowerCase().includes(state.productFilters.E.toLowerCase())) &&
-                (!state.productFilters.F || p.F.toLowerCase().includes(state.productFilters.F.toLowerCase())) &&
-                (!state.productFilters.G || p.G.toLowerCase().includes(state.productFilters.G.toLowerCase())) &&
-                (!state.productFilters.descrizione || p.descrizione.toLowerCase().includes(state.productFilters.descrizione.toLowerCase())) &&
-                (!state.productFilters.produttore || p.produttore.toLowerCase().includes(state.productFilters.produttore.toLowerCase())) &&
-                (!state.productFilters.codiceProduttore || p.codiceProduttore.toLowerCase().includes(state.productFilters.codiceProduttore.toLowerCase())) &&
-                (!state.productFilters.codiceFornitore || fornitoreDetailsMatcher(p.fornitori, 'codiceFornitore', state.productFilters.codiceFornitore)) &&
-                (!state.productFilters.fornitore || fornitoreDetailsMatcher(p.fornitori, 'fornitore', state.productFilters.fornitore))
-            );
-            
-            if (state.productFilters.onlyDuplicated) {
-                const duplicatedMatrix = {};
-            
-                fp.forEach(p => {
-                    if(p.codiceProduttore) {
-                        duplicatedMatrix[p.codiceProduttore.trim()] = duplicatedMatrix[p.codiceProduttore] ? [...duplicatedMatrix[p.codiceProduttore], p] : [p];  
-                    }
-                });
-                fp = [];
-                Object.keys(duplicatedMatrix).map(k => {
-                    if(duplicatedMatrix[k].length >= 2) {
-                        fp = [...fp, ...duplicatedMatrix[k]];
-                    }
-                });
-            }
+            const filteredProduct = filterProducts(state.products, state.productFilters);
 
             return {
                 ...state, 
                 ...{
-                    filterdProducts: fp, 
+                    filterdProducts: filteredProduct, 
                     loading: false
                 }
             };
@@ -238,6 +210,40 @@ const fornitoreDetailsMatcher = (fornitoriList, field, value) => {
 
     return match;
 }
+
+const filterProducts = (products, productFilters) => {
+    let fp = products.filter( p => 
+        (!productFilters.A || p.A.toLowerCase().includes(productFilters.A.toLowerCase())) &&
+        (!productFilters.B || p.B.toLowerCase().includes(productFilters.B.toLowerCase())) &&
+        (!productFilters.C || p.C.toLowerCase().includes(productFilters.C.toLowerCase())) &&
+        (!productFilters.D || p.D.toLowerCase().includes(productFilters.D.toLowerCase())) &&
+        (!productFilters.E || p.E.toLowerCase().includes(productFilters.E.toLowerCase())) &&
+        (!productFilters.F || p.F.toLowerCase().includes(productFilters.F.toLowerCase())) &&
+        (!productFilters.G || p.G.toLowerCase().includes(productFilters.G.toLowerCase())) &&
+        (!productFilters.descrizione || p.descrizione.toLowerCase().includes(productFilters.descrizione.toLowerCase())) &&
+        (!productFilters.produttore || p.produttore.toLowerCase().includes(productFilters.produttore.toLowerCase())) &&
+        (!productFilters.codiceProduttore || p.codiceProduttore.toLowerCase().includes(productFilters.codiceProduttore.toLowerCase())) &&
+        (!productFilters.codiceFornitore || fornitoreDetailsMatcher(p.fornitori, 'codiceFornitore', productFilters.codiceFornitore)) &&
+        (!productFilters.fornitore || fornitoreDetailsMatcher(p.fornitori, 'fornitore', productFilters.fornitore))
+    );
+    
+    if (productFilters.onlyDuplicated) {
+        const duplicatedMatrix = {};
+    
+        fp.forEach(p => {
+            if(p.codiceProduttore) {
+                duplicatedMatrix[p.codiceProduttore.trim()] = duplicatedMatrix[p.codiceProduttore] ? [...duplicatedMatrix[p.codiceProduttore], p] : [p];  
+            }
+        });
+        fp = [];
+        Object.keys(duplicatedMatrix).map(k => {
+            if(duplicatedMatrix[k].length >= 2) {
+                fp = [...fp, ...duplicatedMatrix[k]];
+            }
+        });
+    }
+    return fp;
+} 
 
 // temp stuff for testing
 
