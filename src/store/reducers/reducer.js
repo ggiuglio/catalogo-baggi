@@ -42,6 +42,9 @@ const Reducer = (state = INITIAL_STATE, action) => {
 
             // adding fake data for test
             // addFakeProducts(products, 100000);
+            
+            // checking duplicated or null ids
+            //findDuplicatedIds(products);
 
             return {
                 ...state,
@@ -277,6 +280,28 @@ const makeString = (length) => {
        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+ }
+
+ const findDuplicatedIds = (products) => {
+    const duplicatedMatrix = {};
+    products.forEach( p => {
+        if (!p.id) {
+            console.log('null id');
+        }
+        if (duplicatedMatrix[p.id]) {
+            duplicatedMatrix[p.id]++;
+        }
+        else {
+            duplicatedMatrix[p.id] = 1;
+        }
+    });
+
+    Object.keys(duplicatedMatrix).map(k => {
+        if(duplicatedMatrix[k] >= 2) {
+            console.log('duplicated id: ', k)
+        }
+    });
+
  }
 
 export default Reducer

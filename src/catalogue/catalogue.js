@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import styled,{ css } from 'styled-components';
 import { loadProducts, setFilter, setLoading, deleteProduct, editProduct } from '../store/actions/actionsCreator';
-import { getProducts, getUser, getProductsNumber } from '../store/selectors/selector';
+import { getProducts, getUser, getProductsNumber, getProductFilters } from '../store/selectors/selector';
 import { history } from '../App';
 import search from '../assets/search.png';
 import deleteImg from '../assets/delete.png';
@@ -166,7 +166,7 @@ const Checkbox = styled.input`
 
 const filterValues = {};
 
-const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLoading, user, deleteProd, editProd }) => {
+const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilter, setLoading, user, deleteProd, editProd }) => {
   useEffect(() => {
     if (user) {
       loadProducts();
@@ -175,6 +175,8 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
       history.push('login');
     }
   }, [user, loadProducts]);
+
+  const [inputDecrizione, setInputDescrizione] = useState('');
 
   const inputAref = React.createRef();
   const inputBref = React.createRef();
@@ -356,7 +358,7 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
 
         </FilterRow>
         {
-          productList.map(p =>
+          productList.map((p, i) =>
             <TableRow disabled={p.obsoleto} key={p.id}>
               <ActionCell>
                 <DeleteIcon src={deleteImg} onClick={() => deleteProd(p)} />
@@ -372,8 +374,8 @@ const Catalogue = ({ productList, productsNumber, loadProducts, setFilter, setLo
               <GrowCell>{p.descrizione}</GrowCell>
               <MediumCell>{p.produttore}</MediumCell>
               <MediumCell>{p.codiceProduttore}</MediumCell>
-              <MediumCell>{p.fornitori.map(f => <div>{f.codiceFornitore}</div>)}</MediumCell>
-              <MediumCell>{p.fornitori.map(f => <div>{f.fornitore}</div>)}</MediumCell>
+              <MediumCell>{p.fornitori.map((f, i) => <div key={i}>{f.codiceFornitore}</div>)}</MediumCell>
+              <MediumCell>{p.fornitori.map((f, i) => <div key={i}>{f.fornitore}</div>)}</MediumCell>
               <MediumCell>{p.id}</MediumCell>
             </TableRow>
           )
@@ -391,7 +393,8 @@ const mapStateToProps = state => {
   return {
     productList: getProducts(state),
     user: getUser(state),
-    productsNumber: getProductsNumber(state)
+    productsNumber: getProductsNumber(state),
+    filters: getProductFilters(state)
   }
 };
 
