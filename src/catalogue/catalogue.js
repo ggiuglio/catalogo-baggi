@@ -177,81 +177,44 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
   }, [user, loadProducts]);
 
   useEffect(() => { 
-    setInputDescrizione(filters.descrizione);
+    if(inputA !== filters.A) setInputA(filters.A);
+    if(inputB !== filters.B) setInputB(filters.B);
+    if(inputC !== filters.C) setInputC(filters.C);
+    if(inputD !== filters.D) setInputD(filters.D);
+    if(inputE !== filters.E) setInputE(filters.E);
+    if(inputF !== filters.F) setInputF(filters.F);
+    if(inputG !== filters.G) setInputG(filters.G);
+    if(inputDescrizione !== filters.descrizione) setInputDescrizione(filters.descrizione);
+    if(inputProduttore !== filters.produttore) setInputDescrizione(filters.produttore);
+    if(inputCodiceProduttore !== filters.codiceProduttore) setInputDescrizione(filters.codiceProduttore);
+    if(inputFornitore!== filters.fornitore) setInputDescrizione(filters.fornitore);
+    if(inputCodiceFornitore !== filters.codiceFornitore) setInputDescrizione(filters.codiceFornitore);
+
   }, [filters]);
 
-  const [inputDescrizione, setInputDescrizione] = useState('');
 
-  const inputAref = React.createRef();
-  const inputBref = React.createRef();
-  const inputCref = React.createRef();
-  const inputDref = React.createRef();
-  const inputEref = React.createRef();
-  const inputFref = React.createRef();
-  const inputGref = React.createRef();
-  const inputProduttoref = React.createRef();
-  const inputDecrizioneref = React.createRef();
-  const inputCodiceProduttoref = React.createRef();
-  const inputCodiceFornitoreref = React.createRef();
-  const inputFornitoreref = React.createRef();
+  const [inputA, setInputA] = useState('');
+  const [inputB, setInputB] = useState('');
+  const [inputC, setInputC] = useState('');
+  const [inputD, setInputD] = useState('');
+  const [inputE, setInputE] = useState('');
+  const [inputF, setInputF] = useState('');
+  const [inputG, setInputG] = useState('');
+  const [inputDescrizione, setInputDescrizione] = useState('');
+  const [inputProduttore, setInputProduttore] = useState('');
+  const [inputCodiceProduttore, setInputCodiceProduttore] = useState('');
+  const [inputFornitore, setInputFornitore] = useState('');
+  const [inputCodiceFornitore, setInputCodiceFornitore] = useState('');
+
 
   let debounce;
   let debounceLoad;
-
-  const chagngeFilter = (filter, value) => {
-    setFilterInput(filter, value)
-    if (debounce && debounceLoad) {
-      clearTimeout(debounce);
-      clearTimeout(debounceLoad);
-    }
-    debounceLoad = setTimeout(() => debounceLoadin(), 400);
-    debounce = setTimeout(() => debouncedFilterChange(filter, value), 500);
-  }
-
-  const setFilterInput = (filter, value) => {
-    switch (filter) {
-      case 'A':
-        break;
-      case 'B':
-        break;
-      case 'C':
-        break;
-      case 'D':
-        break;
-      case 'E':
-        break;
-      case 'F':
-        break;
-      case 'G':
-        break;
-      case 'produttore':
-        break;
-      case 'descrizione':
-        setInputDescrizione(value)
-        break;
-      case 'codiceProduttore':
-        break;
-      case 'codiceFornitore':
-        break;
-      case 'fornitore':
-        break;
-      default:
-        break;
-    };
-  }
-
-
 
   const debouncedFilterChange = (filter, value) => {
     setFilter(filter, value);
   }
   const debounceLoadin = () => {
     setLoading();
-  }
-
-  const filterChange = (event, filter) => {
-    const value = event.target.value;
-    setFilterValue(filter, value);
   }
 
   const setDuplicated = (value) => {
@@ -267,50 +230,6 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
     debounce = setTimeout(() => debouncedFilterChange(filter, value), 500);
   }
 
-  const resetFilter = (filter) => {
-    setFilterValue(filter, '');
-    switch (filter) {
-      case 'A':
-        inputAref.current.value = '';
-        break;
-      case 'B':
-        inputBref.current.value = '';
-        break;
-      case 'C':
-        inputCref.current.value = '';
-        break;
-      case 'D':
-        inputDref.current.value = '';
-        break;
-      case 'E':
-        inputEref.current.value = '';
-        break;
-      case 'F':
-        inputFref.current.value = '';
-        break;
-      case 'G':
-        inputGref.current.value = '';
-        break;
-      case 'produttore':
-        inputProduttoref.current.value = '';
-        break;
-      case 'descrizione':
-        inputDecrizioneref.current.value = '';
-        break;
-      case 'codiceProduttore':
-        inputCodiceProduttoref.current.value = '';
-        break;
-      case 'codiceFornitore':
-        inputCodiceFornitoreref.current.value = '';
-        break;
-      case 'fornitore':
-        inputFornitoreref.current.value = '';
-        break;
-      default:
-        break;
-    };
-
-  }
 
   return <div>
     <ProductsFound>{productList.length} su {productsNumber} prodotti trovati
@@ -341,64 +260,64 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
           <ActionCell>
           </ActionCell>
           <FilterCell>
-            <Filter type="text" ref={inputAref} onChange={(e) => filterChange(e, 'A')} />
+            <Filter type="text" value={inputA} onChange={(e) => setFilterValue('A', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.A ? <ClearIcon src={x} onClick={() => resetFilter('A')} /> : ''}
+            {inputA ? <ClearIcon src={x} onClick={() => setFilterValue('A', '')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" ref={inputBref} onChange={(e) => filterChange(e, 'B')} />
+            <Filter type="text" value={inputB} onChange={(e) => setFilterValue('B', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.B ? <ClearIcon src={x} onClick={() => resetFilter('B')} /> : ''}
+            {inputB ? <ClearIcon src={x} onClick={() => setFilterValue('B', '')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" ref={inputCref} onChange={(e) => filterChange(e, 'C')} />
+            <Filter type="text" value={inputC} onChange={(e) => setFilterValue('C', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.C ? <ClearIcon src={x} onClick={() => resetFilter('C')} /> : ''}
+            {inputC ? <ClearIcon src={x} onClick={() => setFilterValue('C', '')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" ref={inputDref} onChange={(e) => filterChange(e, 'D')} />
+            <Filter type="text" value={inputD} onChange={(e) => setFilterValue('D', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.D ? <ClearIcon src={x} onClick={() => resetFilter('D')} /> : ''}
+            {inputD ? <ClearIcon src={x} onClick={() => setFilterValue('D', '')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" ref={inputEref} onChange={(e) => filterChange(e, 'E')} />
+            <Filter type="text" value={inputE} onChange={(e) => setFilterValue('E', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.E ? <ClearIcon src={x} onClick={() => resetFilter('E')} /> : ''}
+            {inputE ? <ClearIcon src={x} onClick={() => setFilterValue('E', '')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" ref={inputFref} onChange={(e) => filterChange(e, 'F')} />
+            <Filter type="text" value={inputF} onChange={(e) => setFilterValue('F', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.F ? <ClearIcon src={x} onClick={() => resetFilter('F')} /> : ''}
+            {inputF ? <ClearIcon src={x} onClick={() => setFilterValue('F', '')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" ref={inputGref} onChange={(e) => filterChange(e, 'G')} />
+            <Filter type="text" value={inputG} onChange={(e) => setFilterValue('G', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.G ? <ClearIcon src={x} onClick={() => resetFilter('G')} /> : ''}
+            {inputG ? <ClearIcon src={x} onClick={() => setFilterValue('G', '')} /> : ''}
           </FilterCell>
           <GrowFilterCell>
             <Filter type="text" value={inputDescrizione} onChange={(e) => setFilterValue('descrizione', e.target.value)} />
             <SearchIcon src={search} />
-            {inputDescrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : ''}
+            {inputDescrizione ? <ClearIcon src={x} onClick={() => setFilterValue('descrizione', '')} /> : ''}
           </GrowFilterCell>
           <MediumFilterCell>
-            <Filter type="text" ref={inputProduttoref} onChange={(e) => filterChange(e, 'produttore')} />
+            <Filter type="text" value={inputProduttore} onChange={(e) => setFilterValue('produttore', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.produttore ? <ClearIcon src={x} onClick={() => resetFilter('produttore')} /> : ''}
+            {inputProduttore ? <ClearIcon src={x} onClick={() => setFilterValue('produttore', '')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
-            <Filter type="text" ref={inputCodiceProduttoref} onChange={(e) => filterChange(e, 'codiceProduttore')} />
+            <Filter type="text" value={inputCodiceProduttore} onChange={(e) => setFilterValue('codiceProduttore', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.codiceProduttore ? <ClearIcon src={x} onClick={() => resetFilter('codiceProduttore')} /> : ''}
+            {inputCodiceProduttore ? <ClearIcon src={x} onClick={() => setFilterValue('codiceProduttore', '')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
-            <Filter type="text" ref={inputCodiceFornitoreref} onChange={(e) => filterChange(e, 'codiceFornitore')} />
+            <Filter type="text" value={inputCodiceFornitore} onChange={(e) => setFilterValue('codiceFornitore', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.codiceFornitore ? <ClearIcon src={x} onClick={() => resetFilter('codiceFornitore')} /> : ''}
+            {inputCodiceFornitore ? <ClearIcon src={x} onClick={() => setFilterValue('codiceFornitore', '')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
-            <Filter type="text" ref={inputFornitoreref} onChange={(e) => filterChange(e, 'fornitore')} />
+            <Filter type="text" value={inputFornitore} onChange={(e) => setFilterValue('fornitore', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.fornitore ? <ClearIcon src={x} onClick={() => resetFilter('fornitore')} /> : ''}
+            {inputFornitore ? <ClearIcon src={x} onClick={() => setFilterValue('fornitore', '')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
           </MediumFilterCell>
