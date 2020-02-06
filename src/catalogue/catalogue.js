@@ -176,7 +176,11 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
     }
   }, [user, loadProducts]);
 
-  const [inputDecrizione, setInputDescrizione] = useState('');
+  useEffect(() => { 
+    setInputDescrizione(filters.descrizione);
+  }, [filters]);
+
+  const [inputDescrizione, setInputDescrizione] = useState('');
 
   const inputAref = React.createRef();
   const inputBref = React.createRef();
@@ -193,6 +197,50 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
 
   let debounce;
   let debounceLoad;
+
+  const chagngeFilter = (filter, value) => {
+    setFilterInput(filter, value)
+    if (debounce && debounceLoad) {
+      clearTimeout(debounce);
+      clearTimeout(debounceLoad);
+    }
+    debounceLoad = setTimeout(() => debounceLoadin(), 400);
+    debounce = setTimeout(() => debouncedFilterChange(filter, value), 500);
+  }
+
+  const setFilterInput = (filter, value) => {
+    switch (filter) {
+      case 'A':
+        break;
+      case 'B':
+        break;
+      case 'C':
+        break;
+      case 'D':
+        break;
+      case 'E':
+        break;
+      case 'F':
+        break;
+      case 'G':
+        break;
+      case 'produttore':
+        break;
+      case 'descrizione':
+        setInputDescrizione(value)
+        break;
+      case 'codiceProduttore':
+        break;
+      case 'codiceFornitore':
+        break;
+      case 'fornitore':
+        break;
+      default:
+        break;
+    };
+  }
+
+
 
   const debouncedFilterChange = (filter, value) => {
     setFilter(filter, value);
@@ -211,7 +259,6 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
   }
 
   const setFilterValue = (filter, value) => {
-    filterValues[filter] = value;
     if (debounce && debounceLoad) {
       clearTimeout(debounce);
       clearTimeout(debounceLoad);
@@ -329,9 +376,9 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
             {filterValues.G ? <ClearIcon src={x} onClick={() => resetFilter('G')} /> : ''}
           </FilterCell>
           <GrowFilterCell>
-            <Filter type="text" ref={inputDecrizioneref} onChange={(e) => filterChange(e, 'descrizione')} />
+            <Filter type="text" value={inputDescrizione} onChange={(e) => setFilterValue('descrizione', e.target.value)} />
             <SearchIcon src={search} />
-            {filterValues.descrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : ''}
+            {inputDescrizione ? <ClearIcon src={x} onClick={() => resetFilter('descrizione')} /> : ''}
           </GrowFilterCell>
           <MediumFilterCell>
             <Filter type="text" ref={inputProduttoref} onChange={(e) => filterChange(e, 'produttore')} />
