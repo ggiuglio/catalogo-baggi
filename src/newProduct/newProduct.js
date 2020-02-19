@@ -103,7 +103,6 @@ const CreateButton = styled.div`
       color: white;
     }
 `;
-const NewProductDetailsTableHeaderFullRow = styled(NewProductDetailsTableHeaderCell)``;
 
 const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct, getOiVersion, newTipo}) => {
   if (!user) {
@@ -111,7 +110,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
   }
   const [a, setA] = useState('S');
   const [b, setB] = useState('0');
-  const [c, setC] = useState('');
+  const [c, setC] = useState('00');
   const [d, setD] = useState('');
   const [e, setE] = useState('');
   const [f, setF] = useState('0');
@@ -266,7 +265,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
         <NewProductTableCell> 
           <NewProductSelect value={newTipo ? newTipo : f} onChange={e => setValue('F', e)}>
             <option value="0">Prodotti</option>
-            <option value="1">Ricambii</option>
+            <option value="1">Ricambi</option>
             <option value="2">Certificati/Documenti</option>
             <option value="3">Service</option>
             <option value="4">Consumabili</option>
@@ -300,7 +299,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
 
     <NewProductDetailsTableHeaderCell>Elenco Fornitori</NewProductDetailsTableHeaderCell>
     { fornitori ? fornitori.map( (f, i) =>
-      <NewProductDetailsTable>
+      <NewProductDetailsTable key={i}>
         <NewProductDetailsTableHeaderCell>Codice Fornitore</NewProductDetailsTableHeaderCell>
         <NewProductTableCell> 
           <NewProductTextArea value={f.codiceFornitore} onChange={e => setFronitoreValue(e.target.value, 'codiceFornitore', i)}/> 

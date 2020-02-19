@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled,{ css } from 'styled-components';
 import { loadProducts, setFilter, setLoading, deleteProduct, editProduct } from '../store/actions/actionsCreator';
@@ -10,6 +10,7 @@ import editImg from '../assets/edit.png';
 import x from '../assets/x.png';
 import ConfirmDelete from '../common/confirmDelete';
 import ConfirmEdit from '../common/confirmEdit';
+import { FilterInput } from '../common/filterInput';
 
 const Container = styled.div`
   overflow: auto;
@@ -89,16 +90,6 @@ const GrowCell = styled(Cell)`
 const FilterCell = styled(Cell)`
   padding: 5px 0;
 `;
-const Filter = styled.input`
-  width: 100%;
-  height: 100%;
-  border: none;
-  box-sizing: border-box;
-  padding: 2px 5px;
-  padding-left: 22px;
-  font-size: 16px;
-  outline: none;
-`;
 const GrowFilterCell = styled(FilterCell)`
   flex-grow: 1;
 `;
@@ -164,9 +155,8 @@ const Checkbox = styled.input`
   cursor: pointer;
 `;
 
-const filterValues = {};
-
 const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilter, setLoading, user, deleteProd, editProd }) => {
+  
   useEffect(() => {
     if (user) {
       loadProducts();
@@ -176,60 +166,46 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
     }
   }, [user, loadProducts]);
 
-  useEffect(() => { 
-    if(inputA !== filters.A) setInputA(filters.A);
-    if(inputB !== filters.B) setInputB(filters.B);
-    if(inputC !== filters.C) setInputC(filters.C);
-    if(inputD !== filters.D) setInputD(filters.D);
-    if(inputE !== filters.E) setInputE(filters.E);
-    if(inputF !== filters.F) setInputF(filters.F);
-    if(inputG !== filters.G) setInputG(filters.G);
-    if(inputDescrizione !== filters.descrizione) setInputDescrizione(filters.descrizione);
-    if(inputProduttore !== filters.produttore) setInputDescrizione(filters.produttore);
-    if(inputCodiceProduttore !== filters.codiceProduttore) setInputDescrizione(filters.codiceProduttore);
-    if(inputFornitore!== filters.fornitore) setInputDescrizione(filters.fornitore);
-    if(inputCodiceFornitore !== filters.codiceFornitore) setInputDescrizione(filters.codiceFornitore);
-
-  }, [filters]);
-
-
-  const [inputA, setInputA] = useState('');
-  const [inputB, setInputB] = useState('');
-  const [inputC, setInputC] = useState('');
-  const [inputD, setInputD] = useState('');
-  const [inputE, setInputE] = useState('');
-  const [inputF, setInputF] = useState('');
-  const [inputG, setInputG] = useState('');
-  const [inputDescrizione, setInputDescrizione] = useState('');
-  const [inputProduttore, setInputProduttore] = useState('');
-  const [inputCodiceProduttore, setInputCodiceProduttore] = useState('');
-  const [inputFornitore, setInputFornitore] = useState('');
-  const [inputCodiceFornitore, setInputCodiceFornitore] = useState('');
-
-
-  let debounce;
-  let debounceLoad;
-
-  const debouncedFilterChange = (filter, value) => {
-    setFilter(filter, value);
-  }
-  const debounceLoadin = () => {
-    setLoading();
-  }
-
   const setDuplicated = (value) => {
-    setFilterValue('onlyDuplicated', value);
+    setFilter('onlyDuplicated', value);
   }
 
-  const setFilterValue = (filter, value) => {
-    if (debounce && debounceLoad) {
-      clearTimeout(debounce);
-      clearTimeout(debounceLoad);
-    }
-    debounceLoad = setTimeout(() => debounceLoadin(), 400);
-    debounce = setTimeout(() => debouncedFilterChange(filter, value), 500);
-  }
-
+  const changeA = (value) => {
+    setFilter('A', value);
+  };
+  const changeB = (value) => {
+    setFilter('B', value);
+  };
+  const changeC= (value) => {
+    setFilter('C', value);
+  };
+  const changeD = (value) => {
+    setFilter('D', value);
+  };
+  const changeE = (value) => {
+    setFilter('E', value);
+  };
+  const changeF = (value) => {
+    setFilter('F', value);
+  };
+  const changeG = (value) => {
+    setFilter('G', value);
+  };
+  const changeDescrizione = (value) => {
+    setFilter('descrizione', value);
+  };
+  const changeProduttore = (value) => {
+    setFilter('produttore', value);
+  };
+  const changeCodiceProduttore = (value) => {
+    setFilter('codiceProduttore', value);
+  };
+  const changeFornitore = (value) => {
+    setFilter('fornitore', value);
+  };
+  const changeCodiceFornitore = (value) => {
+    setFilter('codiceFornitore', value);
+  };
 
   return <div>
     <ProductsFound>{productList.length} su {productsNumber} prodotti trovati
@@ -260,64 +236,64 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
           <ActionCell>
           </ActionCell>
           <FilterCell>
-            <Filter type="text" value={inputA} onChange={(e) => setFilterValue('A', e.target.value)} />
+            <FilterInput filterValue={filters.A || ''} updateValue={changeA} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputA ? <ClearIcon src={x} onClick={() => setFilterValue('A', '')} /> : ''}
+            {filters.A ? <ClearIcon src={x} onClick={() => changeA('')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" value={inputB} onChange={(e) => setFilterValue('B', e.target.value)} />
+            <FilterInput filterValue={filters.B || ''} updateValue={changeB} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputB ? <ClearIcon src={x} onClick={() => setFilterValue('B', '')} /> : ''}
+            {filters.B ? <ClearIcon src={x} onClick={() => changeB('')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" value={inputC} onChange={(e) => setFilterValue('C', e.target.value)} />
+            <FilterInput filterValue={filters.C || ''} updateValue={changeC} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputC ? <ClearIcon src={x} onClick={() => setFilterValue('C', '')} /> : ''}
+            {filters.C ? <ClearIcon src={x} onClick={() => changeC('')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" value={inputD} onChange={(e) => setFilterValue('D', e.target.value)} />
+            <FilterInput filterValue={filters.D || ''} updateValue={changeD} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputD ? <ClearIcon src={x} onClick={() => setFilterValue('D', '')} /> : ''}
+            {filters.D ? <ClearIcon src={x} onClick={() => changeD('')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" value={inputE} onChange={(e) => setFilterValue('E', e.target.value)} />
+            <FilterInput filterValue={filters.E || ''} updateValue={changeE} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputE ? <ClearIcon src={x} onClick={() => setFilterValue('E', '')} /> : ''}
+            {filters.E ? <ClearIcon src={x} onClick={() => changeE('')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" value={inputF} onChange={(e) => setFilterValue('F', e.target.value)} />
+            <FilterInput filterValue={filters.F || ''} updateValue={changeF} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputF ? <ClearIcon src={x} onClick={() => setFilterValue('F', '')} /> : ''}
+            {filters.F ? <ClearIcon src={x} onClick={() => changeF('')} /> : ''}
           </FilterCell>
           <FilterCell>
-            <Filter type="text" value={inputG} onChange={(e) => setFilterValue('G', e.target.value)} />
+          <FilterInput filterValue={filters.G || ''} updateValue={changeG} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputG ? <ClearIcon src={x} onClick={() => setFilterValue('G', '')} /> : ''}
+            {filters.G ? <ClearIcon src={x} onClick={() => changeG('')} /> : ''}
           </FilterCell>
           <GrowFilterCell>
-            <Filter type="text" value={inputDescrizione} onChange={(e) => setFilterValue('descrizione', e.target.value)} />
+            <FilterInput filterValue={filters.descrizione || ''} updateValue={changeDescrizione} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputDescrizione ? <ClearIcon src={x} onClick={() => setFilterValue('descrizione', '')} /> : ''}
+            {filters.descrizione ? <ClearIcon src={x} onClick={() => changeDescrizione('')} /> : ''}
           </GrowFilterCell>
           <MediumFilterCell>
-            <Filter type="text" value={inputProduttore} onChange={(e) => setFilterValue('produttore', e.target.value)} />
+            <FilterInput filterValue={filters.produttore || ''} updateValue={changeProduttore} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputProduttore ? <ClearIcon src={x} onClick={() => setFilterValue('produttore', '')} /> : ''}
+            {filters.produttore ? <ClearIcon src={x} onClick={() => changeProduttore('')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
-            <Filter type="text" value={inputCodiceProduttore} onChange={(e) => setFilterValue('codiceProduttore', e.target.value)} />
+          <FilterInput filterValue={filters.codiceProduttore || ''} updateValue={changeCodiceProduttore} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputCodiceProduttore ? <ClearIcon src={x} onClick={() => setFilterValue('codiceProduttore', '')} /> : ''}
+            {filters.codiceProduttore ? <ClearIcon src={x} onClick={() => changeCodiceProduttore('')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
-            <Filter type="text" value={inputCodiceFornitore} onChange={(e) => setFilterValue('codiceFornitore', e.target.value)} />
+          <FilterInput filterValue={filters.codiceFornitore || ''} updateValue={changeCodiceFornitore} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputCodiceFornitore ? <ClearIcon src={x} onClick={() => setFilterValue('codiceFornitore', '')} /> : ''}
+            {filters.codiceFornitore ? <ClearIcon src={x} onClick={() => changeCodiceFornitore('')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
-            <Filter type="text" value={inputFornitore} onChange={(e) => setFilterValue('fornitore', e.target.value)} />
+          <FilterInput filterValue={filters.fornitore || ''} updateValue={changeFornitore} setLoading={setLoading} />
             <SearchIcon src={search} />
-            {inputFornitore ? <ClearIcon src={x} onClick={() => setFilterValue('fornitore', '')} /> : ''}
+            {filters.fornitore ? <ClearIcon src={x} onClick={() => changeFornitore('')} /> : ''}
           </MediumFilterCell>
           <MediumFilterCell>
           </MediumFilterCell>

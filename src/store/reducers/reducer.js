@@ -239,7 +239,7 @@ const filterProducts = (products, productFilters) => {
             }
         });
         fp = [];
-        Object.keys(duplicatedMatrix).map(k => {
+        Object.keys(duplicatedMatrix).forEach(k => {
             if(duplicatedMatrix[k].length >= 2) {
                 fp = [...fp, ...duplicatedMatrix[k]];
             }
@@ -296,7 +296,7 @@ const makeString = (length) => {
         }
     });
 
-    Object.keys(duplicatedMatrix).map(k => {
+    Object.keys(duplicatedMatrix).forEach(k => {
         if(duplicatedMatrix[k] >= 2) {
             console.log('duplicated id: ', k)
         }

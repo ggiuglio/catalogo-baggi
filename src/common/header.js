@@ -100,7 +100,7 @@ const Header = ({logout, user}) => {
       case '/nuovo-prodotto':
         return 'Nuovo Prodotto';
       case '/import':
-        return 'Caricameto da Excel';
+        return 'Caricamento da Excel';
       default:
         return '';
     }
@@ -116,7 +116,7 @@ const Header = ({logout, user}) => {
           Nuovo prodotto
         </Tab>
         <Tab selected={selectedTab === '/import'} onClick={() => goToPage('import')}>
-          Caricameto Dati
+          Caricamento Dati
         </Tab>
       </Tabs>
       <Bar>
