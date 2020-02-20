@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import styled,{ css } from 'styled-components';
-import { loadProducts, setFilter, setLoading, deleteProduct, editProduct } from '../store/actions/actionsCreator';
-import { getProducts, getUser, getProductsNumber, getProductFilters } from '../store/selectors/selector';
+import { loadProducts, setFilter, setLoading, deleteProduct, editProduct, loadMoreResults } from '../store/actions/actionsCreator';
+import { getProducts, getUser, getProductsNumber, getProductFilters, getResultNumberLimit } from '../store/selectors/selector';
 import { history } from '../App';
 import search from '../assets/search.png';
 import deleteImg from '../assets/delete.png';
@@ -27,7 +27,7 @@ const TableContainer = styled.div`
   font-size: 12px;
 `;
 const ProductTable = styled.div`
-  min-width: 1460px;
+  min-width: 1455px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -154,8 +154,24 @@ const Checkbox = styled.input`
   margin-top: 2px;
   cursor: pointer;
 `;
+const LoadMorebutton = styled.div`
+  width: 150px;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  text-align: center;
+  background: #cccccc;
+  color: black;
+  border: 1px solid black;
+  margin: 15px auto;
+  cursor: pointer;
+  :hover {
+    background-color: #444444;
+    color: white;
+  }
+`;
 
-const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilter, setLoading, user, deleteProd, editProd }) => {
+const Catalogue = ({ productList, productsNumber, resultNumberLimit, getMoreResults, filters, loadProducts, setFilter, setLoading, user, deleteProd, editProd }) => {
   
   useEffect(() => {
     if (user) {
@@ -324,6 +340,11 @@ const Catalogue = ({ productList, productsNumber, filters, loadProducts, setFilt
         }
       </ProductTable>
       </TableContainer>
+      {
+        productsNumber > resultNumberLimit ? 
+        <LoadMorebutton onClick={() => getMoreResults()}>Carica altri prodotti</LoadMorebutton> : 
+        <div></div>
+      }
       <ConfirmDelete />
       <ConfirmEdit />
     </Container >
@@ -336,7 +357,8 @@ const mapStateToProps = state => {
     productList: getProducts(state),
     user: getUser(state),
     productsNumber: getProductsNumber(state),
-    filters: getProductFilters(state)
+    filters: getProductFilters(state),
+    resultNumberLimit: getResultNumberLimit(state)
   }
 };
 
@@ -346,7 +368,8 @@ const mapDispatchToProps = dispatch => {
     setFilter: (filter, value) => dispatch(setFilter(filter, value)),
     setLoading: () => dispatch(setLoading()),
     deleteProd: (product) => dispatch(deleteProduct(product)),
-    editProd: (product) => dispatch(editProduct(product))
+    editProd: (product) => dispatch(editProduct(product)),
+    getMoreResults: () => dispatch(loadMoreResults()),
   }
 };
 

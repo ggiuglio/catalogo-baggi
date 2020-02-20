@@ -15,7 +15,8 @@ import {
     EDIT_PRODUCT_CANCEL,
     CALCULATE_LATEST_PRODUCT_VERSION,
     CALCULATE_LATEST_OI_PRODUCT_VERSION,
-    CANCEL_LATEST_PRODUCT_VERSION
+    CANCEL_LATEST_PRODUCT_VERSION,
+    LOAD_MORE_RESULTS
 } from '../actions/actionsTypes'
 
 export const INITIAL_STATE = {
@@ -26,6 +27,7 @@ export const INITIAL_STATE = {
    user: null,
    loading: false,
    importResults: null,
+   resultNumberLimit: 100
 };
 
 const Reducer = (state = INITIAL_STATE, action) => {
@@ -120,9 +122,18 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 ...state, 
                 ...{
                     filterdProducts: filteredProduct, 
-                    loading: false
+                    loading: false,
+                    resultNumberLimit: 100,
                 }
             };
+        }
+        case LOAD_MORE_RESULTS: {
+            return {
+                ...state,
+                ...{
+                    resultNumberLimit: state.resultNumberLimit + 100
+                }
+            }
         }
         case SET_LOADING: {
             return {

@@ -15,7 +15,8 @@ import {
   EDIT_PRODUCT_SUCCESS,
   CALCULATE_LATEST_PRODUCT_VERSION,
   CANCEL_LATEST_PRODUCT_VERSION,
-  CALCULATE_LATEST_OI_PRODUCT_VERSION
+  CALCULATE_LATEST_OI_PRODUCT_VERSION,
+  LOAD_MORE_RESULTS
 } from './actionsTypes.js'
 import { FirebaseInstance } from '../../App';
 import { history } from '../../App';
@@ -216,6 +217,15 @@ export const editProductCancel = () => {
   return dispatch => {
     return dispatch({
       type: EDIT_PRODUCT_CANCEL
+    })
+  }
+}
+
+export const loadMoreResults = () => {
+  return dispatch => {
+    dispatch({
+      type: LOAD_MORE_RESULTS,
+      value: true
     })
   }
 }

@@ -64,7 +64,7 @@ const Name = styled.span`
 `;
 
 const Tab = styled.div`
-  width: 120px;
+  width: 130px;
   padding: 10px;
   border-right: 1px solid black;
   text-align: center;
