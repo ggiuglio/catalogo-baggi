@@ -14,7 +14,7 @@ import {
     EDIT_PRODUCT_SUCCESS,
     EDIT_PRODUCT_CANCEL,
     CALCULATE_LATEST_PRODUCT_VERSION,
-    CALCULATE_LATEST_OI_PRODUCT_VERSION,
+    CALCULATE_LATEST_IO_PRODUCT_VERSION,
     CANCEL_LATEST_PRODUCT_VERSION,
     LOAD_MORE_RESULTS
 } from '../actions/actionsTypes'
@@ -169,7 +169,7 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 latestVersion: latestVersion
             }
         }
-        case CALCULATE_LATEST_OI_PRODUCT_VERSION: {
+        case CALCULATE_LATEST_IO_PRODUCT_VERSION: {
             let latestVersion = null;
             let latestTipo = null; 
             let versions = state.products.filter(p => 

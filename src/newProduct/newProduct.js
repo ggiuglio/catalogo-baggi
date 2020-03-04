@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from "react-redux";
 import { getUser, getLatestVersion, getLatestTipo } from '../store/selectors/selector';
 import { calculateLatestProductVersion,
-         calculateLatestOiProductVersion,
+         calculateLatestIoProductVersion,
          cancelLatestProductVersion, 
          createNewProduct 
         } from '../store/actions/actionsCreator';
@@ -104,7 +104,7 @@ const CreateButton = styled.div`
     }
 `;
 
-const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct, getOiVersion, newTipo}) => {
+const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct, getIoVersion, newTipo}) => {
   if (!user) {
     history.push('login');
   }
@@ -129,15 +129,15 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
         E: e,
         F: f
       };
-      if(d.toLowerCase() === 'oi') {
-        getOiVersion(productDetials);
+      if(d.toLowerCase() === 'io') {
+        getIoVersion(productDetials);
       } else {
         getVersion(productDetials);
       }
     } else {
       cancelVersion()
     }
-  }, [a,b,c,d,e,f, getVersion, getOiVersion, cancelVersion]);
+  }, [a,b,c,d,e,f, getVersion, getIoVersion, cancelVersion]);
  // A: S, V
  // B: 0, S, L, G
  // C: 00, 01, 02...
@@ -228,14 +228,14 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
       </NewProductTableHeader>
       <NewProductTableRow>
         <NewProductTableCell> 
-          <NewProductSelect value={a} onChange={e => setValue('A', e)}>
+          <NewProductSelect value={a} onChange={event => setValue('A', event)}>
             <option value="S">Sensevolution</option>
             <option value="V">Voicevolution</option>
             <option value="C">Cibus</option>
           </NewProductSelect> 
         </NewProductTableCell>
         <NewProductTableCell> 
-          <NewProductSelect value={b} onChange={e => setValue('B', e)}>
+          <NewProductSelect value={b} onChange={event => setValue('B', event)}>
             <option value="0">Generico</option>
             <option value="S">Solido</option>
             <option value="L">Liquido</option>
@@ -243,7 +243,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
           </NewProductSelect> 
         </NewProductTableCell>
         <NewProductTableCell>
-          <NewProductSelect value={c} onChange={e => setValue('C', e)}>
+          <NewProductSelect value={c} onChange={event => setValue('C', event)}>
             <option value="00">Tutti i mercati</option>
             <option value="01">Tabacco</option>
             <option value="02">Energetico</option>
@@ -257,21 +257,25 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
           </NewProductSelect> 
         </NewProductTableCell>
         <NewProductTableCell> 
-          <NewProductInput maxlength="2" value={d} onChange={e => setValue('D', e)}/> 
+          <NewProductInput maxlength="2" value={d} onChange={event => setValue('D', event)}/> 
         </NewProductTableCell>
         <NewProductTableCell> 
-          <NewProductInput maxlength="3" value={e} onChange={e => setValue('E', e)}/> 
+          <NewProductInput maxlength="3" value={e} onChange={event => setValue('E', event)}/> 
         </NewProductTableCell>
         <NewProductTableCell> 
-          <NewProductSelect value={newTipo ? newTipo : f} onChange={e => setValue('F', e)}>
-            <option value="0">Prodotti</option>
-            <option value="1">Ricambi</option>
-            <option value="2">Certificati/Documenti</option>
-            <option value="3">Service</option>
-            <option value="4">Consumabili</option>
-            <option value="5">Demo</option>
-            <option value="6">Distinte non prodotto</option>
-          </NewProductSelect> 
+          { d.toUpperCase() !== 'IO' ? 
+            <NewProductSelect value={f} onChange={event => setValue('F', event)}>
+              <option value="0">Prodotti</option>
+              <option value="1">Ricambi</option>
+              <option value="2">Certificati/Documenti</option>
+              <option value="3">Service</option>
+              <option value="4">Consumabili</option>
+              <option value="5">Demo</option>
+              <option value="6">Distinte non prodotto</option>
+            </NewProductSelect> 
+            : 
+            <NewProductInput value={newTipo ? newTipo : ''} disabled />
+          }
         </NewProductTableCell>
         <NewProductTableCell> <NewProductInput value={newVersion ? newVersion : ''} disabled /> </NewProductTableCell>
       </NewProductTableRow>
@@ -326,7 +330,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getVersion: product => dispatch(calculateLatestProductVersion(product)),
-    getOiVersion: product => dispatch(calculateLatestOiProductVersion(product)),
+    getIoVersion: product => dispatch(calculateLatestIoProductVersion(product)),
     cancelVersion: () => dispatch(cancelLatestProductVersion()),
     createProduct: (product) => dispatch(createNewProduct(product))
   }

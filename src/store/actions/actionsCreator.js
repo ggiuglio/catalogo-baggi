@@ -15,7 +15,7 @@ import {
   EDIT_PRODUCT_SUCCESS,
   CALCULATE_LATEST_PRODUCT_VERSION,
   CANCEL_LATEST_PRODUCT_VERSION,
-  CALCULATE_LATEST_OI_PRODUCT_VERSION,
+  CALCULATE_LATEST_IO_PRODUCT_VERSION,
   LOAD_MORE_RESULTS
 } from './actionsTypes.js'
 import { FirebaseInstance } from '../../App';
@@ -40,10 +40,10 @@ export const calculateLatestProductVersion = (productDetails) => {
   }
 }
 
-export const calculateLatestOiProductVersion = (productDetails) => {
+export const calculateLatestIoProductVersion = (productDetails) => {
   return dispatch => {
     return dispatch({
-      type: CALCULATE_LATEST_OI_PRODUCT_VERSION,
+      type: CALCULATE_LATEST_IO_PRODUCT_VERSION,
       productDetails: productDetails
     })
   }
