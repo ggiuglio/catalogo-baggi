@@ -1,12 +1,13 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from "react-redux";
 import { getUser, getLatestVersion, getLatestTipo } from '../store/selectors/selector';
-import { calculateLatestProductVersion,
-         calculateLatestIoProductVersion,
-         cancelLatestProductVersion, 
-         createNewProduct 
-        } from '../store/actions/actionsCreator';
+import {
+  calculateLatestProductVersion,
+  calculateLatestIoProductVersion,
+  cancelLatestProductVersion,
+  createNewProduct
+} from '../store/actions/actionsCreator';
 import { history } from '../App';
 
 const NewProductContainer = styled.div`
@@ -104,7 +105,7 @@ const CreateButton = styled.div`
     }
 `;
 
-const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct, getIoVersion, newTipo}) => {
+const NewProduct = ({ user, getVersion, cancelVersion, newVersion, createProduct, getIoVersion, newTipo }) => {
   if (!user) {
     history.push('login');
   }
@@ -117,10 +118,10 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
   const [descrizione, setDescrizione] = useState('');
   const [produttore, setProduttore] = useState('');
   const [codiceProduttore, setCodiceProduttore] = useState('');
-  const [fornitori, setFornitori] = useState([{codiceFornitore: '', fornitore: ''}]);
+  const [fornitori, setFornitori] = useState([{ codiceFornitore: '', fornitore: '' }]);
 
   useEffect(() => {
-    if(a && b && c && d && e && f) {
+    if (a && b && c && d && e && f) {
       const productDetials = {
         A: a,
         B: b,
@@ -129,7 +130,7 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
         E: e,
         F: f
       };
-      if(d.toLowerCase() === 'io') {
+      if (d.toLowerCase() === 'io') {
         getIoVersion(productDetials);
       } else {
         getVersion(productDetials);
@@ -137,13 +138,13 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
     } else {
       cancelVersion()
     }
-  }, [a,b,c,d,e,f, getVersion, getIoVersion, cancelVersion]);
- // A: S, V
- // B: 0, S, L, G
- // C: 00, 01, 02...
- // D: 2 caratteri solo lettere o numeri
- // E: 3 caratterei solo lettere o numeri
- // F: drop down list un numero 0-6
+  }, [a, b, c, d, e, f, getVersion, getIoVersion, cancelVersion]);
+  // A: S, V
+  // B: 0, S, L, G
+  // C: 00, 01, 02...
+  // D: 2 caratteri solo lettere o numeri
+  // E: 3 caratterei solo lettere o numeri
+  // F: drop down list un numero 0-6
   const setValue = (filed, e) => {
     switch (filed) {
       case 'A':
@@ -165,10 +166,10 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
         setF(e.target.value);
         break;
       case 'descrizione':
-            setDescrizione(e.target.value);
-            break;
+        setDescrizione(e.target.value);
+        break;
       case 'produttore':
-          setProduttore(e.target.value);
+        setProduttore(e.target.value);
         break;
       case 'codiceProduttore':
         setCodiceProduttore(e.target.value);
@@ -177,14 +178,14 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
         break;
     };
   }
-  
+
   const setFronitoreValue = (value, type, id) => {
     const fornitoriList = JSON.parse(JSON.stringify(fornitori));
     fornitoriList.forEach((f, i) => {
-      if(i === id && type === 'fornitore') {
+      if (i === id && type === 'fornitore') {
         f.fornitore = value;
       }
-      if(i === id && type === 'codiceFornitore') {
+      if (i === id && type === 'codiceFornitore') {
         f.codiceFornitore = value;
       }
     });
@@ -192,14 +193,14 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
   }
 
   const createBAGGICode = () => {
-    if(c.length === 2 && d.length === 2 && e.length === 3) {
+    if (c.length === 2 && d.length === 2 && e.length === 3) {
       const newProd = {
         A: a,
         B: b,
         C: c,
         D: d,
         E: e,
-        F: f,
+        F: d.toUpperCase() === 'IO' ? newTipo : f,
         G: newVersion,
         descrizione: descrizione,
         produttore: produttore,
@@ -227,20 +228,20 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
         <NewProductTableHeaderCell>Versione</NewProductTableHeaderCell>
       </NewProductTableHeader>
       <NewProductTableRow>
-        <NewProductTableCell> 
+        <NewProductTableCell>
           <NewProductSelect value={a} onChange={event => setValue('A', event)}>
             <option value="S">Sensevolution</option>
             <option value="V">Voicevolution</option>
             <option value="C">Cibus</option>
-          </NewProductSelect> 
+          </NewProductSelect>
         </NewProductTableCell>
-        <NewProductTableCell> 
+        <NewProductTableCell>
           <NewProductSelect value={b} onChange={event => setValue('B', event)}>
             <option value="0">Generico</option>
             <option value="S">Solido</option>
             <option value="L">Liquido</option>
             <option value="G">Gas</option>
-          </NewProductSelect> 
+          </NewProductSelect>
         </NewProductTableCell>
         <NewProductTableCell>
           <NewProductSelect value={c} onChange={event => setValue('C', event)}>
@@ -254,16 +255,16 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
             <option value="07">Farmaceutico</option>
             <option value="09">Petrolchimico</option>
             <option value="12">Siderurgico</option>
-          </NewProductSelect> 
+          </NewProductSelect>
         </NewProductTableCell>
-        <NewProductTableCell> 
-          <NewProductInput maxlength="2" value={d} onChange={event => setValue('D', event)}/> 
+        <NewProductTableCell>
+          <NewProductInput maxlength="2" value={d} onChange={event => setValue('D', event)} />
         </NewProductTableCell>
-        <NewProductTableCell> 
-          <NewProductInput maxlength="3" value={e} onChange={event => setValue('E', event)}/> 
+        <NewProductTableCell>
+          <NewProductInput maxlength="3" value={e} onChange={event => setValue('E', event)} />
         </NewProductTableCell>
-        <NewProductTableCell> 
-          { d.toUpperCase() !== 'IO' ? 
+        <NewProductTableCell>
+          {d.toUpperCase() !== 'IO' ?
             <NewProductSelect value={f} onChange={event => setValue('F', event)}>
               <option value="0">Prodotti</option>
               <option value="1">Ricambi</option>
@@ -272,8 +273,8 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
               <option value="4">Consumabili</option>
               <option value="5">Demo</option>
               <option value="6">Distinte non prodotto</option>
-            </NewProductSelect> 
-            : 
+            </NewProductSelect>
+            :
             <NewProductInput value={newTipo ? newTipo : ''} disabled />
           }
         </NewProductTableCell>
@@ -283,44 +284,44 @@ const NewProduct = ({user, getVersion, cancelVersion, newVersion, createProduct,
 
     <NewProductDetailsTable>
       <NewProductDetailsTableHeaderCell>Descrizione</NewProductDetailsTableHeaderCell>
-      <NewProductTableCell> 
-        <NewProductTextArea value={descrizione} onChange={e => setValue('descrizione', e)}/> 
+      <NewProductTableCell>
+        <NewProductTextArea value={descrizione} onChange={e => setValue('descrizione', e)} />
       </NewProductTableCell>
     </NewProductDetailsTable>
     <NewProductDetailsTable>
       <NewProductDetailsTableHeaderCell>Produttore</NewProductDetailsTableHeaderCell>
-      <NewProductTableCell> 
-        <NewProductTextArea value={produttore} onChange={e => setValue('produttore', e)}/> 
+      <NewProductTableCell>
+        <NewProductTextArea value={produttore} onChange={e => setValue('produttore', e)} />
       </NewProductTableCell>
     </NewProductDetailsTable>
 
     <NewProductDetailsTable>
       <NewProductDetailsTableHeaderCell>Codice Produttore</NewProductDetailsTableHeaderCell>
-      <NewProductTableCell> 
-        <NewProductTextArea value={codiceProduttore} onChange={e => setValue('codiceProduttore', e)}/> 
+      <NewProductTableCell>
+        <NewProductTextArea value={codiceProduttore} onChange={e => setValue('codiceProduttore', e)} />
       </NewProductTableCell>
     </NewProductDetailsTable>
 
     <NewProductDetailsTableHeaderCell>Elenco Fornitori</NewProductDetailsTableHeaderCell>
-    { fornitori ? fornitori.map( (f, i) =>
+    {fornitori ? fornitori.map((f, i) =>
       <NewProductDetailsTable key={i}>
         <NewProductDetailsTableHeaderCell>Codice Fornitore</NewProductDetailsTableHeaderCell>
-        <NewProductTableCell> 
-          <NewProductTextArea value={f.codiceFornitore} onChange={e => setFronitoreValue(e.target.value, 'codiceFornitore', i)}/> 
+        <NewProductTableCell>
+          <NewProductTextArea value={f.codiceFornitore} onChange={e => setFronitoreValue(e.target.value, 'codiceFornitore', i)} />
         </NewProductTableCell>
         <NewProductDetailsTableHeaderCell>Fornitore</NewProductDetailsTableHeaderCell>
-        <NewProductTableCell> 
-          <NewProductTextArea value={f.fornitore} onChange={e => setFronitoreValue(e.target.value, 'fornitore', i)}/> 
+        <NewProductTableCell>
+          <NewProductTextArea value={f.fornitore} onChange={e => setFronitoreValue(e.target.value, 'fornitore', i)} />
         </NewProductTableCell>
       </NewProductDetailsTable>
-    ) : '' }
-  
+    ) : ''}
+
     <CreateButton onClick={() => createBAGGICode()}>Crea Prodotto</CreateButton>
   </NewProductContainer>
 }
 
 const mapStateToProps = state => {
-  return { 
+  return {
     user: getUser(state),
     newVersion: getLatestVersion(state),
     newTipo: getLatestTipo(state)
@@ -336,4 +337,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps) (NewProduct);
+export default connect(mapStateToProps, mapDispatchToProps)(NewProduct);
